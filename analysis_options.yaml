@@ -1,0 +1,110 @@
+# This file configures the static analysis results for your project (errors,
+# warnings, and lints).
+#
+# This enables the 'recommended' set of lints from `package:lints`.
+# This set helps identify many issues that may lead to problems when running
+# or consuming Dart code, and enforces writing Dart using a single, idiomatic
+# style and format.
+#
+# If you want a smaller set of lints you can change this to specify
+# 'package:lints/core.yaml'. These are just the most critical lints
+# (the recommended set includes the core lints).
+# The core lints are also what is used by pub.dev for scoring packages.
+
+# For more information about the core and recommended set of lints, see
+# https://dart.dev/go/core-lints
+
+# For additional information about configuring this file, see
+# https://dart.dev/guides/language/analysis-options
+
+include: package:lints/recommended.yaml
+
+analyzer:
+  errors:
+    invalid_annotation_target: ignore
+    parameter_assignments: ignore
+
+linter:
+  rules:
+    - avoid_catching_errors
+    #- avoid_dynamic_calls
+    - use_string_buffers
+    - avoid_field_initializers_in_const_classes
+    - avoid_js_rounded_ints
+    #- avoid_positional_boolean_parameters
+    - avoid_returning_this
+    - avoid_setters_without_getters
+    - avoid_type_to_string
+    - conditional_uri_does_not_exist
+    - deprecated_consistency
+    #- do_not_use_environment
+    - join_return_with_assignment
+    - library_names
+    - literal_only_boolean_expressions
+    - matching_super_parameters
+    - missing_whitespace_between_adjacent_strings
+    - no_runtimeType_toString
+    - no_self_assignments
+    - only_throw_errors
+    - parameter_assignments
+    - prefer_asserts_in_initializer_lists
+    - prefer_constructors_over_static_methods
+    - prefer_null_aware_method_calls
+    #- sort_pub_dependencies
+    - switch_on_type
+    - test_types_in_equals
+    - throw_in_finally
+    - tighten_type_of_initializing_formals
+    - unnecessary_null_aware_operator_on_extension_on_nullable
+    - unnecessary_statements
+    - use_is_even_rather_than_modulo
+    #- use_setters_to_change_properties
+    #- use_test_throws_matchers
+    - use_to_and_as_if_applicable
+    
+    # avoid memory leak
+    - cancel_subscriptions
+    - close_sinks
+    
+    # with auto fixes
+    - always_declare_return_types
+    - always_put_required_named_parameters_first
+    - always_use_package_imports
+    - annotate_redeclares
+    - avoid_escaping_inner_quotes
+    - avoid_function_literals_in_foreach_calls
+    - avoid_redundant_argument_values
+    - cascade_invocations
+    - combinators_ordering
+    - directives_ordering
+    - eol_at_end_of_file
+    - no_literal_bool_comparisons
+    - noop_primitive_operations
+    - prefer_contains
+    - prefer_double_quotes
+    - prefer_final_in_for_each
+    - prefer_final_locals
+    - prefer_if_elements_to_conditional_expressions
+    - prefer_int_literals
+    - require_trailing_commas
+    - simplify_variable_pattern
+    - unawaited_futures
+    - unnecessary_await_in_return
+    - unnecessary_ignore
+    - unnecessary_lambdas
+    - unnecessary_parenthesis
+    - unnecessary_raw_strings
+    - unnecessary_unawaited
+    - use_colored_box
+    - use_decorated_box
+    - use_enums
+    - use_named_constants
+    - use_raw_strings
+    - use_truncating_division
+    
+    # build auto fix
+    - prefer_const_constructors
+    #- prefer_const_constructors_in_immutables
+    #- prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
+    #- type_annotate_public_apis
