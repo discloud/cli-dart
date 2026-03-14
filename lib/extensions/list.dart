@@ -1,0 +1,14 @@
+import "package:discloud/structures/disposable.dart";
+
+extension ListDisposableExtensions on List<Disposable> {
+  Future<void> dispose() async {
+    final futures = <Future<void>>[];
+
+    removeWhere((item) {
+      if (item.dispose() case final Future<void> future) futures.add(future);
+      return true;
+    });
+
+    await futures.wait;
+  }
+}

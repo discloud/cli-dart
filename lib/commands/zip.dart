@@ -13,10 +13,10 @@ class ZipCommand extends Command<void> {
   }
 
   @override
-  String get name => "zip";
+  final name = "zip";
 
   @override
-  String get description => "Make zip";
+  final description = "Make zip";
 
   @override
   Future<void> run() async {

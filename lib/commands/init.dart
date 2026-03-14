@@ -14,10 +14,10 @@ class InitCommand extends Command<void> {
   }
 
   @override
-  String get name => "init";
+  final name = "init";
 
   @override
-  String get description => "Init $configFilename file";
+  final description = "Init $configFilename file";
 
   @override
   Future<void> run() async {

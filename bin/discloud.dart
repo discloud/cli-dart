@@ -5,17 +5,18 @@ import "package:discloud/commands/commands.dart";
 
 void main(Iterable<String> arguments) async {
   final runner =
-      CommandRunner(
+      CommandRunner<void>(
           "discloud",
           "A fast option to manage your apps on Discloud.",
         )
         ..addCommand(InitCommand())
+        ..addCommand(LoginCommand())
         ..addCommand(ZipCommand());
 
   try {
     await runner.run(arguments);
   } /* on FormatException */ catch (e) {
-    print(e);
+    stderr.write(e);
     exit(1);
   }
 
