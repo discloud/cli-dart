@@ -1,4 +1,15 @@
 {
+  "assertPrint": {
+    "prefix": "assertPrint",
+    "scope": "dart",
+    "body": [
+      "assert(() {",
+      "\t// ignore: avoid_print",
+      "\tprint(\"$$hashCode $$runtimeType $0\");",
+      "\treturn true;",
+      "}());"
+    ]
+  },
   "command": {
     "scope": "dart",
     "prefix": "command",
