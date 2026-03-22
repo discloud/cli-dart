@@ -53,6 +53,9 @@ jobs:
       - name: Sync inno_setup build version
         run: dart run scripts/inno_setup.dart --version ${{ github.ref_name }}
 
+      - name: Generate docs
+        run: dart run scripts/docs/generate.dart
+
       - name: Build setup
         run: iscc inno_setup.iss
 
