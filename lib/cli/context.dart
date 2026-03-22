@@ -2,10 +2,10 @@ import "dart:async";
 import "dart:io";
 
 import "package:discloud/constants.dart";
+import "package:discloud/extensions/duration.dart";
 import "package:discloud/extensions/list.dart";
 import "package:discloud/services/discloud/api_client.dart";
 import "package:discloud/structures/disposable.dart";
-import "package:duration/duration.dart";
 import "package:local_store/local_store.dart";
 import "package:tint/tint.dart";
 
@@ -41,14 +41,11 @@ abstract class CliContext implements Disposable {
 
   @override
   Future<void> dispose() async {
-    _stopwatch.stop();
     api.dispose();
     await subscriptions.dispose();
+    _stopwatch.stop();
 
-    final elapsed = _stopwatch.elapsed.pretty(
-      abbreviated: true,
-      tersity: .millisecond,
-    ).replaceAll(",", "");
+    final elapsed = _stopwatch.elapsed.pretty();
 
     stderr.writeln("Elapsed: $elapsed".dim());
   }
