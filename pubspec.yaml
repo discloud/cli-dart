@@ -18,7 +18,7 @@ dependencies:
   args: ^2.7.0
   charcode: ^1.4.0
   cli_spin: ^1.0.1
-  dart_jsonwebtoken: ^3.3.2
+  dart_jsonwebtoken: ^3.4.0
   discloud_config: ^2.4.1
   duration: ^4.0.3
   freezed_annotation: ^3.1.0
