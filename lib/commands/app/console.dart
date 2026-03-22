@@ -70,11 +70,18 @@ class AppConsoleCommand extends Command<void> {
 
       if (response["status"] == "ok") {
         if (response["apps"]?["shell"] case final Map shell) {
-          if (shell["stdout"] case final content?) stdout.write(content);
-          if (shell["stderr"] case final content?) stderr.write(content);
+          if (shell["stdout"] case final String content
+              when content.isNotEmpty) {
+            stdout.writeln(content);
+          }
+
+          if (shell["stderr"] case final String content
+              when content.isNotEmpty) {
+            stderr.writeln(content);
+          }
         }
       } else {
-        stderr.write(resolveResponseMessage(response));
+        stderr.writeln(resolveResponseMessage(response));
       }
       return true;
     } on DiscloudApiException catch (e, s) {

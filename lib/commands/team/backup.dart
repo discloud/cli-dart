@@ -32,7 +32,7 @@ class TeamBackupCommand extends Command<void> {
       spinner.success(resolveResponseMessage(response));
 
       if (response["backups"] case final Map data) {
-        stdout.write(data["url"]);
+        stdout.writeln(data["url"]);
       }
     } catch (e, s) {
       spinner.fail(resolveResponseMessage(e));

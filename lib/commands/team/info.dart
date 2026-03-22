@@ -45,10 +45,10 @@ class TeamInfoCommand extends Command<void> {
 
       switch (response["apps"]) {
         case final List list:
-          stdout.write(listToAsciiTable(list, _keysIgnore));
+          stdout.writeln(listToAsciiTable(list, _keysIgnore));
           break;
         case final Map data:
-          stdout.write(mapToVerticalAsciiTable(data, _keysIgnore));
+          stdout.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
           break;
       }
     } catch (e, s) {

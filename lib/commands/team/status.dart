@@ -32,7 +32,7 @@ class TeamStatusCommand extends Command<void> {
       spinner.success(resolveResponseMessage(response));
 
       if (response["apps"] case final data?) {
-        stdout.write(mapToVerticalAsciiTable(data, _keysToIgnore));
+        stdout.writeln(mapToVerticalAsciiTable(data, _keysToIgnore));
       }
     } catch (e, s) {
       spinner.fail(resolveResponseMessage(e));

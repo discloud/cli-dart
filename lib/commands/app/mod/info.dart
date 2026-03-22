@@ -30,7 +30,7 @@ class AppModInfoCommand extends Command<void> {
       spinner.success(resolveResponseMessage(response));
 
       if (response["app"] case final Map data) {
-        stdout.write(mapToVerticalAsciiTable(data));
+        stdout.writeln(mapToVerticalAsciiTable(data));
       }
     } catch (e, s) {
       spinner.fail(resolveResponseMessage(e));

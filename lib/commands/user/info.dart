@@ -25,7 +25,7 @@ class UserInfoCommand extends Command<void> {
       spinner.success(resolveResponseMessage(response));
 
       if (response["user"] case final Map data) {
-        stdout.write(mapToVerticalAsciiTable(data, _keysIgnore));
+        stdout.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
       }
     } catch (e, s) {
       spinner.fail(resolveResponseMessage(e));
