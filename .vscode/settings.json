@@ -1,0 +1,16 @@
+{
+  "[dart]": {
+    "editor.rulers": [
+      80,
+      100,
+      110,
+      120,
+      130,
+    ]
+  },
+  "editor.tabSize": 2,
+  "explorer.fileNesting.patterns": {
+    "*.dart": "${capture}.freezed.dart,${capture}.g.dart"
+  },
+  "files.eol": "\n",
+}
