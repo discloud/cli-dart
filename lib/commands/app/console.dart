@@ -6,7 +6,7 @@ import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/services/discloud/exception.dart";
 import "package:discloud/utils/messages.dart";
-import "package:interact/interact.dart";
+import "package:tint/tint.dart";
 
 class AppConsoleCommand extends Command<void> {
   AppConsoleCommand() {
@@ -38,16 +38,12 @@ class AppConsoleCommand extends Command<void> {
 
     stdout.writeln("Enter 'exit' to stop.");
 
-    final input = Input(
-      prompt: "",
-      validator: (value) {
-        return value.isNotEmpty;
-      },
-    );
-
     while (true) {
-      final command = input.interact();
-      if (command == "exit") break;
+      stderr.write("?> ".dim());
+
+      final command = stdin.readLineSync();
+      if (command == null || command == "exit") break;
+      if (command.isEmpty) continue;
 
       if (!await _send(appId: appId, command: command, spinner: spinner)) break;
     }
