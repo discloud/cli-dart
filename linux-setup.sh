@@ -2,7 +2,7 @@
 
 set -e
 
-echo "Installing DisCloud CLI..."
+echo "Installing Discloud CLI..."
 
 ARCH=$(uname -m)
 [ "$ARCH" = "x86_64" ] && BINARY="discloud-cli-linux-x64"
