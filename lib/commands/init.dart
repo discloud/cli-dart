@@ -8,9 +8,8 @@ class InitCommand extends Command<void> {
   InitCommand() {
     argParser
       ..addFlag("force", abbr: "f", negatable: false)
-      ..addFlag("yes", abbr: "y", negatable: false)
       ..addOption("main")
-      ..addOption("type", allowed: ["bot", "site"]);
+      ..addOption("type", allowed: const ["bot", "site"]);
   }
 
   @override
@@ -31,6 +30,7 @@ class InitCommand extends Command<void> {
       ..writeAll([
         "# https://docs.discloud.com/en/discloud.config",
         "MAIN=${argResults?.option("main") ?? ""}",
+        if (argResults?.option("type") case final type?) "TYPE=$type",
       ], "\n");
 
     await sink.close();

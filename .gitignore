@@ -28,4 +28,5 @@ doc/api/
 .flutter-plugins
 .flutter-plugins-dependencies
 
+discloud.config
 **/*.exe

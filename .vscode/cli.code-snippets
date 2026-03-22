@@ -1,0 +1,24 @@
+{
+  "command": {
+    "scope": "dart",
+    "prefix": "command",
+    "body": [
+      "import \"dart:async\";",
+      "",
+      "import \"package:args/command_runner.dart\";",
+      "import \"package:discloud/extensions/command.dart\";",
+      "",
+      "class $1Command extends Command<void> {",
+      "\t@override",
+      "\tfinal name = \"$2\";",
+      "",
+      "\t@override",
+      "\tfinal description = \"$3\";",
+      "",
+      "\t@override",
+      "\tFuture<void> run() async {$0}",
+      "}",
+      ""
+    ]
+  }
+}

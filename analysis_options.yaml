@@ -24,6 +24,15 @@ analyzer:
     invalid_annotation_target: ignore
     parameter_assignments: ignore
 
+  exclude:
+    - lib/**.g.dart
+    - lib/**.freezed.dart
+    - lib/generated/**
+    - lib/version.dart
+    - modules/**.g.dart
+    - modules/**.freezed.dart
+    - modules/generated/**
+
 linter:
   rules:
     - avoid_catching_errors

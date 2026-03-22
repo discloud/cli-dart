@@ -1,16 +1,20 @@
+import "package:discloud/extensions/string.dart";
 import "package:discloud/services/discloud/exception.dart";
 
 String resolveResponseMessage<T>(T response) {
   switch (response) {
     case final Map r:
-      String message = "${r["status"]}: ${r["message"]}";
+      String message = "${r["status"]}: ${r["message"]}".capitalize();
       if (r["logs"] case final String logs? when logs.isNotEmpty) {
         message += "\n$logs";
       }
       return message;
-    case final DiscloudApiException r:
-      String message = "[Error ${r.code}]: ${r.message}";
-      if (r.logs case final logs? when logs.isNotEmpty) {
+    case final DiscloudApiException e:
+      String message = "[Error ${e.code}]: ${e.message}";
+      if (e.localeList case final localeList? when localeList.isNotEmpty) {
+        message += " (${localeList.join(", ")})";
+      }
+      if (e.logs case final logs? when logs.isNotEmpty) {
         message += "\n$logs";
       }
       return message;

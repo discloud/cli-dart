@@ -1,8 +1,10 @@
 import "dart:convert";
 import "dart:io";
 
+import "package:discloud/cli/context.dart";
 import "package:discloud/extensions/io_http_client.dart";
 import "package:discloud/services/discloud/exception.dart";
+import "package:discloud/services/discloud/utils.dart";
 import "package:discloud/structures/disposable.dart";
 
 class DiscloudApiClient implements Disposable {
@@ -19,10 +21,20 @@ class DiscloudApiClient implements Disposable {
   }
 
   static Future<Map?> _resolveResponseBody(HttpClientResponse response) async {
+    CliContext.I.debug(
+      "Response status: ${response.statusCode} ${response.reasonPhrase}"
+      "\n"
+      "Response content length: ${response.contentLength}",
+    );
+
     if (response.headers.contentType case final contentType?) {
+      CliContext.I.debug("Response content type: $contentType");
+
       switch (contentType.mimeType) {
         case _jsonContentType:
-          return response.json();
+          final body = await response.json();
+          CliContext.I.debug(body);
+          return body;
       }
     }
 
@@ -36,6 +48,8 @@ class DiscloudApiClient implements Disposable {
 
   final HttpClient _client;
 
+  CliContext get context => .I;
+
   @override
   void dispose() {
     _client.close();
@@ -43,6 +57,7 @@ class DiscloudApiClient implements Disposable {
 
   Future<T> delete<T extends Map>(
     String path, {
+    Map? body,
     Map<String, String>? headers,
     Map<String, String>? query,
   }) async {
@@ -50,7 +65,7 @@ class DiscloudApiClient implements Disposable {
 
     final request = await _client.deleteUrl(url);
 
-    _prepareRequest(request, headers: headers);
+    await _prepareRequest(request, body: body, headers: headers);
 
     final response = await request.close();
 
@@ -63,6 +78,7 @@ class DiscloudApiClient implements Disposable {
       message: responseBody?["message"] ?? response.reasonPhrase,
       logs: responseBody?["logs"],
       path: path,
+      body: body,
     );
   }
 
@@ -75,7 +91,7 @@ class DiscloudApiClient implements Disposable {
 
     final request = await _client.getUrl(url);
 
-    _prepareRequest(request, headers: headers);
+    await _prepareRequest(request, headers: headers);
 
     final response = await request.close();
 
@@ -101,7 +117,7 @@ class DiscloudApiClient implements Disposable {
 
     final request = await _client.postUrl(url);
 
-    _prepareRequest(request, body: body, headers: headers);
+    await _prepareRequest(request, body: body, headers: headers);
 
     final response = await request.close();
 
@@ -128,7 +144,7 @@ class DiscloudApiClient implements Disposable {
 
     final request = await _client.putUrl(url);
 
-    _prepareRequest(request, body: body, headers: headers);
+    await _prepareRequest(request, body: body, headers: headers);
 
     final response = await request.close();
 
@@ -139,25 +155,140 @@ class DiscloudApiClient implements Disposable {
     throw DiscloudApiException(
       code: responseBody?["code"] ?? response.statusCode,
       message: responseBody?["message"] ?? response.reasonPhrase,
+      localeList: responseBody?["localeList"],
       logs: responseBody?["logs"],
       path: path,
       body: body,
     );
   }
 
-  void _prepareRequest(
+  Future<HttpClientResponse> postMultipart(
+    String path, {
+    required File file,
+    Map<String, String>? fields,
+    Map<String, String>? headers,
+  }) async {
+    final url = _resolveUrl(path);
+
+    final request = await _client.postUrl(url);
+
+    await _uploadMultipart(
+      request: request,
+      file: file,
+      fields: fields,
+      headers: headers,
+    );
+
+    final response = await request.close();
+
+    if (response.ok) return response;
+
+    final body = await response.json();
+
+    throw DiscloudApiException(
+      code: response.statusCode,
+      message: body["message"] ?? response.reasonPhrase,
+      logs: body["logs"],
+    );
+  }
+
+  Future<HttpClientResponse> putMultipart(
+    String path, {
+    required File file,
+    Map<String, String>? fields,
+    Map<String, String>? headers,
+  }) async {
+    final url = _resolveUrl(path);
+
+    final request = await _client.putUrl(url);
+
+    await _uploadMultipart(
+      request: request,
+      file: file,
+      fields: fields,
+      headers: headers,
+    );
+
+    final response = await request.close();
+
+    if (response.ok) return response;
+
+    final body = await response.json();
+
+    throw DiscloudApiException(
+      code: response.statusCode,
+      message: body["message"] ?? response.reasonPhrase,
+      logs: body["logs"],
+    );
+  }
+
+  Future<void> _uploadMultipart({
+    required HttpClientRequest request,
+    required File file,
+    Map<String, String>? fields,
+    Map<String, String>? headers,
+  }) async {
+    final now = DateTime.now();
+    final boundary = "formBoundary${now.microsecondsSinceEpoch}";
+    final fileName = file.uri.pathSegments.last;
+
+    await _prepareRequest(request, headers: headers ??= {});
+
+    for (final e in headers.entries) {
+      request.headers.add(e.key, e.value);
+    }
+
+    request.headers.contentType = .new(
+      "multipart",
+      "form-data",
+      parameters: {"boundary": boundary},
+    );
+
+    if (fields case final fields?) {
+      for (final e in fields.entries) {
+        request
+          ..write("--$boundary\r\n")
+          ..write('Content-Disposition: form-data; name="${e.key}"\r\n\r\n')
+          ..write("${e.value}\r\n");
+      }
+    }
+
+    request
+      ..write("--$boundary\r\n")
+      ..write(
+        'Content-Disposition: form-data; name="file"; filename="$fileName"\r\n',
+      )
+      ..write("Content-Type: application/zip\r\n\r\n");
+
+    await request.addStream(file.openRead());
+
+    await file.delete();
+
+    request.write("\r\n--$boundary--\r\n");
+  }
+
+  Future<void> _prepareRequest(
     HttpClientRequest request, {
     Map<String, String>? headers,
     Map? body,
-  }) {
-    if (Platform.environment["DISCLOUD_TOKEN"] case final value?) {
-      request.headers.add("api-token", value);
+  }) async {
+    if (Platform.environment["DISCLOUD_TOKEN"] ??
+            await context.store.get("token")
+        case final value?) {
+      request.headers.set("api-token", value);
     }
 
     if (headers case final headers?) {
       for (final entry in headers.entries) {
-        request.headers.add(entry.key, entry.value);
+        request.headers.set(entry.key, entry.value);
       }
+    }
+
+    if (!isDiscloudJwt(request.headers.value("api-token") ?? "")) {
+      throw const DiscloudApiException(
+        code: 401,
+        message: "Please use the discloud login command first.",
+      );
     }
 
     if (body case final body?) {

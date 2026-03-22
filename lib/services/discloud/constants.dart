@@ -24,3 +24,28 @@ const availableLangs = {
   "ruby",
   "typescript",
 };
+
+const appApts = {
+  "canvas",
+  "ffmpeg",
+  "java",
+  "libgl",
+  "mysql",
+  "openssl",
+  "puppeteer",
+  "selenium",
+  "tesseract",
+  "tools",
+  "unixodbc",
+};
+
+const appModPerms = {
+  "backup_app",
+  "commit_app",
+  "edit_ram",
+  "logs_app",
+  "restart_app",
+  "start_app",
+  "status_app",
+  "stop_app",
+};

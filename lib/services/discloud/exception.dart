@@ -14,5 +14,6 @@ abstract class DiscloudApiException
     @Default("/") final String path,
     final Map? body,
     final String? logs,
+    final List<dynamic>? localeList,
   }) = _DiscloudApiException;
 }

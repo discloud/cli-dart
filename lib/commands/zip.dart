@@ -1,14 +1,17 @@
 import "dart:io";
+import "dart:isolate";
 
 import "package:args/command_runner.dart";
-import "package:fs/fs.dart";
+import "package:cli_spin/cli_spin.dart";
+import "package:discloud/services/discloud/constants.dart";
+import "package:glob_zipper/glob_zipper.dart";
 import "package:path/path.dart";
 
 class ZipCommand extends Command<void> {
   ZipCommand() {
     argParser
-      ..addOption("encoding", abbr: "e", allowed: ["buffer"])
-      ..addMultiOption("glob", abbr: "g", defaultsTo: ["**"])
+      ..addOption("encoding", abbr: "e", allowed: const ["buffer"])
+      ..addMultiOption("glob", abbr: "g", defaultsTo: const ["**"])
       ..addOption("out", abbr: "o");
   }
 
@@ -22,18 +25,27 @@ class ZipCommand extends Command<void> {
   Future<void> run() async {
     final Directory directory = .current;
 
+    final encoding = argResults?.option("encoding");
     final out = argResults?.option("out");
+    final glob = argResults?.multiOption("glob") ?? const ["**"];
 
-    final zipper = Zipper(
-      directory: directory,
-      tempDirectory: out == null ? null : directory,
-      patterns: argResults?.multiOption("glob") ?? const ["**"],
-      ignoreFilename: ".discloudignore",
-    );
+    final spinner = CliSpin(text: "Zipping...").start();
 
-    final file = await zipper.zip();
+    final file = await Isolate.run(() async {
+      final zipper = GlobZipper(
+        directory: directory,
+        tempDirectory: encoding == null ? directory : null,
+        patterns: glob,
+        ignore: allBlockedFiles,
+        ignoreFilename: ".discloudignore",
+      );
 
-    switch (argResults?.option("encoding")) {
+      return zipper.zip();
+    });
+
+    spinner.success("Success!");
+
+    switch (encoding) {
       case "buffer":
         await stdout.addStream(file.openRead());
         await file.delete();

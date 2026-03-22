@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiscloudApiException {
 
- int get code; String get message; String get path; Map? get body; String? get logs;
+ int get code; String get message; String get path; Map? get body; String? get logs; List<dynamic>? get localeList;
 /// Create a copy of DiscloudApiException
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $DiscloudApiExceptionCopyWith<DiscloudApiException> get copyWith => _$DiscloudAp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiscloudApiException&&(identical(other.code, code) || other.code == code)&&(identical(other.message, message) || other.message == message)&&(identical(other.path, path) || other.path == path)&&const DeepCollectionEquality().equals(other.body, body)&&(identical(other.logs, logs) || other.logs == logs));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiscloudApiException&&(identical(other.code, code) || other.code == code)&&(identical(other.message, message) || other.message == message)&&(identical(other.path, path) || other.path == path)&&const DeepCollectionEquality().equals(other.body, body)&&(identical(other.logs, logs) || other.logs == logs)&&const DeepCollectionEquality().equals(other.localeList, localeList));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,message,path,const DeepCollectionEquality().hash(body),logs);
+int get hashCode => Object.hash(runtimeType,code,message,path,const DeepCollectionEquality().hash(body),logs,const DeepCollectionEquality().hash(localeList));
 
 @override
 String toString() {
-  return 'DiscloudApiException(code: $code, message: $message, path: $path, body: $body, logs: $logs)';
+  return 'DiscloudApiException(code: $code, message: $message, path: $path, body: $body, logs: $logs, localeList: $localeList)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $DiscloudApiExceptionCopyWith<$Res>  {
   factory $DiscloudApiExceptionCopyWith(DiscloudApiException value, $Res Function(DiscloudApiException) _then) = _$DiscloudApiExceptionCopyWithImpl;
 @useResult
 $Res call({
- int code, String message, String path, Map? body, String? logs
+ int code, String message, String path, Map? body, String? logs, List<dynamic>? localeList
 });
 
 
@@ -62,14 +62,15 @@ class _$DiscloudApiExceptionCopyWithImpl<$Res>
 
 /// Create a copy of DiscloudApiException
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? message = null,Object? path = null,Object? body = freezed,Object? logs = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? message = null,Object? path = null,Object? body = freezed,Object? logs = freezed,Object? localeList = freezed,}) {
   return _then(_self.copyWith(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as int,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,body: freezed == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
 as Map?,logs: freezed == logs ? _self.logs : logs // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,localeList: freezed == localeList ? _self.localeList : localeList // ignore: cast_nullable_to_non_nullable
+as List<dynamic>?,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int code,  String message,  String path,  Map? body,  String? logs)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int code,  String message,  String path,  Map? body,  String? logs,  List<dynamic>? localeList)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DiscloudApiException() when $default != null:
-return $default(_that.code,_that.message,_that.path,_that.body,_that.logs);case _:
+return $default(_that.code,_that.message,_that.path,_that.body,_that.logs,_that.localeList);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.code,_that.message,_that.path,_that.body,_that.logs);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int code,  String message,  String path,  Map? body,  String? logs)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int code,  String message,  String path,  Map? body,  String? logs,  List<dynamic>? localeList)  $default,) {final _that = this;
 switch (_that) {
 case _DiscloudApiException():
-return $default(_that.code,_that.message,_that.path,_that.body,_that.logs);case _:
+return $default(_that.code,_that.message,_that.path,_that.body,_that.logs,_that.localeList);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.code,_that.message,_that.path,_that.body,_that.logs);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int code,  String message,  String path,  Map? body,  String? logs)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int code,  String message,  String path,  Map? body,  String? logs,  List<dynamic>? localeList)?  $default,) {final _that = this;
 switch (_that) {
 case _DiscloudApiException() when $default != null:
-return $default(_that.code,_that.message,_that.path,_that.body,_that.logs);case _:
+return $default(_that.code,_that.message,_that.path,_that.body,_that.logs,_that.localeList);case _:
   return null;
 
 }
@@ -210,7 +211,7 @@ return $default(_that.code,_that.message,_that.path,_that.body,_that.logs);case 
 
 
 class _DiscloudApiException extends DiscloudApiException {
-  const _DiscloudApiException({this.code = 500, this.message = "Unknown", this.path = "/", final  Map? body, this.logs}): _body = body,super._();
+  const _DiscloudApiException({this.code = 500, this.message = "Unknown", this.path = "/", final  Map? body, this.logs, final  List<dynamic>? localeList}): _body = body,_localeList = localeList,super._();
   
 
 @override@JsonKey() final  int code;
@@ -226,6 +227,15 @@ class _DiscloudApiException extends DiscloudApiException {
 }
 
 @override final  String? logs;
+ final  List<dynamic>? _localeList;
+@override List<dynamic>? get localeList {
+  final value = _localeList;
+  if (value == null) return null;
+  if (_localeList is EqualUnmodifiableListView) return _localeList;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of DiscloudApiException
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +247,16 @@ _$DiscloudApiExceptionCopyWith<_DiscloudApiException> get copyWith => __$Disclou
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiscloudApiException&&(identical(other.code, code) || other.code == code)&&(identical(other.message, message) || other.message == message)&&(identical(other.path, path) || other.path == path)&&const DeepCollectionEquality().equals(other._body, _body)&&(identical(other.logs, logs) || other.logs == logs));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiscloudApiException&&(identical(other.code, code) || other.code == code)&&(identical(other.message, message) || other.message == message)&&(identical(other.path, path) || other.path == path)&&const DeepCollectionEquality().equals(other._body, _body)&&(identical(other.logs, logs) || other.logs == logs)&&const DeepCollectionEquality().equals(other._localeList, _localeList));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,message,path,const DeepCollectionEquality().hash(_body),logs);
+int get hashCode => Object.hash(runtimeType,code,message,path,const DeepCollectionEquality().hash(_body),logs,const DeepCollectionEquality().hash(_localeList));
 
 @override
 String toString() {
-  return 'DiscloudApiException(code: $code, message: $message, path: $path, body: $body, logs: $logs)';
+  return 'DiscloudApiException(code: $code, message: $message, path: $path, body: $body, logs: $logs, localeList: $localeList)';
 }
 
 
@@ -257,7 +267,7 @@ abstract mixin class _$DiscloudApiExceptionCopyWith<$Res> implements $DiscloudAp
   factory _$DiscloudApiExceptionCopyWith(_DiscloudApiException value, $Res Function(_DiscloudApiException) _then) = __$DiscloudApiExceptionCopyWithImpl;
 @override @useResult
 $Res call({
- int code, String message, String path, Map? body, String? logs
+ int code, String message, String path, Map? body, String? logs, List<dynamic>? localeList
 });
 
 
@@ -274,14 +284,15 @@ class __$DiscloudApiExceptionCopyWithImpl<$Res>
 
 /// Create a copy of DiscloudApiException
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? code = null,Object? message = null,Object? path = null,Object? body = freezed,Object? logs = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? code = null,Object? message = null,Object? path = null,Object? body = freezed,Object? logs = freezed,Object? localeList = freezed,}) {
   return _then(_DiscloudApiException(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as int,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,body: freezed == body ? _self._body : body // ignore: cast_nullable_to_non_nullable
 as Map?,logs: freezed == logs ? _self.logs : logs // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,localeList: freezed == localeList ? _self._localeList : localeList // ignore: cast_nullable_to_non_nullable
+as List<dynamic>?,
   ));
 }
 

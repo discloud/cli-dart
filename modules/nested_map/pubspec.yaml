@@ -1,0 +1,11 @@
+name: nested_map
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.11.3
+
+dev_dependencies:
+  lints: any
+  test: any
