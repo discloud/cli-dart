@@ -2,7 +2,7 @@ import "dart:io";
 
 import "package:args/command_runner.dart";
 
-Future<void> generateCommands(CommandRunner runner) async {
+Future<void> commands({required CommandRunner runner}) async {
   final visited = <Command<void>>{};
 
   final buffer = StringBuffer()

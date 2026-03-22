@@ -6,8 +6,5 @@ import "generate/home.dart";
 void main() async {
   final runner = CliCommandRunner();
 
-  await Future.wait([
-    generateHome(),
-    generateCommands(runner),
-  ]);
+  await Future.wait([home(), commands(runner: runner)]);
 }
