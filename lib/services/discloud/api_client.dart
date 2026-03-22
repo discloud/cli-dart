@@ -50,6 +50,11 @@ class DiscloudApiClient implements Disposable {
 
   CliContext get context => .I;
 
+  Future<String?> get _maybeToken async =>
+      Platform.environment["DISCLOUD_TOKEN"] ??= await context.store.get(
+        "token",
+      );
+
   @override
   void dispose() {
     _client.close();
@@ -272,9 +277,7 @@ class DiscloudApiClient implements Disposable {
     Map<String, String>? headers,
     Map? body,
   }) async {
-    if (Platform.environment["DISCLOUD_TOKEN"] ??
-            await context.store.get("token")
-        case final value?) {
+    if (await _maybeToken case final value?) {
       request.headers.set("api-token", value);
     }
 
