@@ -12,9 +12,9 @@ Welcome to the **Discloud CLI** installation documentation. Follow the instructi
 
 ## 📋 Prerequisites
 
-* **Operating System:**
-  * Linux x64
-  * Windows 10/11 x64
+- **Operating System:**
+  - Linux x64
+  - Windows x64
 
 ---
 
@@ -22,7 +22,7 @@ Welcome to the **Discloud CLI** installation documentation. Follow the instructi
 
 On Linux, the CLI is distributed as a raw binary file. There is **no graphical setup** (`.deb` or `.rpm`). You must download the binary manually and ensure it is executable and accessible in your system's `PATH`.
 
-* You can install the CLI using the script in the [`linux-setup.sh`](linux-setup.sh) file.
+- You can install the CLI using the script in the [`linux-setup.sh`](linux-setup.sh) file.
 
 ---
 
@@ -39,10 +39,10 @@ The distribution for Windows is provided through a **standalone executable setup
     Double-click the downloaded file. If Windows SmartScreen or Defender prompts you, select **More info** > **Run anyway** (as it is a community tool signed by the developer).
 
 3. **Follow the Wizard:**
-    * Click **Next**.
-    * Read and accept the license terms (**I Agree**).
-    * Choose the installation directory (default is recommended).
-    * Click **Install**.
+    - Click **Next**.
+    - Read and accept the license terms (**I Agree**).
+    - Choose the installation directory (default is recommended).
+    - Click **Install**.
 
 4. **Finish:**
     Once completed, click **Finish**. You may check "Launch Discloud CLI" to open immediately.
@@ -74,3 +74,44 @@ The system will either generate an OTP code or open your default browser to conf
 ## CONTRIBUTING
 
 For details see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### Prerequisites
+
+- Dart 3.10 or higher due to the [`dot shorthand`](https://dart.dev/language/dot-shorthands).
+
+### Preparing for development
+
+- Get the dependencies
+
+    ```sh
+    dart pub get
+    ```
+
+### Preparing for format and build
+
+- Run build runner
+
+    ```sh
+    dart run build_runner build
+    ```
+
+- Run formatter and linter
+
+    ```sh
+    dart format .
+    dart fix --apply
+    ```
+
+### Testing
+
+- You can perform the test manually by running the command below.
+
+    ```sh
+    dart run lib/main.dart
+    ```
+
+- Try adding arguments.
+
+    ```sh
+    dart run lib/main.dart --version
+    ```
