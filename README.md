@@ -81,7 +81,7 @@ After completing the steps above, verify that the installation was successful by
 discloud --version
 ```
 
-If installed correctly, the output will display the current version number (e.g., `1.0.0`).
+If installed correctly, the output will display the current version number (e.g., `v1.0.0`).
 
 ---
 
