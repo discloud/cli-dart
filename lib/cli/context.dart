@@ -7,6 +7,7 @@ import "package:discloud/extensions/list.dart";
 import "package:discloud/services/discloud/api_client.dart";
 import "package:discloud/structures/disposable.dart";
 import "package:local_store/local_store.dart";
+import "package:path/path.dart";
 import "package:tint/tint.dart";
 
 abstract class CliContext implements Disposable {
@@ -36,6 +37,10 @@ abstract class CliContext implements Disposable {
   final LocalStore store = .json(cliConfigFilePath);
 
   final Directory workspaceFolder = .current;
+
+  final rootFilePath = Platform.resolvedExecutable;
+
+  late final rootPath = dirname(rootFilePath);
 
   final List<Disposable> subscriptions = [];
 
