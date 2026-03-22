@@ -75,6 +75,8 @@ The system will either generate an OTP code or open your default browser to conf
 
 For details see [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Getting Started
+
 ### Prerequisites
 
 - Dart 3.10 or higher due to the [`dot shorthand`](https://dart.dev/language/dot-shorthands).
@@ -115,3 +117,7 @@ For details see [CONTRIBUTING.md](CONTRIBUTING.md).
     ```sh
     dart run lib/main.dart --version
     ```
+
+## LICENSE
+
+For details see [LICENSE](LICENSE).
