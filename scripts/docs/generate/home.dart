@@ -1,6 +1,6 @@
 import "dart:io";
 
-void main() async {
+Future<void> generateHome() async {
   final buffer = StringBuffer()
     ..write("""
 # [CLI Documentation](docs.md)

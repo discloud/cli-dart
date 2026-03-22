@@ -1,14 +1,12 @@
 import "dart:io";
 
 import "package:args/command_runner.dart";
-import "package:discloud/cli/runner.dart";
 
-void main() async {
-  final runner = CliCommandRunner();
-
+Future<void> generateCommands(CommandRunner runner) async {
   final visited = <Command<void>>{};
 
-  final buffer = StringBuffer()..write("""
+  final buffer = StringBuffer()
+    ..write("""
 # [CLI Documentation](docs.md)
 
 ## [Commands](commands.md)
