@@ -26,6 +26,7 @@ Available subcommands:
   console   Use the app terminal
   delete    Delete one of your apps on Discloud
   info      Get information of your apps
+  logs      View the logs from application in Discloud
   mod       Manage your app team
   ram       Set amount of ram for your app
   restart   Restart one or all of your apps on Discloud
@@ -122,6 +123,17 @@ Get information of your apps
 Usage: discloud app info [arguments]
 -h, --help    Print this usage information.
     --app     (defaults to "all")
+```
+
+#### app logs
+
+```sh
+View the logs from application in Discloud
+
+Usage: discloud app logs [arguments]
+-h, --help               Print this usage information.
+    --app (mandatory)    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
+    --out                Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
 ```
 
 #### app mod
@@ -278,6 +290,7 @@ Available subcommands:
   backup    Get backup of your app code from Discloud
   commit    Commit one app or site to Discloud
   info      Get information of your apps
+  logs      View the logs from application in Discloud
   restart   Restart one or all of your apps on Discloud
   start     Start one or all of your apps on Discloud
   status    Get status of your app
@@ -313,6 +326,17 @@ Get information of your apps
 Usage: discloud team info [arguments]
 -h, --help    Print this usage information.
     --app     (defaults to "all")
+```
+
+#### team logs
+
+```sh
+View the logs from application in Discloud
+
+Usage: discloud team logs [arguments]
+-h, --help               Print this usage information.
+    --app (mandatory)    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
+    --out                Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
 ```
 
 #### team restart
