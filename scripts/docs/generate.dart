@@ -11,11 +11,13 @@ void main() async {
   const docRootPath = "docs";
   const docsExt = ".md";
 
+  final docRootDir = Directory(docRootPath);
+
+  if (await docRootDir.exists()) await docRootDir.delete(recursive: true);
+
   final runner = CliCommandRunner();
 
   await Future.wait([home(), commands(runner: runner)]);
-
-  final docRootDir = Directory(docRootPath);
 
   final entities = await docRootDir
       .list(recursive: true)
