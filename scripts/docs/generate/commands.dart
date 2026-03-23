@@ -7,7 +7,7 @@ Future<void> commands({required CommandRunner runner}) async {
   final visited = <Command<void>>{};
 
   final buffer = StringBuffer("""
-# [CLI Documentation v$packageVersion](docs.md)
+# [CLI Documentation v$packageVersion](index.md)
 
 ## [Commands](commands.md)
 """);

@@ -5,7 +5,7 @@ import "package:markdown/markdown.dart";
 import "package:path/path.dart";
 
 import "generate/commands.dart";
-import "generate/home.dart";
+import "generate/index.dart";
 
 void main() async {
   const docRootPath = "docs";
