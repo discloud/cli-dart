@@ -29,12 +29,13 @@ void main(Iterable<String> arguments) async {
 }
 
 void _printCliHeader(ArgResults argResults) {
-  final text = "discloud ${_getCommandName(argResults)} v$packageVersion";
+  final parts = ["discloud", ?_getCommandName(argResults), "v$packageVersion"];
+  final text = parts.join(" ");
 
   stderr.writeln(text.bold());
 }
 
-String _getCommandName(ArgResults argResults) {
+String? _getCommandName(ArgResults argResults) {
   final list = <String>[];
 
   ArgResults? command = argResults;
@@ -44,6 +45,8 @@ String _getCommandName(ArgResults argResults) {
       command = subcommand.command;
     }
   } while (command != null);
+
+  if (list.isEmpty) return null;
 
   return list.join(" ");
 }
