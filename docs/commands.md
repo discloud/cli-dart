@@ -9,8 +9,6 @@ Display help information for discloud.
 
 Usage: discloud help [command]
 -h, --help    Print this usage information.
-
-Run "discloud help" to see global options.
 ```
 
 ### app
@@ -35,8 +33,6 @@ Available subcommands:
   status    Get status of your app
   stop      Stop one or all of your apps on Discloud
   upload    Upload one app or site to Discloud
-
-Run "discloud help" to see global options.
 ```
 
 #### app apt
@@ -50,8 +46,6 @@ Usage: discloud app apt <subcommand> [arguments]
 Available subcommands:
   install     Install APT on your app
   uninstall   Uninstall APT from your app
-
-Run "discloud help" to see global options.
 ```
 
 ##### app apt install
@@ -63,8 +57,6 @@ Usage: discloud app apt install [arguments]
 -h, --help                                                                                        Print this usage information.
     --app (mandatory)                                                                             
     --apt=<canvas,ffmpeg,java,libgl,mysql,openssl,puppeteer,selenium,tesseract,tools,unixodbc>    
-
-Run "discloud help" to see global options.
 ```
 
 ##### app apt uninstall
@@ -76,8 +68,6 @@ Usage: discloud app apt uninstall [arguments]
 -h, --help                                                                                        Print this usage information.
     --app (mandatory)                                                                             
     --apt=<canvas,ffmpeg,java,libgl,mysql,openssl,puppeteer,selenium,tesseract,tools,unixodbc>    
-
-Run "discloud help" to see global options.
 ```
 
 #### app backup
@@ -88,8 +78,6 @@ Get backup of your app code from Discloud
 Usage: discloud app backup [arguments]
 -h, --help                       Print this usage information.
     --app=<appId> (mandatory)    
-
-Run "discloud help" to see global options.
 ```
 
 #### app commit
@@ -101,8 +89,6 @@ Usage: discloud app commit [arguments]
 -h, --help    Print this usage information.
     --app     App id (This can be omitted to use the discloud.config file)
 -g, --glob    (defaults to "**")
-
-Run "discloud help" to see global options.
 ```
 
 #### app console
@@ -114,8 +100,6 @@ Usage: discloud app console [arguments]
 -h, --help                       Print this usage information.
     --app=<appId> (mandatory)    
     --command                    
-
-Run "discloud help" to see global options.
 ```
 
 #### app delete
@@ -127,8 +111,6 @@ Usage: discloud app delete [arguments]
 -h, --help               Print this usage information.
 -y, --[no-]yes           Skip confirmation prompt
     --app (mandatory)    
-
-Run "discloud help" to see global options.
 ```
 
 #### app info
@@ -139,8 +121,6 @@ Get information of your apps
 Usage: discloud app info [arguments]
 -h, --help    Print this usage information.
     --app     (defaults to "all")
-
-Run "discloud help" to see global options.
 ```
 
 #### app mod
@@ -156,8 +136,6 @@ Available subcommands:
   delete   Delete MOD of your app
   edit     Edit MOD perms of your app
   info     Get MOD info of your app
-
-Run "discloud help" to see global options.
 ```
 
 ##### app mod add
@@ -170,8 +148,6 @@ Usage: discloud app mod add [arguments]
     --app (mandatory)    
     --mod (mandatory)    
     --perms              [backup_app, commit_app, edit_ram, logs_app, restart_app, start_app, status_app, stop_app]
-
-Run "discloud help" to see global options.
 ```
 
 ##### app mod delete
@@ -183,8 +159,6 @@ Usage: discloud app mod delete [arguments]
 -h, --help               Print this usage information.
     --app (mandatory)    
     --mod (mandatory)    
-
-Run "discloud help" to see global options.
 ```
 
 ##### app mod edit
@@ -197,8 +171,6 @@ Usage: discloud app mod edit [arguments]
     --app (mandatory)    
     --mod (mandatory)    
     --perms              [backup_app, commit_app, edit_ram, logs_app, restart_app, start_app, status_app, stop_app]
-
-Run "discloud help" to see global options.
 ```
 
 ##### app mod info
@@ -209,8 +181,6 @@ Get MOD info of your app
 Usage: discloud app mod info [arguments]
 -h, --help               Print this usage information.
     --app (mandatory)    
-
-Run "discloud help" to see global options.
 ```
 
 #### app ram
@@ -222,8 +192,6 @@ Usage: discloud app ram [arguments]
 -h, --help                  Print this usage information.
     --app (mandatory)       
     --amount (mandatory)    
-
-Run "discloud help" to see global options.
 ```
 
 #### app restart
@@ -234,8 +202,6 @@ Restart one or all of your apps on Discloud
 Usage: discloud app restart [arguments]
 -h, --help    Print this usage information.
     --app     (defaults to "all")
-
-Run "discloud help" to see global options.
 ```
 
 #### app start
@@ -246,8 +212,6 @@ Start one or all of your apps on Discloud
 Usage: discloud app start [arguments]
 -h, --help    Print this usage information.
     --app     (defaults to "all")
-
-Run "discloud help" to see global options.
 ```
 
 #### app status
@@ -258,8 +222,6 @@ Get status of your app
 Usage: discloud app status [arguments]
 -h, --help               Print this usage information.
     --app (mandatory)    
-
-Run "discloud help" to see global options.
 ```
 
 #### app stop
@@ -270,8 +232,6 @@ Stop one or all of your apps on Discloud
 Usage: discloud app stop [arguments]
 -h, --help    Print this usage information.
     --app     (defaults to "all")
-
-Run "discloud help" to see global options.
 ```
 
 #### app upload
@@ -282,8 +242,6 @@ Upload one app or site to Discloud
 Usage: discloud app upload [arguments]
 -h, --help    Print this usage information.
 -g, --glob    (defaults to "**")
-
-Run "discloud help" to see global options.
 ```
 
 ### init
@@ -296,8 +254,6 @@ Usage: discloud init [arguments]
 -f, --force    
     --main     
     --type     [bot, site]
-
-Run "discloud help" to see global options.
 ```
 
 ### login
@@ -307,8 +263,6 @@ Login on Discloud API
 
 Usage: discloud login [arguments]
 -h, --help    Print this usage information.
-
-Run "discloud help" to see global options.
 ```
 
 ### team
@@ -327,8 +281,6 @@ Available subcommands:
   start     Start one or all of your apps on Discloud
   status    Get status of your app
   stop      Stop one or all of your apps on Discloud
-
-Run "discloud help" to see global options.
 ```
 
 #### team backup
@@ -339,8 +291,6 @@ Get backup of your app code from Discloud
 Usage: discloud team backup [arguments]
 -h, --help               Print this usage information.
     --app (mandatory)    
-
-Run "discloud help" to see global options.
 ```
 
 #### team commit
@@ -352,8 +302,6 @@ Usage: discloud team commit [arguments]
 -h, --help    Print this usage information.
     --app     App id (This can be omitted to use the discloud.config file)
 -g, --glob    (defaults to "**")
-
-Run "discloud help" to see global options.
 ```
 
 #### team info
@@ -364,8 +312,6 @@ Get information of your apps
 Usage: discloud team info [arguments]
 -h, --help    Print this usage information.
     --app     (defaults to "all")
-
-Run "discloud help" to see global options.
 ```
 
 #### team restart
@@ -376,8 +322,6 @@ Restart one or all of your apps on Discloud
 Usage: discloud team restart [arguments]
 -h, --help    Print this usage information.
     --app     (defaults to "all")
-
-Run "discloud help" to see global options.
 ```
 
 #### team start
@@ -388,8 +332,6 @@ Start one or all of your apps on Discloud
 Usage: discloud team start [arguments]
 -h, --help    Print this usage information.
     --app     (defaults to "all")
-
-Run "discloud help" to see global options.
 ```
 
 #### team status
@@ -400,8 +342,6 @@ Get status of your app
 Usage: discloud team status [arguments]
 -h, --help               Print this usage information.
     --app (mandatory)    
-
-Run "discloud help" to see global options.
 ```
 
 #### team stop
@@ -412,8 +352,6 @@ Stop one or all of your apps on Discloud
 Usage: discloud team stop [arguments]
 -h, --help    Print this usage information.
     --app     (defaults to "all")
-
-Run "discloud help" to see global options.
 ```
 
 ### user
@@ -427,8 +365,6 @@ Usage: discloud user <subcommand> [arguments]
 Available subcommands:
   info     Get your information
   locale   Set your locale
-
-Run "discloud help" to see global options.
 ```
 
 #### user info
@@ -438,8 +374,6 @@ Get your information
 
 Usage: discloud user info [arguments]
 -h, --help    Print this usage information.
-
-Run "discloud help" to see global options.
 ```
 
 #### user locale
@@ -450,8 +384,6 @@ Set your locale
 Usage: discloud user locale [arguments]
 -h, --help                          Print this usage information.
 -l, --locale=<pt-BR> (mandatory)    
-
-Run "discloud help" to see global options.
 ```
 
 ### zip
@@ -464,6 +396,4 @@ Usage: discloud zip [arguments]
 -e, --encoding    [buffer]
 -g, --glob        (defaults to "**")
 -o, --out         
-
-Run "discloud help" to see global options.
 ```

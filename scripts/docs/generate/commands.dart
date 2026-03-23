@@ -1,3 +1,4 @@
+import "dart:convert";
 import "dart:io";
 
 import "package:args/command_runner.dart";
@@ -20,10 +21,10 @@ Future<void> commands({required CommandRunner runner}) async {
     buffer.writeln("\n$prefix ${command.name}");
 
     if (command.usage case final String usage when usage.isNotEmpty) {
-      buffer.writeln("\n```sh\n$usage\n```");
+      buffer.writeln("\n```sh\n${_removeLastLine(usage)}\n```");
     }
 
-    recursiveDocsGenerate(
+    _recursiveDocsGenerate(
       buffer,
       visited,
       command.subcommands,
@@ -37,7 +38,7 @@ Future<void> commands({required CommandRunner runner}) async {
   await file.writeAsString(buffer.toString());
 }
 
-void recursiveDocsGenerate(
+void _recursiveDocsGenerate(
   StringBuffer buffer,
   Set<Command<void>> visited,
   Map<String, Command<void>> subcommands,
@@ -55,10 +56,10 @@ void recursiveDocsGenerate(
     buffer.writeln("\n$prefix $actualName");
 
     if (command.usage case final String usage when usage.isNotEmpty) {
-      buffer.writeln("\n```sh\n$usage\n```");
+      buffer.writeln("\n```sh\n${_removeLastLine(usage)}\n```");
     }
 
-    recursiveDocsGenerate(
+    _recursiveDocsGenerate(
       buffer,
       visited,
       command.subcommands,
@@ -66,4 +67,14 @@ void recursiveDocsGenerate(
       level + 1,
     );
   }
+}
+
+String _removeLastLine(String text) {
+  final lines = const LineSplitter().convert(text)..removeLast();
+
+  while (lines.lastOrNull?.isEmpty ?? false) {
+    lines.removeLast();
+  }
+
+  return lines.join("\n");
 }
