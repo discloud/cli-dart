@@ -50,7 +50,9 @@ void recursiveDocsGenerate(
 
     final prefix = "".padRight(level, "#");
 
-    buffer.writeln("\n$prefix $fullName ${command.name}");
+    final actualName = "$fullName ${command.name}";
+
+    buffer.writeln("\n$prefix $actualName");
 
     if (command.usage case final String usage when usage.isNotEmpty) {
       buffer.writeln("\n```sh\n$usage\n```");
@@ -60,7 +62,7 @@ void recursiveDocsGenerate(
       buffer,
       visited,
       command.subcommands,
-      "$fullName ${command.name}",
+      actualName,
       level + 1,
     );
   }
