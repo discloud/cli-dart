@@ -3,7 +3,7 @@ import "dart:math";
 
 import "package:charcode/ascii.dart";
 
-const _clearLineChars = [$esc, $lbracket, $0, $K];
+const _clearLineChars = [$esc, $lbracket, $0, $G];
 
 const _goUpLineChars = [$esc, $lbracket, $1, $A];
 
@@ -22,5 +22,9 @@ extension StdoutExtension on Stdout {
     lines = min(lines, _maxGoLines);
     final chars = _goUpLineChars.followedBy(_clearLineChars);
     add([for (int i = 0; i < lines; i++) ...chars]);
+  }
+
+  void rewrite(Object? object) {
+    write("\x1b[0G$object");
   }
 }
