@@ -3,6 +3,7 @@ import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/constants.dart";
+import "package:discloud/extensions/string.dart";
 
 class InitCommand extends Command<void> {
   InitCommand() {
@@ -29,7 +30,7 @@ class InitCommand extends Command<void> {
     final sink = file.openWrite()
       ..writeAll([
         "# https://docs.discloud.com/en/discloud.config",
-        "MAIN=${argResults?.option("main") ?? ""}",
+        "MAIN=${argResults?.option("main").orEmpty}",
         if (argResults?.option("type") case final type?) "TYPE=$type",
       ], "\n");
 

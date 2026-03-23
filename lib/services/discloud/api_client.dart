@@ -3,6 +3,7 @@ import "dart:io";
 
 import "package:discloud/cli/context.dart";
 import "package:discloud/extensions/io_http_client.dart";
+import "package:discloud/extensions/string.dart";
 import "package:discloud/services/discloud/exception.dart";
 import "package:discloud/services/discloud/utils.dart";
 import "package:discloud/structures/disposable.dart";
@@ -287,7 +288,7 @@ class DiscloudApiClient implements Disposable {
       }
     }
 
-    if (!isDiscloudJwt(request.headers.value("api-token") ?? "")) {
+    if (!isDiscloudJwt(request.headers.value("api-token").orEmpty)) {
       throw const DiscloudApiException(
         code: 401,
         message: "Please use the discloud login command first.",
