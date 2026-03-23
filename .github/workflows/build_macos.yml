@@ -1,0 +1,64 @@
+name: Build MacOS
+
+on:
+  release:
+    types:
+      - created
+  workflow_dispatch:
+    inputs:
+      version:
+        description: cli version e.g. 1.0.0
+        type: string
+        required: true
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Get dependencies
+        run: dart pub get
+
+      - name: Sync inno_setup build version
+        run: dart run scripts/inno_setup.dart --version ${{ github.ref_name }}
+
+      - name: Run build runner
+        run: dart run build_runner build -drv --low-resources-mode
+
+      - name: Dart format
+        run: |
+          dart format .
+          dart fix --apply
+          dart fix --apply --code=prefer_const_constructors,prefer_const_constructors_in_immutables,prefer_const_declarations,prefer_const_literals_to_create_immutables
+
+      - name: Compile
+        run: |
+          dart compile exe lib/main.dart -o discloud-cli-macos-x64 --target-os=macos --target-arch=x64
+          dart compile exe lib/main.dart -o discloud-cli-macos-arm64 --target-os=macos --target-arch=arm64
+
+      - name: Generate docs
+        run: dart run scripts/docs/generate.dart
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: ${{ github.event.release.prerelease }}
+          tag_name: ${{ github.ref_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            discloud-cli-macos-x64
+            discloud-cli-macos-arm64
