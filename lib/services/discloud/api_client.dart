@@ -52,7 +52,7 @@ class DiscloudApiClient implements Disposable {
   CliContext get context => .I;
 
   Future<String?> get _maybeToken async =>
-      Platform.environment["DISCLOUD_TOKEN"] ??= await context.store.get(
+      Platform.environment["DISCLOUD_TOKEN"] ?? await context.store.get(
         "token",
       );
 
