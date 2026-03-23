@@ -11,5 +11,5 @@ extension IterableEnumExtension<E extends Enum> on Iterable<E> {
 }
 
 extension IterableNumExtension<E extends num> on Iterable<E> {
-  E sum() => reduce((a, b) => a + b as E);
+  E sum() => isEmpty ? 0 as E : reduce((a, b) => a + b as E);
 }
