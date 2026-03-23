@@ -1,7 +1,7 @@
 [Setup]
 AppCopyright=Copyright (C) 2026 Discloud, Inc.
 AppName=Discloud
-AppVersion=0.0.0
+AppVersion={{version}}
 ArchitecturesAllowed=x64os
 ArchitecturesInstallIn64BitMode=x64os
 ChangesEnvironment=yes
@@ -14,7 +14,7 @@ OutputDir=.
 PrivilegesRequired=admin
 SetupIconFile=assets\icons\favicon.ico
 SolidCompression=yes
-VersionInfoVersion=0.0.0.0
+VersionInfoVersion={{version}}.0
 WizardStyle=modern dark polar
 
 [Files]
