@@ -1,3 +1,5 @@
+import "dart:math";
+
 extension IterableEnumExtension<E extends Enum> on Iterable<E> {
   E byNameOrFirst(String name) => byNameOrNull(name) ?? first;
 
@@ -11,5 +13,11 @@ extension IterableEnumExtension<E extends Enum> on Iterable<E> {
 }
 
 extension IterableNumExtension<E extends num> on Iterable<E> {
-  E sum() => isEmpty ? 0 as E : reduce((a, b) => a + b as E);
+  static E _sum<E extends num>(E a, E b) => a + b as E;
+
+  E highest() => isEmpty ? 0 as E : reduce(max);
+
+  E lowest() => isEmpty ? 0 as E : reduce(min);
+
+  E sum() => isEmpty ? 0 as E : reduce(_sum);
 }
