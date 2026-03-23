@@ -4,6 +4,7 @@ import "dart:io";
 import "package:args/command_runner.dart";
 import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
+import "package:discloud/utils/download.dart";
 import "package:discloud/utils/messages.dart";
 import "package:path/path.dart" hide context;
 
@@ -67,7 +68,10 @@ class AppBackupCommand extends Command<void> {
       if (argResults?.option("out") case final out?) {
         spinner.start(_downloadingText);
         try {
-          await _download(url, out, spinner);
+          await download(url, out);
+          spinner
+            ..success(out)
+            ..start(_downloadingText);
         } catch (e, s) {
           spinner.fail(resolveResponseMessage(e));
           context.debug(s);
@@ -100,46 +104,15 @@ class AppBackupCommand extends Command<void> {
       final String url = data["url"];
 
       try {
-        await _download(url, appZilPath, spinner, client);
+        await download(url, appZilPath, client: client);
+        spinner
+          ..success(out)
+          ..start(_downloadingText);
       } catch (e, s) {
         spinner.fail(resolveResponseMessage(e));
         context.debug(s);
         spinner.start(_downloadingText);
       }
-    }
-  }
-
-  Future<void> _download(
-    String url,
-    String out,
-    CliSpin spinner, [
-    HttpClient? client,
-  ]) async {
-    final iclient = client ?? HttpClient();
-    final file = File(out);
-    await file.create(recursive: true);
-    final sink = file.openWrite();
-
-    try {
-      final request = await iclient.getUrl(.parse(url));
-
-      final response = await request.close();
-
-      await for (final data in response) {
-        sink.add(data);
-      }
-
-      await sink.close();
-
-      spinner
-        ..success(out)
-        ..start(_downloadingText);
-    } catch (_, _) {
-      await sink.close();
-      await file.delete();
-      rethrow;
-    } finally {
-      if (client == null) iclient.close();
     }
   }
 }
