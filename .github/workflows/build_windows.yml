@@ -51,7 +51,6 @@ jobs:
       - name: Compile
         run: |
           dart compile exe lib/main.dart -o discloud-cli-x64.exe --target-os=windows --target-arch=x64
-          dart compile exe lib/main.dart -o discloud-cli-arm64.exe --target-os=windows --target-arch=arm64
           dart compile exe lib/main.dart -o discloud-cli-linux-x64 --target-os=linux --target-arch=x64
 
       - name: Install Inno Setup
