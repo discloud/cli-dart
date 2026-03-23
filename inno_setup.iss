@@ -1,14 +1,14 @@
 [Setup]
 AppCopyright=Copyright (C) 2026 Discloud, Inc.
-AppName=Discloud
+AppName=Discloud CLI
 ; update with inno_setup script
 AppVersion={{version}}
 ArchitecturesAllowed=x64os
 ArchitecturesInstallIn64BitMode=x64os
 ChangesEnvironment=yes
 Compression=lzma2/max
-DefaultDirName={autopf}\Discloud
-DefaultGroupName=Discloud
+DefaultDirName={autopf}\Discloud\cli
+DefaultGroupName=Discloud CLI
 LicenseFile=LICENSE
 OutputBaseFilename=discloud-cli-x64-setup
 OutputDir=.
