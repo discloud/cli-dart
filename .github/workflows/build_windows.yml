@@ -39,6 +39,9 @@ jobs:
       - name: Run build runner
         run: dart run build_runner build -drv --low-resources-mode
 
+      - name: Generate docs
+        run: dart run scripts/docs/generate.dart
+
       - name: Dart format
         run: |
           dart format .
@@ -52,9 +55,6 @@ jobs:
 
       - name: Install Inno Setup
         run: choco install innosetup -y
-
-      - name: Generate docs
-        run: dart run scripts/docs/generate.dart
 
       - name: Build setup
         run: iscc inno_setup.iss
