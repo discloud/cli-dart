@@ -1,4 +1,4 @@
-name: Build Binaries & Installers
+name: Build MacOS
 
 on:
   release:
@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
@@ -33,11 +33,14 @@ jobs:
       - name: Get dependencies
         run: dart pub get
 
-      - name: Sync inno_setup build version
-        run: dart run scripts/inno_setup.dart --version ${{ github.ref_name }}
+      - name: Upgrade pubspec version
+        run: dart run scripts/upgrade_pubspec_version.dart --version ${{ github.ref_name }}
 
       - name: Run build runner
         run: dart run build_runner build -drv --low-resources-mode
+
+      - name: Generate docs
+        run: dart run scripts/docs/generate.dart
 
       - name: Dart format
         run: |
@@ -47,17 +50,19 @@ jobs:
 
       - name: Compile
         run: |
-          dart compile exe lib/main.dart -o discloud-cli-x64.exe --target-os=windows --target-arch=x64
-          dart compile exe lib/main.dart -o discloud-cli-linux-x64 --target-os=linux --target-arch=x64
+          dart compile exe lib/main.dart -o discloud-cli-macos-arm64 --target-os=macos --target-arch=arm64
+          dart compile exe lib/main.dart -o discloud-cli-linux-arm64 --target-os=linux --target-arch=arm64
 
-      - name: Install Inno Setup
-        run: choco install innosetup -y
+      - name: Prepare archive
+        run: |
+          mkdir discloud
+          cp discloud-cli-macos-arm64 discloud/discloud
+          tar -czf discloud-cli-macos-arm64.tar.gz discloud
 
-      - name: Generate docs
-        run: dart run scripts/docs/generate.dart
-
-      - name: Build setup
-        run: iscc inno_setup.iss
+      - name: Generate SHA256
+        id: sha
+        run: |
+          echo "sha256=$(shasum -a 256 discloud-cli-macos-arm64.tar.gz | awk '{print $1}')" >> $GITHUB_OUTPUT
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
@@ -66,5 +71,9 @@ jobs:
           tag_name: ${{ github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            discloud-cli-linux-x64
-            ./*.exe
+            discloud-cli-macos-arm64
+            discloud-cli-linux-arm64
+            ./*.tar.gz
+
+      - name: Debug SHA
+        run: echo "SHA256=${{ steps.sha.outputs.sha256 }}"
