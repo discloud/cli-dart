@@ -17,7 +17,7 @@ class TeamBackupCommand extends Command<void> {
   final name = "backup";
 
   @override
-  final description = "Get backup of your app code from Discloud";
+  final description = "Get backup of your team app code from Discloud";
 
   @override
   final aliases = ["bkp"];
