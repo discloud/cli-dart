@@ -33,6 +33,9 @@ jobs:
       - name: Get dependencies
         run: dart pub get
 
+      - name: Sync inno_setup build version
+        run: dart run scripts/inno_setup.dart --version ${{ github.ref_name }}
+
       - name: Run build runner
         run: dart run build_runner build -drv --low-resources-mode
 
@@ -49,9 +52,6 @@ jobs:
 
       - name: Install Inno Setup
         run: choco install innosetup -y
-
-      - name: Sync inno_setup build version
-        run: dart run scripts/inno_setup.dart --version ${{ github.ref_name }}
 
       - name: Generate docs
         run: dart run scripts/docs/generate.dart
