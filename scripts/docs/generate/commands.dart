@@ -7,8 +7,10 @@ import "package:discloud/version.dart";
 Future<void> commands({required CommandRunner runner}) async {
   final visited = <Command<void>>{};
 
+  final version = packageVersion == "0.0.0" ? "" : " v$packageVersion";
+
   final buffer = StringBuffer("""
-# [CLI Documentation v$packageVersion](index.md)
+# [CLI Documentation$version](index.md)
 
 ## [Commands](commands.md)
 """);

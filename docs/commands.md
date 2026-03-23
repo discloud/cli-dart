@@ -1,4 +1,4 @@
-# [CLI Documentation v0.0.0](index.md)
+# [CLI Documentation](index.md)
 
 ## [Commands](commands.md)
 
