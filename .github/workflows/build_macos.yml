@@ -47,7 +47,6 @@ jobs:
 
       - name: Compile
         run: |
-          dart compile exe lib/main.dart -o discloud-cli-macos-x64 --target-os=macos --target-arch=x64
           dart compile exe lib/main.dart -o discloud-cli-macos-arm64 --target-os=macos --target-arch=arm64
 
       - name: Generate docs
