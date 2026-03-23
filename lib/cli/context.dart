@@ -1,7 +1,6 @@
 import "dart:async";
 import "dart:io";
 
-import "package:discloud/constants.dart";
 import "package:discloud/extensions/duration.dart";
 import "package:discloud/extensions/list.dart";
 import "package:discloud/services/discloud/api_client.dart";
@@ -34,13 +33,22 @@ abstract class CliContext implements Disposable {
 
   final DiscloudApiClient api = .new();
 
-  final LocalStore store = .json(cliConfigFilePath);
+  late final LocalStore store = .json(cliConfigFilePath);
 
   final Directory workspaceFolder = .current;
 
   final rootFilePath = Platform.resolvedExecutable;
 
   late final rootPath = dirname(rootFilePath);
+
+  late final userHomePath =
+      Platform.environment["HOME"] ??
+      Platform.environment["USERPROFILE"] ??
+      (throw Exception("User home path not found"));
+
+  late final cliConfigDir = joinAll([userHomePath, ".discloud"]);
+
+  late final cliConfigFilePath = joinAll([cliConfigDir, ".cli"]);
 
   final List<Disposable> subscriptions = [];
 
