@@ -1,6 +1,7 @@
 [Setup]
 AppCopyright=Copyright (C) 2026 Discloud, Inc.
 AppName=Discloud
+; update with inno_setup script
 AppVersion={{version}}
 ArchitecturesAllowed=x64os
 ArchitecturesInstallIn64BitMode=x64os
@@ -14,6 +15,7 @@ OutputDir=.
 PrivilegesRequired=admin
 SetupIconFile=assets\icons\favicon.ico
 SolidCompression=yes
+; update with inno_setup script
 VersionInfoVersion={{version}}.0
 WizardStyle=modern dark polar
 
