@@ -3,8 +3,7 @@ import "dart:io";
 import "package:discloud/version.dart";
 
 Future<void> home() async {
-  final buffer = StringBuffer()
-    ..write("""
+  final buffer = StringBuffer("""
 # [CLI Documentation v$packageVersion](docs.md)
 
 ## [Commands](commands.md)

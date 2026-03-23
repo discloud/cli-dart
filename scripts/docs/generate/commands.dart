@@ -6,8 +6,7 @@ import "package:discloud/version.dart";
 Future<void> commands({required CommandRunner runner}) async {
   final visited = <Command<void>>{};
 
-  final buffer = StringBuffer()
-    ..write("""
+  final buffer = StringBuffer("""
 # [CLI Documentation v$packageVersion](docs.md)
 
 ## [Commands](commands.md)
