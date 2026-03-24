@@ -7,7 +7,7 @@ Future<File> zip({
   required Directory directory,
   Iterable<String> glob = const ["**"],
   Iterable<String> ignore = const .empty(),
-}) async {
+}) {
   return Isolate.run(() async {
     final zipper = GlobZipper(
       directory: directory,
