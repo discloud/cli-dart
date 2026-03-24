@@ -16,16 +16,14 @@ Future<void> download(
   try {
     final request = await client_.getUrl(.parse(url));
 
-    final response = await request.close();
-
     if (onProgress case final onProgress?) {
       await _downloadWithProgress(
         onProgress: onProgress,
-        response: response,
+        responseFactory: request.close,
         sink: sink,
       );
     } else {
-      await sink.addStream(response);
+      await sink.addStream(await request.close());
     }
 
     await sink.close();
@@ -40,9 +38,11 @@ Future<void> download(
 
 Future<void> _downloadWithProgress({
   required VoidCallback onProgress,
-  required HttpClientResponse response,
+  required Future<HttpClientResponse> Function() responseFactory,
   required IOSink sink,
 }) async {
+  final response = await responseFactory();
+
   final total = response.contentLength;
 
   int processed = 0;
