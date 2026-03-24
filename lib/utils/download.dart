@@ -16,22 +16,19 @@ Future<void> download(
   try {
     final request = await client_.getUrl(.parse(url));
 
-    if (onProgress case final onProgress?) {
-      await _downloadWithProgress(
-        onProgress: onProgress,
-        responseFactory: request.close,
-        sink: sink,
-      );
-    } else {
-      await sink.addStream(await request.close());
-    }
+    if (onProgress == null) return await sink.addStream(await request.close());
 
-    await sink.close();
+    await _downloadWithProgress(
+      onProgress: onProgress,
+      responseFactory: request.close,
+      sink: sink,
+    );
   } catch (_) {
     await sink.close();
     await file.delete();
     rethrow;
   } finally {
+    await sink.close();
     if (client == null) client_.close();
   }
 }
