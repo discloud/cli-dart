@@ -4,26 +4,32 @@ typedef VoidProgressCallback =
     void Function({int current, int processed, int total});
 
 Future<void> download(
-  String url,
-  String out, {
+  String url, {
+  String? out,
   HttpClient? client,
   VoidProgressCallback? onProgress,
 }) async {
-  final client_ = client ?? HttpClient();
+  final uri = Uri.parse(url);
+  out ??= uri.pathSegments.last;
+
   final file = File(out);
   await file.create(recursive: true);
   final sink = file.openWrite();
 
+  final client_ = client ?? HttpClient();
+
   try {
-    final request = await client_.getUrl(.parse(url));
+    final request = await client_.getUrl(uri);
 
-    if (onProgress == null) return await sink.addStream(await request.close());
-
-    await _downloadWithProgress(
-      onProgress: onProgress,
-      responseFactory: request.close,
-      sink: sink,
-    );
+    if (onProgress case final onProgress?) {
+      await _downloadWithProgress(
+        onProgress: onProgress,
+        responseFactory: request.close,
+        sink: sink,
+      );
+    } else {
+      await sink.addStream(await request.close());
+    }
   } catch (_) {
     await sink.close();
     await file.delete();

@@ -69,7 +69,7 @@ class AppBackupCommand extends Command<void> {
       if (argResults?.option("out") case final out?) {
         spinner.start(_downloadingText);
         try {
-          await download(url, out);
+          await download(url, out: out);
           spinner
             ..success(out)
             ..start(_downloadingText);
@@ -105,7 +105,7 @@ class AppBackupCommand extends Command<void> {
       final String url = data["url"];
 
       try {
-        await download(url, appZilPath, client: client);
+        await download(url, out: appZilPath, client: client);
         spinner
           ..success(out)
           ..start(_downloadingText);
