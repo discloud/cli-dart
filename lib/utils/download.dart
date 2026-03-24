@@ -1,12 +1,13 @@
 import "dart:io";
 
-typedef VoidCallback = void Function({int current, int processed, int total});
+typedef VoidProgressCallback =
+    void Function({int current, int processed, int total});
 
 Future<void> download(
   String url,
   String out, {
   HttpClient? client,
-  VoidCallback? onProgress,
+  VoidProgressCallback? onProgress,
 }) async {
   final client_ = client ?? HttpClient();
   final file = File(out);
@@ -34,7 +35,7 @@ Future<void> download(
 }
 
 Future<void> _downloadWithProgress({
-  required VoidCallback onProgress,
+  required VoidProgressCallback onProgress,
   required Future<HttpClientResponse> Function() responseFactory,
   required IOSink sink,
 }) async {
