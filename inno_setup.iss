@@ -1,6 +1,10 @@
 [Setup]
 AppCopyright=Copyright (C) 2026 Discloud, Inc.
 AppName=Discloud CLI
+AppPublisher=Discloud, Inc.
+AppPublisherURL=https://discloud.com
+AppReadmeFile=https://github.com/discloud/cli-dart#readme
+AppUpdatesURL=https://github.com/discloud/cli-dart/releases
 ; update with inno_setup script
 AppVersion={{version}}
 ArchitecturesAllowed=x64os
@@ -20,10 +24,15 @@ VersionInfoVersion={{version}}.0
 WizardStyle=modern dark polar
 
 [Files]
-Source: discloud-cli-x64.exe; DestName: discloud.exe; DestDir: {app}; Flags: ignoreversion
+Source: discloud-cli-x64.exe; DestName: discloud.exe; DestDir: {app};  IconFilename: {app}\favicon.ico; Flags: ignoreversion
 Source: assets\icons\favicon.ico; DestDir: {app}; Flags: ignoreversion
 Source: LICENSE; DestDir: {app}; Flags: ignoreversion
-Source: docs\*; DestDir: {app}\docs; Flags: ignoreversion
+Source: docs\*.html; DestDir: {app}\docs; Flags: ignoreversion
+
+[Icons]
+Name: {app}\CLI Documentation; Filename: {app}\docs\index.html;
+Name: {group}\CLI Documentation; Filename: {app}\docs\index.html;
+Name: {group}\Uninstall; Filename: {uninstallexe};
 
 [Code]
 const
