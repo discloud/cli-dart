@@ -407,8 +407,8 @@ Usage: discloud user info [arguments]
 Set your locale
 
 Usage: discloud user locale [arguments]
--h, --help                          Print this usage information.
--l, --locale=<pt-BR> (mandatory)    
+-h, --help                            Print this usage information.
+-l, --locale=<C.UTF-8> (mandatory)    
 ```
 
 ### zip
