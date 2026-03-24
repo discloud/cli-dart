@@ -111,7 +111,7 @@ Delete one of your apps on Discloud
 
 Usage: discloud app delete [arguments]
 -h, --help               Print this usage information.
--y, --[no-]yes           Skip confirmation prompt
+-y, --yes                Skip confirmation prompt
     --app (mandatory)    
 ```
 
