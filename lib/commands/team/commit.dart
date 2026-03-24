@@ -55,7 +55,7 @@ class TeamCommitCommand extends Command<void> {
     spinner.start("Committing...");
 
     try {
-      final response = await context.api.postMultipart(
+      final response = await context.api.putMultipart(
         "/team/$appId/commit",
         file: file,
         onUploadProgress: (current, processed) {
