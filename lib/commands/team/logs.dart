@@ -14,6 +14,7 @@ class TeamLogsCommand extends Command<void> {
       ..addOption(
         "app",
         mandatory: true,
+        valueHelp: "all",
         help:
             "When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.",
       )

@@ -23,7 +23,7 @@ const _keysIgnore = {
 
 class AppInfoCommand extends Command<void> {
   AppInfoCommand() {
-    argParser.addOption("app", defaultsTo: "all");
+    argParser.addOption("app", defaultsTo: "all", valueHelp: "all");
   }
 
   @override

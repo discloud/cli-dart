@@ -7,7 +7,7 @@ import "package:discloud/utils/messages.dart";
 
 class AppStartCommand extends Command<void> {
   AppStartCommand() {
-    argParser.addOption("app", defaultsTo: "all");
+    argParser.addOption("app", valueHelp: "all");
   }
 
   @override

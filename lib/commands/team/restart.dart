@@ -7,7 +7,7 @@ import "package:discloud/utils/messages.dart";
 
 class TeamRestartCommand extends Command<void> {
   TeamRestartCommand() {
-    argParser.addOption("app", defaultsTo: "all");
+    argParser.addOption("app", valueHelp: "all");
   }
 
   @override

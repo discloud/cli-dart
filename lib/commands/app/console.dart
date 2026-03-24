@@ -11,7 +11,7 @@ import "package:tint/tint.dart";
 class AppConsoleCommand extends Command<void> {
   AppConsoleCommand() {
     argParser
-      ..addOption("app", mandatory: true, valueHelp: "appId")
+      ..addOption("app", mandatory: true)
       ..addOption("command");
   }
 

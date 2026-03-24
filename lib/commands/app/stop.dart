@@ -7,7 +7,7 @@ import "package:discloud/utils/messages.dart";
 
 class AppStopCommand extends Command<void> {
   AppStopCommand() {
-    argParser.addOption("app", defaultsTo: "all");
+    argParser.addOption("app", valueHelp: "all");
   }
 
   @override

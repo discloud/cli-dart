@@ -10,7 +10,7 @@ import "package:path/path.dart" hide context;
 
 class TeamBackupCommand extends Command<void> {
   TeamBackupCommand() {
-    argParser.addOption("app", mandatory: true);
+    argParser.addOption("app", mandatory: true, valueHelp: "all");
   }
 
   @override

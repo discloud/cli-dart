@@ -77,9 +77,9 @@ Usage: discloud app apt uninstall [arguments]
 Get backup of your app code from Discloud
 
 Usage: discloud app backup [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    When set to 'all', this command will automatically download backups and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
-    --out                Specifies the destination path for downloading backups. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
+-h, --help                     Print this usage information.
+    --app=<all> (mandatory)    When set to 'all', this command will automatically download backups and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
+    --out                      Specifies the destination path for downloading backups. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
 ```
 
 #### app commit
@@ -99,9 +99,9 @@ Usage: discloud app commit [arguments]
 Use the app terminal
 
 Usage: discloud app console [arguments]
--h, --help                       Print this usage information.
-    --app=<appId> (mandatory)    
-    --command                    
+-h, --help               Print this usage information.
+    --app (mandatory)    
+    --command            
 ```
 
 #### app delete
@@ -121,8 +121,8 @@ Usage: discloud app delete [arguments]
 Get information of your apps
 
 Usage: discloud app info [arguments]
--h, --help    Print this usage information.
-    --app     (defaults to "all")
+-h, --help         Print this usage information.
+    --app=<all>    (defaults to "all")
 ```
 
 #### app logs
@@ -131,9 +131,9 @@ Usage: discloud app info [arguments]
 View the logs from application in Discloud
 
 Usage: discloud app logs [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
-    --out                Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
+-h, --help                     Print this usage information.
+    --app=<all> (mandatory)    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
+    --out                      Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
 ```
 
 #### app mod
@@ -202,9 +202,9 @@ Usage: discloud app mod info [arguments]
 Set amount of ram for your app
 
 Usage: discloud app ram [arguments]
--h, --help                  Print this usage information.
-    --app (mandatory)       
-    --amount (mandatory)    
+-h, --help                        Print this usage information.
+    --app (mandatory)             
+    --amount=<100> (mandatory)    
 ```
 
 #### app restart
@@ -213,8 +213,8 @@ Usage: discloud app ram [arguments]
 Restart one or all of your apps on Discloud
 
 Usage: discloud app restart [arguments]
--h, --help    Print this usage information.
-    --app     (defaults to "all")
+-h, --help         Print this usage information.
+    --app=<all>    
 ```
 
 #### app start
@@ -223,8 +223,8 @@ Usage: discloud app restart [arguments]
 Start one or all of your apps on Discloud
 
 Usage: discloud app start [arguments]
--h, --help    Print this usage information.
-    --app     (defaults to "all")
+-h, --help         Print this usage information.
+    --app=<all>    
 ```
 
 #### app status
@@ -243,8 +243,8 @@ Usage: discloud app status [arguments]
 Stop one or all of your apps on Discloud
 
 Usage: discloud app stop [arguments]
--h, --help    Print this usage information.
-    --app     (defaults to "all")
+-h, --help         Print this usage information.
+    --app=<all>    
 ```
 
 #### app upload
@@ -287,7 +287,7 @@ Usage: discloud team <subcommand> [arguments]
 -h, --help    Print this usage information.
 
 Available subcommands:
-  backup    Get backup of your app code from Discloud
+  backup    Get backup of your team app code from Discloud
   commit    Commit one app or site to Discloud
   info      Get information of your apps
   logs      View the logs from application in Discloud
@@ -300,11 +300,11 @@ Available subcommands:
 #### team backup
 
 ```sh
-Get backup of your app code from Discloud
+Get backup of your team app code from Discloud
 
 Usage: discloud team backup [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
+-h, --help                     Print this usage information.
+    --app=<all> (mandatory)    
 ```
 
 #### team commit
@@ -324,8 +324,8 @@ Usage: discloud team commit [arguments]
 Get information of your apps
 
 Usage: discloud team info [arguments]
--h, --help    Print this usage information.
-    --app     (defaults to "all")
+-h, --help         Print this usage information.
+    --app=<all>    (defaults to "all")
 ```
 
 #### team logs
@@ -334,9 +334,9 @@ Usage: discloud team info [arguments]
 View the logs from application in Discloud
 
 Usage: discloud team logs [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
-    --out                Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
+-h, --help                     Print this usage information.
+    --app=<all> (mandatory)    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
+    --out                      Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
 ```
 
 #### team restart
@@ -345,8 +345,8 @@ Usage: discloud team logs [arguments]
 Restart one or all of your apps on Discloud
 
 Usage: discloud team restart [arguments]
--h, --help    Print this usage information.
-    --app     (defaults to "all")
+-h, --help         Print this usage information.
+    --app=<all>    
 ```
 
 #### team start
@@ -355,8 +355,8 @@ Usage: discloud team restart [arguments]
 Start one or all of your apps on Discloud
 
 Usage: discloud team start [arguments]
--h, --help    Print this usage information.
-    --app     (defaults to "all")
+-h, --help         Print this usage information.
+    --app=<all>    
 ```
 
 #### team status
@@ -375,8 +375,8 @@ Usage: discloud team status [arguments]
 Stop one or all of your apps on Discloud
 
 Usage: discloud team stop [arguments]
--h, --help    Print this usage information.
-    --app     (defaults to "all")
+-h, --help         Print this usage information.
+    --app=<all>    
 ```
 
 ### user

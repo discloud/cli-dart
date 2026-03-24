@@ -5,12 +5,18 @@ import "package:args/command_runner.dart";
 import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
+import "package:discloud_config/discloud_config.dart";
 
 class AppRamCommand extends Command<void> {
   AppRamCommand() {
     argParser
       ..addOption("app", mandatory: true)
-      ..addOption("amount", aliases: const ["ram"], mandatory: true);
+      ..addOption(
+        "amount",
+        aliases: const ["ram"],
+        mandatory: true,
+        valueHelp: DiscloudRamMinByType.lowest.value.toString(),
+      );
   }
 
   @override
@@ -22,7 +28,10 @@ class AppRamCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = argResults!.option("app");
-    final ramMB = max(int.parse(argResults!.option("amount")!), 100);
+    final ramMB = max(
+      int.parse(argResults!.option("amount")!),
+      DiscloudRamMinByType.lowest.value,
+    );
 
     final spinner = CliSpin().start();
 
