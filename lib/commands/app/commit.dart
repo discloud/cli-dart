@@ -1,5 +1,5 @@
+import "dart:async";
 import "dart:io";
-import "dart:isolate";
 
 import "package:args/command_runner.dart";
 import "package:cli_spin/cli_spin.dart";
@@ -7,8 +7,9 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
 import "package:discloud/utils/messages.dart";
+import "package:discloud/utils/percent.dart";
+import "package:discloud/utils/zip.dart";
 import "package:discloud_config/discloud_config.dart";
-import "package:glob_zipper/glob_zipper.dart";
 import "package:path/path.dart" as p;
 
 class AppCommitCommand extends Command<void> {
@@ -43,24 +44,27 @@ class AppCommitCommand extends Command<void> {
 
     final spinner = CliSpin().start("Zipping...");
 
-    final file = await Isolate.run(() async {
-      final zipper = GlobZipper(
-        directory: directory,
-        tempDirectory: directory,
-        patterns: glob,
-        ignore: allBlockedFiles,
-        ignoreFilename: ".discloudignore",
-      );
+    final file = await zip(
+      directory: directory,
+      glob: glob,
+      ignore: allBlockedFiles,
+    );
 
-      return zipper.zip();
-    });
+    final fileStat = await file.stat();
+    final total = fileStat.size;
 
     spinner.start("Committing...");
 
     try {
-      final response = await context.api.postMultipart(
+      final response = await context.api.putMultipart(
         "/app/$appId/commit",
         file: file,
+        onUploadProgress: (current, processed) {
+          spinner.start("Committing... ${percent(processed, total)}%");
+        },
+        onUploadDone: () {
+          spinner.start("Processing...");
+        },
       );
 
       spinner.success(resolveResponseMessage(response));

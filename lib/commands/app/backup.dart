@@ -100,12 +100,12 @@ class AppBackupCommand extends Command<void> {
       }
 
       final appZipName = "$appId.zip";
-      final appZilPath = joinAll([out, appZipName]);
+      final appZipPath = joinAll([out, appZipName]);
 
       final String url = data["url"];
 
       try {
-        await download(url, out: appZilPath, client: client);
+        await download(url, out: appZipPath, client: client);
         spinner
           ..success(out)
           ..start(_downloadingText);

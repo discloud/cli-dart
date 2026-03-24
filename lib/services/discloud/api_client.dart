@@ -7,6 +7,10 @@ import "package:discloud/extensions/string.dart";
 import "package:discloud/services/discloud/exception.dart";
 import "package:discloud/services/discloud/utils.dart";
 import "package:discloud/structures/disposable.dart";
+import "package:path/path.dart";
+
+typedef VoidUploadProgressCallback = void Function(int current, int processed);
+typedef VoidUploadDoneCallback = void Function();
 
 class DiscloudApiClient implements Disposable {
   static const _apiVersion = 2;
@@ -172,6 +176,8 @@ class DiscloudApiClient implements Disposable {
     required File file,
     Map<String, String>? fields,
     Map<String, String>? headers,
+    VoidUploadDoneCallback? onUploadDone,
+    VoidUploadProgressCallback? onUploadProgress,
   }) async {
     final url = _resolveUrl(path);
 
@@ -182,6 +188,8 @@ class DiscloudApiClient implements Disposable {
       file: file,
       fields: fields,
       headers: headers,
+      onUploadDone: onUploadDone,
+      onUploadProgress: onUploadProgress,
     );
 
     final response = await request.close();
@@ -202,6 +210,8 @@ class DiscloudApiClient implements Disposable {
     required File file,
     Map<String, String>? fields,
     Map<String, String>? headers,
+    VoidUploadDoneCallback? onUploadDone,
+    VoidUploadProgressCallback? onUploadProgress,
   }) async {
     final url = _resolveUrl(path);
 
@@ -212,6 +222,8 @@ class DiscloudApiClient implements Disposable {
       file: file,
       fields: fields,
       headers: headers,
+      onUploadDone: onUploadDone,
+      onUploadProgress: onUploadProgress,
     );
 
     final response = await request.close();
@@ -230,12 +242,15 @@ class DiscloudApiClient implements Disposable {
   Future<void> _uploadMultipart({
     required HttpClientRequest request,
     required File file,
+    VoidUploadProgressCallback? onUploadProgress,
+    VoidUploadDoneCallback? onUploadDone,
     Map<String, String>? fields,
     Map<String, String>? headers,
   }) async {
     final now = DateTime.now();
     final boundary = "formBoundary${now.microsecondsSinceEpoch}";
-    final fileName = file.uri.pathSegments.last;
+    final filename = file.uri.pathSegments.last;
+    final fileExtension = extension(filename);
 
     await _prepareRequest(request, headers: headers ??= {});
 
@@ -251,23 +266,32 @@ class DiscloudApiClient implements Disposable {
 
     if (fields case final fields?) {
       for (final e in fields.entries) {
-        request
-          ..write("--$boundary\r\n")
-          ..write('Content-Disposition: form-data; name="${e.key}"\r\n\r\n')
-          ..write("${e.value}\r\n");
+        request.write(
+          "--$boundary\r\n"
+          "Content-Disposition: form-data; "
+          'name="${e.key}"\r\n\r\n${e.value}\r\n',
+        );
       }
     }
 
-    request
-      ..write("--$boundary\r\n")
-      ..write(
-        'Content-Disposition: form-data; name="file"; filename="$fileName"\r\n',
-      )
-      ..write("Content-Type: application/zip\r\n\r\n");
+    request.write(
+      "--$boundary\r\n"
+      "Content-Disposition: form-data; "
+      'name="file"; '
+      'filename="$filename"\r\n'
+      "Content-Type: application/$fileExtension\r\n\r\n",
+    );
 
-    await request.addStream(file.openRead());
+    int processed = 0;
+    await for (final data in file.openRead()) {
+      request.add(data);
+
+      onUploadProgress?.call(data.length, processed += data.length);
+    }
 
     await file.delete();
+
+    onUploadDone?.call();
 
     request.write("\r\n--$boundary--\r\n");
   }
