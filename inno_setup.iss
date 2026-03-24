@@ -24,7 +24,7 @@ VersionInfoVersion={{version}}.0
 WizardStyle=modern dark polar
 
 [Files]
-Source: discloud-cli-x64.exe; DestName: discloud.exe; DestDir: {app};  IconFilename: {app}\favicon.ico; Flags: ignoreversion
+Source: discloud-cli-x64.exe; DestName: discloud.exe; DestDir: {app}; Flags: ignoreversion
 Source: assets\icons\favicon.ico; DestDir: {app}; Flags: ignoreversion
 Source: LICENSE; DestDir: {app}; Flags: ignoreversion
 Source: docs\*.html; DestDir: {app}\docs; Flags: ignoreversion
