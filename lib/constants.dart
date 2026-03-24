@@ -1,1 +1,0 @@
-const configFilename = "discloud.config";

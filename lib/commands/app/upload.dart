@@ -2,7 +2,6 @@ import "dart:isolate";
 
 import "package:args/command_runner.dart";
 import "package:cli_spin/cli_spin.dart";
-import "package:discloud/constants.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
@@ -29,7 +28,7 @@ class AppUploadCommand extends Command<void> {
   Future<void> run() async {
     final directory = context.workspaceFolder;
 
-    final configFilePath = p.joinAll([directory.path, configFilename]);
+    final configFilePath = p.joinAll([directory.path, DiscloudConfig.filename]);
 
     final DiscloudConfig config = await .fromPath(configFilePath);
 

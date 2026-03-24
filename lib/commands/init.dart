@@ -2,8 +2,8 @@ import "dart:async";
 import "dart:io";
 
 import "package:args/command_runner.dart";
-import "package:discloud/constants.dart";
 import "package:discloud/extensions/string.dart";
+import "package:discloud_config/discloud_config.dart";
 
 class InitCommand extends Command<void> {
   InitCommand() {
@@ -17,14 +17,14 @@ class InitCommand extends Command<void> {
   final name = "init";
 
   @override
-  final description = "Init $configFilename file";
+  final description = "Init ${DiscloudConfig.filename} file";
 
   @override
   Future<void> run() async {
-    final file = File(configFilename);
+    final file = File(DiscloudConfig.filename);
 
     if (!argResults!.flag("force") && await file.exists()) {
-      throw Exception("$configFilename already exists!");
+      throw Exception("${DiscloudConfig.filename} already exists!");
     }
 
     final sink = file.openWrite()
