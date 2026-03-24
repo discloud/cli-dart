@@ -1,0 +1,54 @@
+name: update docs
+
+on:
+  push:
+    paths-ignore:
+      - docs
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Get short SHA
+        id: short_github_sha
+        run: |
+          id=$(echo ${{ github.sha }} | cut -c 1-7)
+          echo "id=$id" >> $GITHUB_OUTPUT
+
+      - name: Get dependencies
+        run: dart pub get
+
+      - name: Run build runner
+        run: dart run build_runner build -drv --low-resources-mode
+
+      - name: Generate docs
+        run: dart run scripts/docs/generate.dart
+
+      - name: Git config
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Git commit
+        id: commit
+        continue-on-error: true
+        run: |
+          git add dist
+          git commit -m "build ${{ steps.short_github_sha.outputs.id }}"
+
+      - name: Push
+        if: steps.commit.outcome != 'failure'
+        run: git push
