@@ -9,7 +9,12 @@ import "package:interact/interact.dart";
 class AppDeleteCommand extends Command<void> {
   AppDeleteCommand() {
     argParser
-      ..addFlag("yes", abbr: "y", help: "Skip confirmation prompt")
+      ..addFlag(
+        "yes",
+        abbr: "y",
+        help: "Skip confirmation prompt",
+        negatable: false,
+      )
       ..addOption("app", mandatory: true);
   }
 
