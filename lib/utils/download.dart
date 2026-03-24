@@ -28,7 +28,8 @@ Future<void> download(
         sink: sink,
       );
     } else {
-      await sink.addStream(await request.close());
+      final response = await request.close();
+      await sink.addStream(response);
     }
   } catch (_) {
     await sink.close();
