@@ -13,7 +13,8 @@ Welcome to the **Discloud CLI** installation documentation. Follow the instructi
 ## 📋 Prerequisites
 
 - **Operating System:**
-  - Linux x64
+  - Linux arm64/x64
+  - MacOS arm64
   - Windows x64
 
 ---
