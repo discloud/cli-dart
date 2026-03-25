@@ -254,10 +254,6 @@ class DiscloudApiClient implements Disposable {
 
     await _prepareRequest(request, headers: headers ??= {});
 
-    for (final e in headers.entries) {
-      request.headers.add(e.key, e.value);
-    }
-
     request.headers.contentType = .new(
       "multipart",
       "form-data",
