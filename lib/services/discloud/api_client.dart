@@ -9,7 +9,7 @@ import "package:discloud/services/discloud/utils.dart";
 import "package:discloud/structures/disposable.dart";
 import "package:path/path.dart";
 
-typedef VoidUploadProgressCallback = void Function(int current, int processed);
+typedef VoidUploadProgressCallback = void Function(int processed);
 typedef VoidUploadDoneCallback = void Function();
 
 class DiscloudApiClient implements Disposable {
@@ -286,14 +286,16 @@ class DiscloudApiClient implements Disposable {
     await for (final data in file.openRead()) {
       request.add(data);
 
-      onUploadProgress?.call(data.length, processed += data.length);
+      onUploadProgress?.call(processed += data.length);
     }
 
-    await file.delete();
+    request.write("\r\n--$boundary--\r\n");
+
+    try {
+      await file.delete();
+    } catch (_) {}
 
     onUploadDone?.call();
-
-    request.write("\r\n--$boundary--\r\n");
   }
 
   Future<void> _prepareRequest(

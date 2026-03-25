@@ -59,7 +59,7 @@ class AppCommitCommand extends Command<void> {
       final response = await context.api.putMultipart(
         "/app/$appId/commit",
         file: file,
-        onUploadProgress: (current, processed) {
+        onUploadProgress: (processed) {
           spinner.start("Committing... ${percent(processed, total)}%");
         },
         onUploadDone: () {

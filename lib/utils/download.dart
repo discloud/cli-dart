@@ -1,7 +1,6 @@
 import "dart:io";
 
-typedef VoidProgressCallback =
-    void Function({int current, int processed, int total});
+typedef VoidProgressCallback = void Function(int processed, int total);
 
 Future<void> download(
   String url, {
@@ -54,10 +53,6 @@ Future<void> _downloadWithProgress({
   await for (final data in response) {
     sink.add(data);
 
-    onProgress(
-      current: data.length,
-      processed: processed += data.length,
-      total: total,
-    );
+    onProgress(processed += data.length, total);
   }
 }

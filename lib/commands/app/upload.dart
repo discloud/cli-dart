@@ -52,7 +52,7 @@ class AppUploadCommand extends Command<void> {
       final response = await context.api.postMultipart(
         "/upload",
         file: file,
-        onUploadProgress: (current, processed) {
+        onUploadProgress: (processed) {
           spinner.start("Uploading... ${percent(processed, total)}%");
         },
         onUploadDone: () {
