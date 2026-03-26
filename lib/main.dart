@@ -29,8 +29,9 @@ void main(Iterable<String> arguments) async {
 }
 
 void _printCliHeader(ArgResults argResults) {
-  final buffer = StringBuffer("discloud ")
+  final buffer = StringBuffer()
     ..writeAll([
+      "discloud",
       ?_getCommandName(argResults),
       "v$packageVersion",
     ], " ");
