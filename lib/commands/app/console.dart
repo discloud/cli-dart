@@ -27,7 +27,7 @@ class AppConsoleCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = argResults!.option("app")!;
-    final command = argResults!.option("command");
+    String? command = argResults!.option("command");
 
     final spinner = CliSpin();
 
@@ -41,7 +41,7 @@ class AppConsoleCommand extends Command<void> {
     while (true) {
       stderr.write("?> ".dim());
 
-      final command = stdin.readLineSync();
+      command = stdin.readLineSync();
       if (command == null || command == "exit") break;
       if (command.isEmpty) continue;
 
