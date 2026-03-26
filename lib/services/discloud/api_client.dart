@@ -5,6 +5,7 @@ import "package:discloud/cli/context.dart";
 import "package:discloud/extensions/io_http_client.dart";
 import "package:discloud/extensions/string.dart";
 import "package:discloud/services/discloud/exception.dart";
+import "package:discloud/services/discloud/user_agent.dart";
 import "package:discloud/services/discloud/utils.dart";
 import "package:discloud/structures/disposable.dart";
 import "package:path/path.dart";
@@ -15,6 +16,8 @@ typedef VoidUploadDoneCallback = void Function();
 class DiscloudApiClient implements Disposable {
   static const _apiVersion = 2;
   static const _jsonContentType = "application/json";
+  static const _apiTokenHeader = "api-token";
+  static const UserAgent _userAgent = .new();
 
   static Uri _resolveUrl(String path, {Map<String, String>? query}) {
     return .new(
@@ -300,7 +303,7 @@ class DiscloudApiClient implements Disposable {
     Map? body,
   }) async {
     if (await _maybeToken case final value?) {
-      request.headers.set("api-token", value);
+      request.headers.set(_apiTokenHeader, value);
     }
 
     if (headers case final headers?) {
@@ -309,12 +312,14 @@ class DiscloudApiClient implements Disposable {
       }
     }
 
-    if (!isDiscloudJwt(request.headers.value("api-token").orEmpty)) {
+    if (!isDiscloudJwt(request.headers.value(_apiTokenHeader).orEmpty)) {
       throw const DiscloudApiException(
         code: 401,
         message: "Please use the discloud login command first.",
       );
     }
+
+    request.headers.set(HttpHeaders.userAgentHeader, _userAgent);
 
     if (body case final body?) {
       request
