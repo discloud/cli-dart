@@ -29,10 +29,13 @@ void main(Iterable<String> arguments) async {
 }
 
 void _printCliHeader(ArgResults argResults) {
-  final parts = ["discloud", ?_getCommandName(argResults), "v$packageVersion"];
-  final text = parts.join(" ");
+  final buffer = StringBuffer("discloud")
+    ..writeAll([
+      ?_getCommandName(argResults),
+      "v$packageVersion",
+    ], " ");
 
-  stderr.writeln(text.bold());
+  stderr.writeln(buffer.toString().bold());
 }
 
 String? _getCommandName(ArgResults argResults) {
