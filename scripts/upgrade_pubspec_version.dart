@@ -14,12 +14,12 @@ void main(Iterable<String> args) async {
   String pubspecContent = await pubspecFile.readAsString();
 
   pubspecContent = pubspecContent.replaceFirst(
-    pubspecVersionRegexp,
+    _pubspecVersionRegexp,
     "\nversion: $version\n",
   );
 
   await pubspecFile.writeAsString(pubspecContent);
 }
 
-const pubspecVersionPattern = r"\r?\nversion:\s(\d+)\.(\d+)\.(\d+)\r?\n";
-final pubspecVersionRegexp = RegExp(pubspecVersionPattern);
+const _pubspecVersionPattern = r"\r?\nversion:\s(\d+)\.(\d+)\.(\d+)\r?\n";
+final _pubspecVersionRegexp = RegExp(_pubspecVersionPattern);
