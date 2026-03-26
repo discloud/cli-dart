@@ -117,6 +117,8 @@ class AppBackupCommand extends Command<void> {
         spinner.start(_downloadingText);
       }
     }
+
+    client.close();
   }
 }
 
