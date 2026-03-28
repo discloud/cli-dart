@@ -59,7 +59,7 @@ jobs:
 
       - name: Compile
         run: |
-          dart compile exe lib/main.dart -o discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.exe --target-os=${{ matrix.target_os }} --target-arch=${{ matrix.target_arch }}
+          dart compile exe lib/main.dart -o discloud-cli-${{ matrix.target_arch }}.exe --target-os=${{ matrix.target_os }} --target-arch=${{ matrix.target_arch }}
 
       - name: Install Inno Setup
         run: choco install innosetup -y
