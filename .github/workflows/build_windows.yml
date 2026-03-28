@@ -33,10 +33,6 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - id: vars
-        run: |
-          echo "output=discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}" >> $GITHUB_OUTPUT
-
       - name: Checkout
         uses: actions/checkout@v6
 
@@ -63,7 +59,7 @@ jobs:
 
       - name: Compile
         run: |
-          dart compile exe lib/main.dart -o ${{ steps.vars.outputs.output }}.exe --target-os=${{ matrix.target_os }} --target-arch=${{ matrix.target_arch }}
+          dart compile exe lib/main.dart -o discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.exe --target-os=${{ matrix.target_os }} --target-arch=${{ matrix.target_arch }}
 
       - name: Install Inno Setup
         run: choco install innosetup -y
