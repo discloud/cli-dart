@@ -1,7 +1,7 @@
 [Setup]
-AppCopyright=Copyright (C) 2026 Discloud, Inc.
+AppCopyright=Copyright (C) 2026 Discloud
 AppName=Discloud CLI
-AppPublisher=Discloud, Inc.
+AppPublisher=Discloud
 AppPublisherURL=https://discloud.com
 AppReadmeFile=https://github.com/discloud/cli-dart#readme
 AppUpdatesURL=https://github.com/discloud/cli-dart/releases
