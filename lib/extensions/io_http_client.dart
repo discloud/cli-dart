@@ -3,9 +3,11 @@ import "dart:io";
 import "dart:isolate";
 
 extension HttpClientResponseExtension on HttpClientResponse {
-  Future<List<int>> get bodyBytes => reduce((p, e) => p..addAll(e));
+  static const _badRequestStatusCode = 400;
 
-  bool get ok => statusCode < 400;
+  bool get ok => statusCode < _badRequestStatusCode;
+
+  Future<List<int>> get bodyBytes => reduce((p, e) => p..addAll(e));
 
   Future<String> get body => transform(utf8.decoder).join();
 

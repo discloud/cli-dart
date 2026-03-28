@@ -14,16 +14,20 @@ typedef VoidUploadProgressCallback = void Function(int processed);
 typedef VoidUploadDoneCallback = void Function();
 
 class DiscloudApiClient implements Disposable {
+  static const _apiScheme = "https";
+  static const _apiHost = "api.discloud.app";
   static const _apiVersion = 2;
+  static const _apiVersionPath = "v$_apiVersion";
+  static const _slash = "/";
   static const _jsonContentType = "application/json";
   static const _apiTokenHeader = "api-token";
   static const UserAgent _userAgent = .new();
 
   static Uri _resolveUrl(String path, {Map<String, String>? query}) {
     return .new(
-      scheme: "https",
-      host: "api.discloud.app",
-      pathSegments: const ["v$_apiVersion"].followedBy(path.split("/")),
+      scheme: _apiScheme,
+      host: _apiHost,
+      pathSegments: const [_apiVersionPath].followedBy(path.split(_slash)),
       queryParameters: query,
     );
   }
