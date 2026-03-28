@@ -1,4 +1,4 @@
-name: Build MacOS
+name: Build Linux & MacOS
 
 on:
   release:
@@ -52,17 +52,53 @@ jobs:
         run: |
           dart compile exe lib/main.dart -o discloud-cli-macos-arm64 --target-os=macos --target-arch=arm64
           dart compile exe lib/main.dart -o discloud-cli-linux-arm64 --target-os=linux --target-arch=arm64
+          dart compile exe lib/main.dart -o discloud-cli-linux-x64 --target-os=linux --target-arch=x64
+
+      - name: Save artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          if-no-files-found: error
+          name: build
+          overwrite: true
+          retention-days: 1
+          path: |
+            discloud-cli-macos-arm64
+            discloud-cli-linux-arm64
+            discloud-cli-linux-x64
+
+  archive:
+    needs: build
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - target_os: macos
+            target_arch: arm64
+          - target_os: linux
+            target_arch: arm64
+          - target_os: linux
+            target_arch: x64
+
+    runs-on: macos-latest
+    steps:
+      - name: Get artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare archive
         run: |
           mkdir discloud
-          cp discloud-cli-macos-arm64 discloud/discloud
-          tar -czf discloud-cli-macos-arm64.tar.gz discloud
+          cp discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }} discloud/discloud
+          tar -czf discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz discloud
+          rm -f discloud/discloud
 
       - name: Generate SHA256
         id: sha
         run: |
-          echo "sha256=$(shasum -a 256 discloud-cli-macos-arm64.tar.gz | awk '{print $1}')" >> $GITHUB_OUTPUT
+          echo "sha256=$(shasum -a 256 discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz | awk '{print $1}')" >> $GITHUB_OUTPUT
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
@@ -71,9 +107,8 @@ jobs:
           tag_name: ${{ inputs.version || github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            discloud-cli-macos-arm64
-            discloud-cli-linux-arm64
-            ./*.tar.gz
+            discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}
+            discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz
 
       - name: Debug SHA
-        run: echo "SHA256=${{ steps.sha.outputs.sha256 }}"
+        run: echo "discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz=${{ steps.sha.outputs.sha256 }}"

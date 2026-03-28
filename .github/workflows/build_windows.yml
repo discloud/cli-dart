@@ -21,9 +21,22 @@ concurrency:
 
 jobs:
   build:
-    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - os: windows-latest
+            target_os: windows
+            target_arch: x64
+
+    runs-on: ${{ matrix.os }}
 
     steps:
+      - id: vars
+        run: |
+          echo "output=discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}" >> $GITHUB_OUTPUT
+
       - name: Checkout
         uses: actions/checkout@v6
 
@@ -50,8 +63,7 @@ jobs:
 
       - name: Compile
         run: |
-          dart compile exe lib/main.dart -o discloud-cli-x64.exe --target-os=windows --target-arch=x64
-          dart compile exe lib/main.dart -o discloud-cli-linux-x64 --target-os=linux --target-arch=x64
+          dart compile exe lib/main.dart -o ${{ steps.vars.outputs.output }}.exe --target-os=${{ matrix.target_os }} --target-arch=${{ matrix.target_arch }}
 
       - name: Install Inno Setup
         run: choco install innosetup -y
@@ -65,6 +77,4 @@ jobs:
           prerelease: ${{ github.event.release.prerelease }}
           tag_name: ${{ inputs.version || github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: |
-            discloud-cli-linux-x64
-            ./*.exe
+          files: ./*.exe
