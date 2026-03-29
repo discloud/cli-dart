@@ -23,6 +23,12 @@ void main(Iterable<String> arguments) async {
     stderr.writeln(e);
     context.debug(s);
   } finally {
+    context.debug("""\t
+OS ${Platform.operatingSystemVersion}
+Dart SDK v${Platform.version}
+Discloud CLI v$packageVersion
+""");
+
     await context.dispose();
     exit(success ? 0 : 1);
   }
