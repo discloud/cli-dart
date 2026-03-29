@@ -15,7 +15,12 @@ class InitCommand extends Command<void> {
             "Determines whether the app should automatically restart if it crashes.",
         negatable: false,
       )
-      ..addFlag("force", abbr: "f", help: "Overwrite config file", negatable: false)
+      ..addFlag(
+        "force",
+        abbr: "f",
+        help: "Overwrite config file",
+        negatable: false,
+      )
       ..addFlag("vlan", help: "Enables private networking", negatable: false)
       ..addMultiOption("apt", help: appApts.join(","))
       ..addOption("avatar", help: "Image URL (.gif, .jpeg, .jpg, .png)")
@@ -52,7 +57,8 @@ class InitCommand extends Command<void> {
     final buffer = StringBuffer()
       ..writeAll([
         "# https://docs.discloud.com/en/discloud.config",
-        if (args?.multiOption("apt") case final v?) "APT=${v.join(",")}",
+        if (args?.multiOption("apt") case final v? when v.isNotEmpty)
+          "APT=${v.join(",")}",
         if (args?.flag("autorestart") case final v? when v) "AUTORESTART=$v",
         if (args?.option("avatar") case final v?) "AVATAR=$v",
         if (hostname case final v?) "HOSTNAME=$v",
