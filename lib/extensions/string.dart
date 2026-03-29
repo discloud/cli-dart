@@ -27,5 +27,7 @@ extension StringExtension on String {
 }
 
 extension NullableStringExtension on String? {
-  String get orEmpty => this ?? "";
+  static const _empty = "";
+
+  String get orEmpty => this ?? _empty;
 }
