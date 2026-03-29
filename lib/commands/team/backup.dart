@@ -83,7 +83,9 @@ class TeamBackupCommand extends Command<void> {
       final String status = data["status"];
 
       if (status != "ok") {
-        spinner.fail("$appId - bad backup status");
+        spinner
+          ..fail("$appId - bad backup status")
+          ..start(_downloadingText);
         return;
       }
 
