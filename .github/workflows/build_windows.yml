@@ -10,6 +10,9 @@ on:
         description: cli version e.g. 1.0.0
         type: string
         required: true
+      prerelease:
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -70,7 +73,7 @@ jobs:
       - name: Upload to release
         uses: softprops/action-gh-release@v2
         with:
-          prerelease: ${{ github.event.release.prerelease }}
+          prerelease: ${{ inputs.prerelease || github.event.release.prerelease }}
           tag_name: ${{ inputs.version || github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: ./*.exe
