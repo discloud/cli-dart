@@ -1,11 +1,11 @@
 import "dart:io";
-import "dart:isolate";
 
 import "package:args/command_runner.dart";
 import "package:cli_spin/cli_spin.dart";
+import "package:discloud/extensions/command.dart";
 import "package:discloud/services/discloud/constants.dart";
-import "package:glob_zipper/glob_zipper.dart";
-import "package:path/path.dart";
+import "package:discloud/utils/zip.dart";
+import "package:path/path.dart" hide context;
 
 class ZipCommand extends Command<void> {
   ZipCommand() {
@@ -23,25 +23,19 @@ class ZipCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final Directory directory = .current;
-
     final encoding = argResults?.option("encoding");
     final out = argResults?.option("out");
     final glob = argResults?.multiOption("glob") ?? const ["**"];
 
-    final spinner = CliSpin(text: "Zipping...").start();
+    final directory = context.workspaceFolder;
 
-    final file = await Isolate.run(() async {
-      final zipper = GlobZipper(
-        directory: directory,
-        tempDirectory: encoding == null ? directory : null,
-        patterns: glob,
-        ignore: allBlockedFiles,
-        ignoreFilename: ".discloudignore",
-      );
+    final spinner = CliSpin().start("Zipping...");
 
-      return zipper.zip();
-    });
+    final file = await zip(
+      directory: directory,
+      glob: glob,
+      ignore: allBlockedFiles,
+    );
 
     spinner.success("Success!");
 
