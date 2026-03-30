@@ -21,30 +21,33 @@ class GlobZipper {
 
   const GlobZipper({
     required this.directory,
-    this.patterns = const ["**"],
-    this.ignore = const .empty(),
+    this.globPatterns = const ["**"],
+    this.ignorePatterns = const .empty(),
     this.ignoreFilename,
     this.tempDirectory,
-    this.tempFilenamePrefix = "file",
+    this.zipname,
   });
 
   final Directory directory;
-  final Iterable<String> patterns;
-  final Iterable<String> ignore;
+  final Iterable<String> globPatterns;
+  final Iterable<String> ignorePatterns;
   final String? ignoreFilename;
   final Directory? tempDirectory;
-  final String tempFilenamePrefix;
+  final String? zipname;
+
+  String get _zipname {
+    if (zipname case final zipname? when zipname.isNotEmpty) return zipname;
+    return "temp-${_random.nextDouble()}.zip";
+  }
 
   Future<File> zip([ZipCallback? callback]) async {
-    final random = "${_random.nextDouble()}".replaceAll(_dot, _empty);
-
-    final tempFilename = "$tempFilenamePrefix-$random.zip";
+    final tempFilename = _zipname;
 
     final fs = FS(
       directory: directory,
-      patterns: patterns,
+      globPatterns: globPatterns,
       ignoreFilename: ignoreFilename,
-      ignore: ignore.followedBy([tempFilename]),
+      ignorePatterns: ignorePatterns.followedBy([tempFilename]),
     );
 
     final tempDirectory = this.tempDirectory ?? .systemTemp;
@@ -69,9 +72,7 @@ class GlobZipper {
     Stream<File> stream,
   ) async {
     await for (final file in stream) {
-      final stat = await file.stat();
-
-      final aFile = await _toArchiveFile(file, root: directory, stat: stat);
+      final aFile = await _toArchiveFile(file, root: directory);
 
       encoder.addArchiveFile(aFile);
     }

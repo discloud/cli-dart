@@ -14,8 +14,8 @@ Future<File> zip({
     final zipper = GlobZipper(
       directory: directory,
       tempDirectory: directory,
-      patterns: glob,
-      ignore: ignore,
+      globPatterns: glob,
+      ignorePatterns: ignore,
       ignoreFilename: _ignoreFilename,
     );
 

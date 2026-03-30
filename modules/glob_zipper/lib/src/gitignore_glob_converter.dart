@@ -6,12 +6,12 @@ final _regExp = RegExp(_pattern);
 String _gitignoreTextToGlobConverter(String content) {
   content = content.replaceAll(_regExp, _empty);
 
-  final pattern = transformIterableToGlob(LineSplitter.split(content));
+  final pattern = _transformIterableToGlob(LineSplitter.split(content));
 
-  return pattern.length > 1 ? "{${pattern.join(_gSep)}}" : pattern.join(_gSep);
+  return _transformIterableGlobToGlobPattern(pattern);
 }
 
-Iterable<String> transformIterableToGlob(Iterable<String> iterable) {
+Iterable<String> _transformIterableToGlob(Iterable<String> iterable) {
   return iterable
       .where((e) => e.isNotEmpty)
       .map(
@@ -19,7 +19,13 @@ Iterable<String> transformIterableToGlob(Iterable<String> iterable) {
       );
 }
 
-Future<String> gitignoreFileToGlobConverter(File file) async {
+String _transformIterableGlobToGlobPattern(Iterable<String> iterable) {
+  return iterable.length > 1
+      ? "{${iterable.join(_gSep)}}"
+      : iterable.join(_gSep);
+}
+
+Future<String> _gitignoreFileToGlobConverter(File file) async {
   final content = await file.readAsString();
   return _gitignoreTextToGlobConverter(content);
 }
