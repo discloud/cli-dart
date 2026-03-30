@@ -1,11 +1,13 @@
 part of "glob_zipper.dart";
 
+const _dot = ".";
+const _empty = "";
 const _gStar = "**";
 const _gSep = ",";
 const _pSep = "/";
-const _dot = ".";
 const _rSlash = r"\";
-const _empty = "";
+
+void _noop(_, _) {}
 
 class FS {
   static String _normalizeGlobPath(String path) {
@@ -48,7 +50,8 @@ class FS {
 
     final ignore = _ignoreGlob;
 
-    await for (final entity in _glob.list(root: directory.path)) {
+    await for (final entity
+        in _glob.list(root: directory.path).handleError(_noop)) {
       if (entity is! File) continue;
       if (ignore.matches(entity.path)) continue;
 
