@@ -48,10 +48,12 @@ class FS {
   Stream<File> list() async* {
     final ignore = await _findIgnoreFiles();
 
+    bool isInvalidEntity(FileSystemEntity e) =>
+        e is! File || ignore.matches(e.path);
+
     await for (final entity
         in _glob.list(root: directory.path).handleError(_noop)) {
-      if (entity is! File) continue;
-      if (ignore.matches(entity.path)) continue;
+      if (isInvalidEntity(entity)) continue;
 
       yield entity as File;
     }
@@ -68,24 +70,24 @@ class FS {
     final glob = Glob(ignoreFilePattern);
     Glob ignore = _ignoreGlob;
 
+    bool isInvalidEntity(FileSystemEntity e) =>
+        e is! File ||
+        basename(e.path) != ignoreFilename ||
+        ignore.matches(e.path);
+
     await for (final entity
         in glob.list(root: directory.path).handleError(_noop)) {
-      if (entity is! File) continue;
-      if (ignore.matches(entity.path)) continue;
-      if (basename(entity.path) != ignoreFilename) continue;
+      if (isInvalidEntity(entity)) continue;
 
-      String ignorePattern = await _gitignoreFileToGlobConverter(
-        entity as File,
-      );
+      String ignPattern = await _gitignoreFileToGlobConverter(entity as File);
 
       final relativePath = dirname(relative(entity.path, from: directory.path));
 
       if (relativePath != _dot) {
-        ignorePattern =
-            "${_normalizeGlobPath(relativePath)}$_pSep$ignorePattern";
+        ignPattern = "${_normalizeGlobPath(relativePath)}$_pSep$ignPattern";
       }
 
-      _ignorePatterns.add(ignorePattern);
+      _ignorePatterns.add(ignPattern);
 
       ignore = _ignoreGlob;
     }
