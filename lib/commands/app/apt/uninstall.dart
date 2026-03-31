@@ -10,7 +10,7 @@ class AppAptUninstallCommand extends Command<void> {
   AppAptUninstallCommand() {
     argParser
       ..addOption("app", mandatory: true)
-      ..addMultiOption("apt", valueHelp: appApts.join(","));
+      ..addMultiOption("apt", help: appApts.join(","));
   }
 
   @override

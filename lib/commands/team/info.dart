@@ -23,7 +23,7 @@ const _keysIgnore = {
 
 class TeamInfoCommand extends Command<void> {
   TeamInfoCommand() {
-    argParser.addOption("app", defaultsTo: "all", valueHelp: "all");
+    argParser.addOption("app", defaultsTo: "all");
   }
 
   @override

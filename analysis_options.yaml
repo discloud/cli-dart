@@ -89,6 +89,10 @@ linter:
     - eol_at_end_of_file
     - no_literal_bool_comparisons
     - noop_primitive_operations
+    - prefer_const_constructors
+    - prefer_const_constructors_in_immutables
+    - prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
     - prefer_contains
     - prefer_double_quotes
     - prefer_final_in_for_each
@@ -112,8 +116,4 @@ linter:
     - use_truncating_division
     
     # build auto fix
-    - prefer_const_constructors
-    #- prefer_const_constructors_in_immutables
-    #- prefer_const_declarations
-    - prefer_const_literals_to_create_immutables
     #- type_annotate_public_apis

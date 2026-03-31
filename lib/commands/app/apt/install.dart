@@ -10,7 +10,7 @@ class AppAptInstallCommand extends Command<void> {
   AppAptInstallCommand() {
     argParser
       ..addOption("app", mandatory: true)
-      ..addMultiOption("apt", valueHelp: appApts.join(","));
+      ..addMultiOption("apt", help: appApts.join(","));
   }
 
   @override
