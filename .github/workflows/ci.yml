@@ -23,3 +23,7 @@ jobs:
       - name: Dart format
         run: |
           dart format . --set-exit-if-changed
+
+      - name: Date analyze
+        run: |
+          dart analyze
