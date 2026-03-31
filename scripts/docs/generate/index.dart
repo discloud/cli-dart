@@ -3,7 +3,7 @@ import "dart:io";
 import "package:discloud/version.dart";
 
 Future<void> home() async {
-  final version = packageVersion == "0.0.0" ? "" : " v$packageVersion";
+  const version = packageVersion == "0.0.0" ? "" : " v$packageVersion";
 
   final buffer = StringBuffer("""
 # [CLI Documentation$version](index.md)
