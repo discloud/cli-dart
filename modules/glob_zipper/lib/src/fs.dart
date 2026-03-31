@@ -46,9 +46,7 @@ class FS {
   }
 
   Stream<File> list() async* {
-    await _findIgnoreFiles();
-
-    final ignore = _ignoreGlob;
+    final ignore = await _findIgnoreFiles();
 
     await for (final entity
         in _glob.list(root: directory.path).handleError(_noop)) {
@@ -59,9 +57,9 @@ class FS {
     }
   }
 
-  Future<void> _findIgnoreFiles() async {
+  Future<Glob> _findIgnoreFiles() async {
     final ignoreFilePattern = _ignoreFilePattern;
-    if (ignoreFilePattern == null) return;
+    if (ignoreFilePattern == null) return _ignoreGlob;
 
     _ignorePatterns
       ..clear()
@@ -70,7 +68,8 @@ class FS {
     final glob = Glob(ignoreFilePattern);
     Glob ignore = _ignoreGlob;
 
-    await for (final entity in glob.list(root: directory.path)) {
+    await for (final entity
+        in glob.list(root: directory.path).handleError(_noop)) {
       if (entity is! File) continue;
       if (ignore.matches(entity.path)) continue;
       if (basename(entity.path) != ignoreFilename) continue;
@@ -90,5 +89,7 @@ class FS {
 
       ignore = _ignoreGlob;
     }
+
+    return ignore;
   }
 }
