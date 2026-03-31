@@ -55,9 +55,9 @@ Available subcommands:
 Install APT on your app
 
 Usage: discloud app apt install [arguments]
--h, --help                                                                                        Print this usage information.
-    --app (mandatory)                                                                             
-    --apt=<canvas,ffmpeg,java,libgl,mysql,openssl,puppeteer,selenium,tesseract,tools,unixodbc>    
+-h, --help               Print this usage information.
+    --app (mandatory)    
+    --apt                canvas,ffmpeg,java,libgl,mysql,openssl,puppeteer,selenium,tesseract,tools,unixodbc
 ```
 
 ##### app apt uninstall
@@ -66,9 +66,9 @@ Usage: discloud app apt install [arguments]
 Uninstall APT from your app
 
 Usage: discloud app apt uninstall [arguments]
--h, --help                                                                                        Print this usage information.
-    --app (mandatory)                                                                             
-    --apt=<canvas,ffmpeg,java,libgl,mysql,openssl,puppeteer,selenium,tesseract,tools,unixodbc>    
+-h, --help               Print this usage information.
+    --app (mandatory)    
+    --apt                canvas,ffmpeg,java,libgl,mysql,openssl,puppeteer,selenium,tesseract,tools,unixodbc
 ```
 
 #### app backup
@@ -121,8 +121,8 @@ Usage: discloud app delete [arguments]
 Get information of your apps
 
 Usage: discloud app info [arguments]
--h, --help         Print this usage information.
-    --app=<all>    (defaults to "all")
+-h, --help    Print this usage information.
+    --app     (defaults to "all")
 ```
 
 #### app logs
@@ -333,8 +333,8 @@ Usage: discloud team commit [arguments]
 Get information of your apps
 
 Usage: discloud team info [arguments]
--h, --help         Print this usage information.
-    --app=<all>    (defaults to "all")
+-h, --help    Print this usage information.
+    --app     (defaults to "all")
 ```
 
 #### team logs
