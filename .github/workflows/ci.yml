@@ -29,4 +29,4 @@ jobs:
 
       - name: Date analyze
         run: |
-          dart analyze
+          dart analyze --fatal-infos
