@@ -36,8 +36,8 @@ jobs:
       - name: Get dependencies
         run: dart pub get
 
-      - name: Upgrade pubspec version
-        run: dart run scripts/upgrade_pubspec_version.dart --version ${{ inputs.version || github.ref_name }}
+      - name: Prepare pubspec
+        run: dart run scripts/prepare_pubspec.dart --version ${{ inputs.version || github.ref_name }}
 
       - name: Run build runner
         run: dart run build_runner build -drv --low-resources-mode

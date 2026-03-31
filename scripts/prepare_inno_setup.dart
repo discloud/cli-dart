@@ -11,23 +11,16 @@ void main(Iterable<String> args) async {
   Version.parse(version);
 
   final issFile = File("inno_setup.iss");
-  final pubspecFile = File("pubspec.yaml");
 
   final interpolator = Interpolation(
     option: .new(prefix: "{{", suffix: "}}"),
   );
 
   String issContent = await issFile.readAsString();
-  String pubspecContent = await pubspecFile.readAsString();
 
   issContent = interpolator.eval(issContent, {"version": version});
-  pubspecContent = pubspecContent.replaceFirst(
-    pubspecVersionRegexp,
-    "\nversion: $version\n",
-  );
 
   await issFile.writeAsString(issContent);
-  await pubspecFile.writeAsString(pubspecContent);
 }
 
 const pubspecVersionPattern = r"\r?\nversion:\s\d+\.\d+\.\d+\r?\n";

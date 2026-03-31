@@ -7,8 +7,8 @@ AppReadmeFile=https://github.com/discloud/cli-dart#readme
 AppUpdatesURL=https://github.com/discloud/cli-dart/releases
 ; update with inno_setup script
 AppVersion={{version}}
-ArchitecturesAllowed=x64os
-ArchitecturesInstallIn64BitMode=x64os
+ArchitecturesAllowed=x64compatible or arm64
+ArchitecturesInstallIn64BitMode=x64compatible or arm64
 ChangesEnvironment=yes
 Compression=lzma2/max
 DefaultDirName={autopf}\Discloud\cli
@@ -24,7 +24,8 @@ VersionInfoVersion={{version}}.0
 WizardStyle=modern dark polar
 
 [Files]
-Source: discloud-cli-x64.exe; DestName: discloud.exe; DestDir: {app}; Flags: ignoreversion
+Source: discloud-cli-x64.exe; DestName: discloud.exe; DestDir: {app}; Check: PreferX64Files; Flags: ignoreversion
+Source: discloud-cli-arm64.exe; DestName: discloud.exe; DestDir: {app}; Check: PreferArm64Files; Flags: ignoreversion
 Source: assets\icons\favicon.ico; DestDir: {app}; Flags: ignoreversion
 Source: LICENSE; DestDir: {app}; Flags: ignoreversion
 Source: docs\*.html; DestDir: {app}\docs; Flags: ignoreversion
@@ -35,6 +36,22 @@ Name: {group}\CLI Documentation; Filename: {app}\docs\index.html;
 Name: {group}\Uninstall; Filename: {uninstallexe};
 
 [Code]
+[Code]
+function PreferArm64Files: Boolean;
+begin
+  Result := IsArm64;
+end;
+
+function PreferX64Files: Boolean;
+begin
+  Result := not PreferArm64Files and IsX64Compatible;
+end;
+
+function PreferX86Files: Boolean;
+begin
+  Result := not PreferArm64Files and not PreferX64Files;
+end;
+
 const
   EnvironmentKey = 'System\CurrentControlSet\Control\Session Manager\Environment';
 
