@@ -1,5 +1,8 @@
 name: ci
 
+permissions:
+  actions: read
+
 on:
   push:
     branches: [ "main" ]
