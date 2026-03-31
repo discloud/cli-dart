@@ -43,6 +43,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Get artifacts
+        continue-on-error: true
         uses: actions/download-artifact@v8
         with:
           name: ${{ inputs.version || github.ref_name }}
