@@ -127,4 +127,4 @@ jobs:
         run: choco install wingetcreate -y
       - name: Submit using wingetcreate
         run: |
-          wingetcreate update Discloud.CLI -s -v ${{ inputs.version || github.ref_name }} -u https://github.com/discloud/cli-dart/releases/download/${{ inputs.version || github.ref_name }}/discloud-cli-x64-setup.exe -t ${{ secrets.GITHUB_TOKEN }}
+          wingetcreate update Discloud.CLI -s -v ${{ inputs.version || github.ref_name }} -u https://github.com/discloud/cli-dart/releases/download/${{ inputs.version || github.ref_name }}/discloud-cli-x64-setup.exe -t ${{ secrets.PERSONAL_GITHUB_TOKEN }}
