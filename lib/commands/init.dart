@@ -66,7 +66,7 @@ class InitCommand extends Command<void> {
         if (args.ram case final v?) "RAM=$v",
         if (args.type case final v?) "TYPE=$v",
         if (args.version case final v?) "VERSION=$v",
-        if (args.vlan case final v when v || args.hostname is String) "VLAN=$v",
+        if (args.vlan case final v when v) "VLAN=$v",
       ], "\n");
 
     final sink = file.openWrite()..write(buffer);
