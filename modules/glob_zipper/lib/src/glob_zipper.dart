@@ -154,6 +154,7 @@ class GlobZipper {
     final fileStream = InputFileStream(file.path);
 
     final archiveFile = ArchiveFile.stream(filename, fileStream)
+      ..compressionLevel = level
       ..lastModTime = stat.modified.microsecondsSinceEpoch ~/ _1e6
       ..mode = stat.mode;
 
