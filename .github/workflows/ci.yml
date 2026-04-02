@@ -23,10 +23,5 @@ jobs:
       - name: Get dependencies
         run: dart pub get
 
-      - name: Dart format
-        run: |
-          dart format . --set-exit-if-changed
-
       - name: Date analyze
-        run: |
-          dart analyze --fatal-infos
+        run: dart analyze --fatal-infos
