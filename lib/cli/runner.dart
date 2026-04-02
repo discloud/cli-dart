@@ -20,7 +20,7 @@ class CliCommandRunner extends CommandRunner<void> {
         negatable: false,
         callback: (value) {
           if (value) {
-            stdout.write("v$packageVersion");
+            stdout.writeln("v$packageVersion");
             exit(0);
           }
         },
