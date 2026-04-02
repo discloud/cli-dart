@@ -1,6 +1,7 @@
 import "dart:async";
 import "dart:convert";
 import "dart:io";
+import "dart:isolate";
 import "dart:math";
 
 import "package:archive/archive_io.dart";
@@ -10,20 +11,47 @@ import "package:path/path.dart";
 
 part "fs.dart";
 part "gitignore_glob_converter.dart";
+part "isolated.dart";
 part "zip_progress.dart";
 
-typedef ZipCallback = Future<void> Function(ZipProgress progress);
+typedef ZipCallback = void Function(ZipProgress progress);
 
 class GlobZipper {
   // ignore: constant_identifier_names
   static const _1e6 = 1e6;
   static final _random = Random();
 
+  static Future<File> isolated({
+    required Directory directory,
+    Iterable<String> globPatterns = const ["**"],
+    Iterable<String> ignorePatterns = const .empty(),
+    String? ignoreFilename,
+    int? level,
+    String? password,
+    Directory? tempDirectory,
+    String? zipname,
+    ZipCallback? callback,
+  }) {
+    return _zipInIsolate(
+      directory: directory,
+      globPatterns: globPatterns,
+      ignoreFilename: ignoreFilename,
+      ignorePatterns: ignorePatterns,
+      level: level,
+      password: password,
+      tempDirectory: tempDirectory,
+      zipname: zipname,
+      callback: callback,
+    );
+  }
+
   const GlobZipper({
     required this.directory,
     this.globPatterns = const ["**"],
     this.ignorePatterns = const .empty(),
     this.ignoreFilename,
+    this.level,
+    this.password,
     this.tempDirectory,
     this.zipname,
   });
@@ -32,6 +60,8 @@ class GlobZipper {
   final Iterable<String> globPatterns;
   final Iterable<String> ignorePatterns;
   final String? ignoreFilename;
+  final int? level;
+  final String? password;
   final Directory? tempDirectory;
   final String? zipname;
 
@@ -54,17 +84,27 @@ class GlobZipper {
 
     final tempFilePath = joinAll([tempDirectory.path, tempFilename]);
 
-    final encoder = ZipFileEncoder()..create(tempFilePath);
+    final File file = .new(tempFilePath);
 
-    if (callback case final callback?) {
-      await _zipWithCallback(encoder, fs.list(), callback);
-    } else {
-      await _zipWithoutCallback(encoder, fs.list());
+    bool success = false;
+    try {
+      final encoder = ZipFileEncoder(password: password)
+        ..create(tempFilePath, level: level);
+
+      if (callback case final callback?) {
+        await _zipWithCallback(encoder, fs.list(), callback);
+      } else {
+        await _zipWithoutCallback(encoder, fs.list());
+      }
+
+      await encoder.close();
+
+      success = true;
+    } finally {
+      if (!success) await file.delete();
     }
 
-    await encoder.close();
-
-    return .new(tempFilePath);
+    return file;
   }
 
   Future<void> _zipWithoutCallback(
@@ -87,14 +127,12 @@ class GlobZipper {
     await for (final file in stream) {
       final stat = await file.stat();
 
-      unawaited(
-        callback(
-          .new(
-            file: file,
-            stat: stat,
-            current: i++,
-            processed: processed += stat.size,
-          ),
+      callback(
+        .new(
+          file: file,
+          stat: stat,
+          current: i++,
+          processed: processed += stat.size,
         ),
       );
 

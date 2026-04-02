@@ -35,6 +35,9 @@ class ZipCommand extends Command<void> {
       directory: directory,
       glob: glob,
       ignore: allBlockedFiles,
+      callback: (progress) {
+        spinner.text = formatZipProgress(progress, directory);
+      },
     );
 
     spinner.success("Success!");
