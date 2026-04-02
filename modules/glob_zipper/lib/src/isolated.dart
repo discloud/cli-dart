@@ -50,7 +50,7 @@ Future<File> _zipInIsolate({
 
   mainPort.close();
 
-  if (maybeFile == null) throw Exception("Zip fail");
+  if (maybeFile == null) throw ZipException();
 
   return maybeFile;
 }
