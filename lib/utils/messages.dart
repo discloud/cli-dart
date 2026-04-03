@@ -1,4 +1,4 @@
-import "package:discloud/extensions/string.dart";
+import "package:discloud/extensions/string_buffer.dart";
 import "package:discloud/services/discloud/exception.dart";
 
 String resolveResponseMessage<T>(T response) {
@@ -6,14 +6,14 @@ String resolveResponseMessage<T>(T response) {
     case final Map r:
       final buffer = StringBuffer();
 
-      buffer.writeAll([?r["status"], ?r["message"]], ": ");
+      buffer.writeAllCapitalized([?r["status"], ?r["message"]], ": ");
 
       if (r["logs"] case final String logs? when logs.isNotEmpty) {
         if (buffer.isNotEmpty) buffer.write("\n");
         buffer.write(logs);
       }
 
-      return buffer.toString().capitalize();
+      return buffer.toString();
     case final DiscloudApiException e:
       final buffer = StringBuffer();
 
