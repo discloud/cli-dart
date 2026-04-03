@@ -68,7 +68,7 @@ class GlobZipper {
 
   String get _zipname {
     if (zipname case final zipname? when zipname.isNotEmpty) return zipname;
-    return "temp-${_random.nextDouble()}.zip";
+    return ".temp-${_random.nextDouble()}.zip";
   }
 
   Future<File> zip([ZipCallback? callback]) async {

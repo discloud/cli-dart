@@ -11,6 +11,7 @@ Future<File> zip({
   Iterable<String> glob = const ["**"],
   Iterable<String> ignore = const .empty(),
   ZipCallback? callback,
+  String? zipname,
 }) {
   return GlobZipper.isolated(
     directory: directory,
@@ -19,6 +20,7 @@ Future<File> zip({
     ignorePatterns: ignore,
     ignoreFilename: _ignoreFilename,
     callback: callback,
+    zipname: zipname,
   );
 }
 
