@@ -67,7 +67,7 @@ class GlobZipper {
   final String? zipname;
 
   String get _zipname {
-    if (zipname case final zipname? when zipname.isNotEmpty) return zipname;
+    if (zipname case final zname? when zname.isNotEmpty) return "$zname.zip";
     return ".temp-${_random.nextDouble()}.zip";
   }
 
