@@ -15,7 +15,7 @@ Welcome to the **Discloud CLI** installation documentation. Follow the instructi
 - **Operating System:**
   - Linux arm64/x64
   - MacOS arm64
-  - Windows x64
+  - Windows arm64/x64
 
 ---
 
@@ -34,7 +34,7 @@ The distribution for Windows is provided through a **standalone executable setup
 ### Step-by-Step
 
 1. **Download the Setup:**
-    Go to the official releases page and download the file `discloud-cli-x64-setup.exe`.
+    Go to the official [releases](https://github.com/discloud/cli-dart/releases/latest) page and download the file `discloud-cli-x64-setup.exe`.
 
 2. **Run the Setup:**
     Double-click the downloaded file. If Windows SmartScreen or Defender prompts you, select **More info** > **Run anyway** (as it is a community tool signed by the developer).
