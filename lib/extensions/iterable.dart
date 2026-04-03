@@ -13,11 +13,12 @@ extension IterableEnumExtension<E extends Enum> on Iterable<E> {
 }
 
 extension IterableNumExtension<E extends num> on Iterable<E> {
+  static const _zero = 0;
   static E _sum<E extends num>(E a, E b) => a + b as E;
 
-  E highest() => isEmpty ? 0 as E : reduce(max);
+  E highest() => isEmpty ? _zero as E : reduce(max);
 
-  E lowest() => isEmpty ? 0 as E : reduce(min);
+  E lowest() => isEmpty ? _zero as E : reduce(min);
 
-  E sum() => isEmpty ? 0 as E : reduce(_sum);
+  E sum() => isEmpty ? _zero as E : reduce(_sum);
 }
