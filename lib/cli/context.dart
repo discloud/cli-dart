@@ -60,7 +60,7 @@ abstract class CliContext implements Disposable {
 
     final elapsed = _stopwatch.elapsed.pretty();
 
-    stderr.writeln("Elapsed: $elapsed".dim());
+    stderr.writeln("Done in $elapsed".dim());
   }
 }
 
