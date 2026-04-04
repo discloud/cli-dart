@@ -6,7 +6,7 @@ class _JSONLocalStore implements LocalStore {
   final String path;
   late final File _file = .new(path);
 
-  final cache = <String, dynamic>{};
+  final _cache = <String, dynamic>{};
 
   bool _loaded = false;
 
@@ -17,7 +17,7 @@ class _JSONLocalStore implements LocalStore {
       final decoded = base64Decode(encoded);
       final text = String.fromCharCodes(decoded);
       final Map<String, dynamic> json = jsonDecode(text);
-      cache.addAll(json..addAll(cache));
+      _cache.addAll(json..addAll(_cache));
     } catch (_) {
     } finally {
       _loaded = true;
@@ -25,7 +25,7 @@ class _JSONLocalStore implements LocalStore {
   }
 
   Future<void> _save() async {
-    final text = jsonEncode(cache);
+    final text = jsonEncode(_cache);
     final encoded = base64Encode(text.codeUnits);
     await _file.create(recursive: true);
     await _file.writeAsString(encoded);
@@ -34,13 +34,13 @@ class _JSONLocalStore implements LocalStore {
   @override
   Future<T?> get<T>(String key) async {
     await _load();
-    return cache.get(key);
+    return _cache.get(key);
   }
 
   @override
   Future<void> set(String key, value) async {
     await _load();
-    cache.set(key, value);
+    _cache.set(key, value);
     await _save();
   }
 }
