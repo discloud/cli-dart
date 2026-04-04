@@ -110,9 +110,9 @@ class GlobZipper {
 
   Future<void> _zipWithoutCallback(
     ZipFileEncoder encoder,
-    Stream<File> Function() stream,
+    Stream<File> Function() fileStreamFactory,
   ) async {
-    await for (final file in stream()) {
+    await for (final file in fileStreamFactory()) {
       final aFile = await _toArchiveFile(file, root: directory);
 
       encoder.addArchiveFile(aFile);
@@ -121,11 +121,11 @@ class GlobZipper {
 
   Future<void> _zipWithCallback(
     ZipFileEncoder encoder,
-    Stream<File> Function() stream,
+    Stream<File> Function() fileStreamFactory,
     ZipCallback callback,
   ) async {
     int processed = 0, i = 1;
-    await for (final file in stream()) {
+    await for (final file in fileStreamFactory()) {
       final stat = await file.stat();
 
       callback(
