@@ -9,5 +9,6 @@ abstract class LocalStore {
   factory LocalStore.json(String path) = _JSONLocalStore;
 
   Future<T?> get<T>(String key);
+  Stream<T?> getMany<T>(Iterable<String> keys);
   Future<void> set(String key, dynamic value);
 }

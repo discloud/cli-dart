@@ -1,6 +1,15 @@
 part of "local_store.dart";
 
 class _JSONLocalStore implements LocalStore {
+  static final _jsonBase64Decoder = utf8.decoder
+      .fuse(base64.decoder)
+      .fuse(utf8.decoder)
+      .fuse(json.decoder);
+
+  static final _jsonBase64Encoder = json.encoder
+      .fuse(utf8.encoder)
+      .fuse(base64.encoder);
+
   _JSONLocalStore(this.path);
 
   final String path;
@@ -13,10 +22,9 @@ class _JSONLocalStore implements LocalStore {
   Future<void> _load() async {
     if (_loaded) return;
     try {
-      final encoded = await _file.readAsString();
-      final decoded = base64Decode(encoded);
-      final text = String.fromCharCodes(decoded);
-      final Map<String, dynamic> json = jsonDecode(text);
+      final json =
+          await _file.openRead().transform(_jsonBase64Decoder).first
+              as Map<String, dynamic>;
       _cache.addAll(json..addAll(_cache));
     } catch (_) {
     } finally {
@@ -25,16 +33,23 @@ class _JSONLocalStore implements LocalStore {
   }
 
   Future<void> _save() async {
-    final text = jsonEncode(_cache);
-    final encoded = base64Encode(text.codeUnits);
-    await _file.create(recursive: true);
-    await _file.writeAsString(encoded);
+    final encoded = _jsonBase64Encoder.convert(_cache);
+    if (!await _file.exists()) await _file.create(recursive: true);
+    await _file.writeAsString(encoded, flush: true);
   }
 
   @override
   Future<T?> get<T>(String key) async {
     await _load();
     return _cache.get(key);
+  }
+
+  @override
+  Stream<T?> getMany<T>(Iterable<String> keys) async* {
+    await _load();
+    for (final key in keys) {
+      yield _cache.get(key);
+    }
   }
 
   @override
