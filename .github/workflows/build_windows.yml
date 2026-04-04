@@ -17,11 +17,17 @@ on:
 permissions:
   contents: write
   actions: read
-  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  prerelease: ${{ inputs.prerelease || github.event.release.prerelease }}
+  release_base_url: ${{ github.server_url }}/${{ github.repository }}/releases
+  setuparm64: discloud-cli-x64-setup.exe
+  setupx64: discloud-cli-x64-setup.exe
+  version: ${{ inputs.version || github.ref_name }}
 
 jobs:
   build:
@@ -47,7 +53,7 @@ jobs:
         continue-on-error: true
         uses: actions/download-artifact@v8
         with:
-          name: ${{ inputs.version || github.ref_name }}
+          name: ${{ env.version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Dart
@@ -57,7 +63,7 @@ jobs:
         run: dart pub get
 
       - name: Prepare pubspec
-        run: dart run scripts/prepare_pubspec.dart --version ${{ inputs.version || github.ref_name }}
+        run: dart run scripts/prepare_pubspec.dart --version ${{ env.version }}
 
       - name: Run build runner
         run: dart run build_runner build -drv --low-resources-mode
@@ -68,14 +74,13 @@ jobs:
           dart fix --apply
 
       - name: Compile
-        run: |
-          dart compile exe lib/main.dart -o discloud-cli-${{ matrix.target_arch }}.exe --target-os=${{ matrix.target_os }} --target-arch=${{ matrix.target_arch }}
+        run: dart compile exe lib/main.dart -o discloud-cli-${{ matrix.target_arch }}.exe --target-os=${{ matrix.target_os }} --target-arch=${{ matrix.target_arch }}
 
       - name: Save artifacts
         uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
-          name: ${{ inputs.version || github.ref_name }}
+          name: ${{ env.version }}
           overwrite: true
           retention-days: 1
           path: ./*.exe
@@ -94,7 +99,7 @@ jobs:
         run: dart pub get
 
       - name: Prepare inno setup
-        run: dart run scripts/prepare_inno_setup.dart --version ${{ inputs.version || github.ref_name }}
+        run: dart run scripts/prepare_inno_setup.dart --version ${{ env.version }}
 
       - name: Generate docs
         run: dart run scripts/docs/generate.dart
@@ -102,7 +107,7 @@ jobs:
       - name: Get artifacts
         uses: actions/download-artifact@v8
         with:
-          name: ${{ inputs.version || github.ref_name }}
+          name: ${{ env.version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Inno Setup
@@ -114,16 +119,17 @@ jobs:
       - name: Upload to release
         uses: softprops/action-gh-release@v2
         with:
-          prerelease: ${{ inputs.prerelease || github.event.release.prerelease }}
-          tag_name: ${{ inputs.version || github.ref_name }}
+          prerelease: ${{ env.prerelease }}
+          tag_name: ${{ env.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: ./*-setup.exe
 
   winget:
     needs: setup
     runs-on: windows-latest
+
     steps:
       - name: Install Winget Create
         run: choco install wingetcreate -y
       - name: Submit using wingetcreate
-        run: wingetcreate update Discloud.CLI -s -v ${{ inputs.version || github.ref_name }} -u https://github.com/discloud/cli-dart/releases/download/${{ inputs.version || github.ref_name }}/discloud-cli-x64-setup.exe -t ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+        run: wingetcreate update Discloud.CLI -s -v ${{ env.version }} --release-notes-url ${{ env.release_base_url }}/tag/${{ env.version }} -u '${{ env.release_base_url }}/download/${{ env.version }}/${{ env.setupx64 }}|x64' '${{ env.release_base_url }}/download/${{ env.version }}/${{ env.setuparm64 }}|arm64' -t ${{ secrets.PERSONAL_GITHUB_TOKEN }}
