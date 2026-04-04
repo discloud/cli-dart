@@ -22,6 +22,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  prerelease: ${{ inputs.prerelease || github.event.release.prerelease }}
+  release_base_url: ${{ github.server_url }}/${{ github.repository }}/releases
+  setuparm64: discloud-cli-x64-setup.exe
+  setupx64: discloud-cli-x64-setup.exe
+  version: ${{ inputs.version || github.ref_name }}
+
 jobs:
   build:
     runs-on: macos-latest
@@ -37,7 +44,7 @@ jobs:
         run: dart pub get
 
       - name: Prepare pubspec
-        run: dart run scripts/prepare_pubspec.dart --version ${{ inputs.version || github.ref_name }}
+        run: dart run scripts/prepare_pubspec.dart --version ${{ env.version }}
 
       - name: Run build runner
         run: dart run build_runner build -drv --low-resources-mode
@@ -60,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
-          name: ${{ inputs.version || github.ref_name }}
+          name: ${{ env.version }}
           overwrite: true
           retention-days: 1
           path: |
@@ -87,7 +94,7 @@ jobs:
       - name: Get artifacts
         uses: actions/download-artifact@v8
         with:
-          name: ${{ inputs.version || github.ref_name }}
+          name: ${{ env.version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare archive
@@ -100,7 +107,7 @@ jobs:
       - name: Upload to release
         uses: softprops/action-gh-release@v2
         with:
-          prerelease: ${{ inputs.prerelease || github.event.release.prerelease }}
-          tag_name: ${{ inputs.version || github.ref_name }}
+          prerelease: ${{ env.prerelease }}
+          tag_name: ${{ env.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz
