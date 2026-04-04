@@ -18,9 +18,14 @@ class _JSONLocalStore implements LocalStore {
   final _cache = <String, dynamic>{};
 
   bool _loaded = false;
+  bool _loading = false;
 
   Future<void> _load() async {
+    while (_loading) {
+      await Future.delayed(const .new(milliseconds: 100));
+    }
     if (_loaded) return;
+    _loading = true;
     try {
       final json =
           await _file.openRead().transform(_jsonBase64Decoder).first
@@ -29,13 +34,13 @@ class _JSONLocalStore implements LocalStore {
     } catch (_) {
     } finally {
       _loaded = true;
+      _loading = false;
     }
   }
 
   Future<void> _save() async {
-    final encoded = _jsonBase64Encoder.convert(_cache);
     if (!await _file.exists()) await _file.create(recursive: true);
-    await _file.writeAsString(encoded, flush: true);
+    await _file.writeAsString(_jsonBase64Encoder.convert(_cache), flush: true);
   }
 
   @override
