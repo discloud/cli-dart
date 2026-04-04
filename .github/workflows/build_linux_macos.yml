@@ -97,19 +97,10 @@ jobs:
           tar -czf discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz discloud
           rm -f discloud/discloud
 
-      - name: Generate SHA256
-        id: sha
-        run: echo "sha256=$(shasum -a 256 discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz | awk '{print $1}')" >> $GITHUB_OUTPUT
-
       - name: Upload to release
         uses: softprops/action-gh-release@v2
         with:
           prerelease: ${{ inputs.prerelease || github.event.release.prerelease }}
           tag_name: ${{ inputs.version || github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: |
-            discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}
-            discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz
-
-      - name: Debug SHA
-        run: echo "discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz=${{ steps.sha.outputs.sha256 }}"
+          files: discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz
