@@ -129,7 +129,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Install Winget Create
-        run: choco install wingetcreate -y
+      - name: Install Inno Setup
+        run: winget install Microsoft.WingetCreate -h --accept-package-agreements --accept-source-agreements --nowarn --verbose
+
       - name: Submit using wingetcreate
         run: wingetcreate update Discloud.CLI -s -v ${{ env.version }} --release-notes-url ${{ env.release_base_url }}/tag/${{ env.version }} -u '${{ env.release_base_url }}/download/${{ env.version }}/${{ env.setupx64 }}|x64' '${{ env.release_base_url }}/download/${{ env.version }}/${{ env.setuparm64 }}|arm64' -t ${{ secrets.PERSONAL_GITHUB_TOKEN }}
