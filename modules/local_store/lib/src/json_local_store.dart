@@ -17,15 +17,11 @@ class _JSONLocalStore implements LocalStore {
 
   final _cache = <String, dynamic>{};
 
-  bool _loaded = false;
-  bool _loading = false;
+  Completer<void>? _loadCompleter;
 
   Future<void> _load() async {
-    while (_loading) {
-      await Future.delayed(const .new(milliseconds: 100));
-    }
-    if (_loaded) return;
-    _loading = true;
+    if (_loadCompleter case final completer?) return completer.future;
+    final completer = _loadCompleter = .new();
     try {
       final json =
           await _file.openRead().transform(_jsonBase64Decoder).first
@@ -33,8 +29,8 @@ class _JSONLocalStore implements LocalStore {
       _cache.addAll(json..addAll(_cache));
     } catch (_) {
     } finally {
-      _loaded = true;
-      _loading = false;
+      completer.complete();
+      if (completer != _loadCompleter) _loadCompleter?.complete();
     }
   }
 
