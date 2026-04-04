@@ -40,58 +40,48 @@ class FS {
   Glob get _ignoreGlob =>
       .new(_transformIterableGlobToGlobPattern(_ignorePatterns));
 
-  String? get _ignoreFilePattern {
-    if (ignoreFilename case final filename?) return "$_gStar$filename";
-    return null;
-  }
-
   Stream<File> list() async* {
-    final ignore = await _findIgnoreFiles();
+    Glob ignore = _ignoreGlob;
 
-    bool isInvalidEntity(FileSystemEntity e) =>
-        e is! File || ignore.matches(e.path);
+    final visitedDirectories = <String>{};
 
     await for (final entity
         in _glob.list(root: directory.path).handleError(_noop)) {
-      if (isInvalidEntity(entity)) continue;
+      if (entity is! File) continue;
+
+      if (ignoreFilename case final filename?) {
+        final dir = entity.dirname;
+
+        if (!visitedDirectories.contains(dir)) {
+          visitedDirectories.add(dir);
+
+          final ignoreFilePath = joinAll([dir, filename]);
+
+          final ignoreFile = File(ignoreFilePath);
+
+          await _resolveIgnoreFile(ignoreFile);
+
+          ignore = _ignoreGlob;
+        }
+
+        if (ignore.matches(entity.path)) continue;
+      }
 
       yield entity as File;
     }
   }
 
-  Future<Glob> _findIgnoreFiles() async {
-    final ignoreFilePattern = _ignoreFilePattern;
-    if (ignoreFilePattern == null) return _ignoreGlob;
+  Future<void> _resolveIgnoreFile(File file) async {
+    if (!await file.exists()) return;
 
-    _ignorePatterns
-      ..clear()
-      ..addAll(_originalIgnorePatterns);
+    String ignorePattern = await _gitignoreFileToGlobConverter(file);
 
-    final glob = Glob(ignoreFilePattern);
-    Glob ignore = _ignoreGlob;
+    final relativePath = dirname(relative(file.path, from: directory.path));
 
-    bool isInvalidEntity(FileSystemEntity e) =>
-        e is! File ||
-        basename(e.path) != ignoreFilename ||
-        ignore.matches(e.path);
-
-    await for (final entity
-        in glob.list(root: directory.path).handleError(_noop)) {
-      if (isInvalidEntity(entity)) continue;
-
-      String ignPattern = await _gitignoreFileToGlobConverter(entity as File);
-
-      final relativePath = dirname(relative(entity.path, from: directory.path));
-
-      if (relativePath != _dot) {
-        ignPattern = "${_normalizeGlobPath(relativePath)}$_pSep$ignPattern";
-      }
-
-      _ignorePatterns.add(ignPattern);
-
-      ignore = _ignoreGlob;
+    if (relativePath != _dot) {
+      ignorePattern = "${_normalizeGlobPath(relativePath)}$_pSep$ignorePattern";
     }
 
-    return ignore;
+    _ignorePatterns.add(ignorePattern);
   }
 }
