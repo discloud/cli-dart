@@ -25,8 +25,7 @@ concurrency:
 env:
   prerelease: ${{ inputs.prerelease || github.event.release.prerelease }}
   release_base_url: ${{ github.server_url }}/${{ github.repository }}/releases
-  setuparm64: discloud-cli-x64-setup.exe
-  setupx64: discloud-cli-x64-setup.exe
+  binary_base_name: discloud-cli
   version: ${{ inputs.version || github.ref_name }}
 
 jobs:
@@ -59,9 +58,9 @@ jobs:
 
       - name: Compile
         run: |
-          dart compile exe lib/main.dart -o discloud-cli-macos-arm64 --target-os=macos --target-arch=arm64
-          dart compile exe lib/main.dart -o discloud-cli-linux-arm64 --target-os=linux --target-arch=arm64
-          dart compile exe lib/main.dart -o discloud-cli-linux-x64 --target-os=linux --target-arch=x64
+          dart compile exe lib/main.dart -o ${{ env.binary_base_name }}-macos-arm64 --target-os=macos --target-arch=arm64
+          dart compile exe lib/main.dart -o ${{ env.binary_base_name }}-linux-arm64 --target-os=linux --target-arch=arm64
+          dart compile exe lib/main.dart -o ${{ env.binary_base_name }}-linux-x64 --target-os=linux --target-arch=x64
 
       - name: Save artifacts
         uses: actions/upload-artifact@v7
@@ -71,9 +70,9 @@ jobs:
           overwrite: true
           retention-days: 1
           path: |
-            discloud-cli-macos-arm64
-            discloud-cli-linux-arm64
-            discloud-cli-linux-x64
+            ${{ env.binary_base_name }}-macos-arm64
+            ${{ env.binary_base_name }}-linux-arm64
+            ${{ env.binary_base_name }}-linux-x64
 
   archive:
     needs: build
@@ -100,8 +99,8 @@ jobs:
       - name: Prepare archive
         run: |
           mkdir discloud
-          cp discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }} discloud/discloud
-          tar -czf discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz discloud
+          cp ${{ env.binary_base_name }}-${{ matrix.target_os }}-${{ matrix.target_arch }} discloud/discloud
+          tar -czf ${{ env.binary_base_name }}-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz discloud
           rm -f discloud/discloud
 
       - name: Upload to release
@@ -110,4 +109,4 @@ jobs:
           prerelease: ${{ env.prerelease }}
           tag_name: ${{ env.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: discloud-cli-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz
+          files: ${{ env.binary_base_name }}-${{ matrix.target_os }}-${{ matrix.target_arch }}.tar.gz
