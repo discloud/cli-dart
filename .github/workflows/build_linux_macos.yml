@@ -23,9 +23,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  binary_base_name: discloud-cli
   prerelease: ${{ inputs.prerelease || github.event.release.prerelease }}
   release_base_url: ${{ github.server_url }}/${{ github.repository }}/releases
-  binary_base_name: discloud-cli
   version: ${{ inputs.version || github.ref_name }}
 
 jobs:
