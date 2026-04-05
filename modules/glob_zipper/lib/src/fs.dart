@@ -4,6 +4,7 @@ const _dot = ".";
 const _empty = "";
 const _gStar = "**";
 const _gSep = ",";
+const _nGlob = "!";
 const _pSep = "/";
 const _rSlash = r"\";
 
@@ -20,7 +21,7 @@ class FS {
   }) : _originalIgnorePatterns = _transformIterableToGlob(
          ignorePatterns,
        ).toSet(),
-       _ignorePatterns = {};
+       _ignorePatterns = .new();
 
   final Directory directory;
   final Iterable<String> globPatterns;
@@ -36,7 +37,8 @@ class FS {
     try {
       return .new(_transformIterableGlobToGlobPattern(_ignorePatterns));
     } catch (_) {
-      return .new("_ignore_${DateTime.now().microsecondsSinceEpoch}_glob_");
+      if (_ignorePatterns.isEmpty) return .new(_nGlob);
+      rethrow;
     }
   }
 
@@ -55,16 +57,16 @@ class FS {
     final visitedDirectories = <String>{};
 
     await for (final entity in _glob.list(root: directory.path)) {
-      if (entity is! File) continue;
+      if (entity is! File || ignore.matches(entity.path)) continue;
 
       final folder = entity.dirname;
       if (visitedDirectories.add(folder)) {
         await _resolveIgnoreFile(folder, filename);
 
         ignore = _ignoreGlob;
-      }
 
-      if (ignore.matches(entity.path)) continue;
+        if (ignore.matches(entity.path)) continue;
+      }
 
       yield entity as File;
     }
