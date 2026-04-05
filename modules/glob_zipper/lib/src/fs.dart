@@ -37,10 +37,20 @@ class FS {
   late final Set<String> _ignorePatterns;
   final Set<String> _originalIgnorePatterns;
 
-  Glob get _ignoreGlob =>
-      .new(_transformIterableGlobToGlobPattern(_ignorePatterns));
+  Glob get _ignoreGlob {
+    try {
+      return .new(_transformIterableGlobToGlobPattern(_ignorePatterns));
+    } catch (_) {
+      return .new("_ignore_${DateTime.now().microsecondsSinceEpoch}_glob_");
+    }
+  }
 
-  Stream<File> list() async* {
+  Stream<File> list() {
+    if (ignoreFilename case final fname?) return _listWithIgnoreFilename(fname);
+    return _listWithoutIgnoreFilename();
+  }
+
+  Stream<File> _listWithIgnoreFilename(String filename) async* {
     Glob ignore = _ignoreGlob;
 
     final visitedDirectories = <String>{};
@@ -49,29 +59,35 @@ class FS {
         in _glob.list(root: directory.path).handleError(_noop)) {
       if (entity is! File) continue;
 
-      if (ignoreFilename case final filename?) {
-        final dir = entity.dirname;
+      final folder = entity.dirname;
+      if (!visitedDirectories.contains(folder)) {
+        visitedDirectories.add(folder);
 
-        if (!visitedDirectories.contains(dir)) {
-          visitedDirectories.add(dir);
+        await _resolveIgnoreFile(folder, filename);
 
-          final ignoreFilePath = joinAll([dir, filename]);
-
-          final ignoreFile = File(ignoreFilePath);
-
-          await _resolveIgnoreFile(ignoreFile);
-
-          ignore = _ignoreGlob;
-        }
-
-        if (ignore.matches(entity.path)) continue;
+        ignore = _ignoreGlob;
       }
+
+      if (ignore.matches(entity.path)) continue;
 
       yield entity as File;
     }
   }
 
-  Future<void> _resolveIgnoreFile(File file) async {
+  Stream<File> _listWithoutIgnoreFilename() async* {
+    final Glob ignore = _ignoreGlob;
+
+    await for (final entity
+        in _glob.list(root: directory.path).handleError(_noop)) {
+      if (entity is! File || ignore.matches(entity.path)) continue;
+
+      yield entity as File;
+    }
+  }
+
+  Future<void> _resolveIgnoreFile(String folder, String filename) async {
+    final File file = .new("$folder$_pSep$filename");
+
     if (!await file.exists()) return;
 
     String ignorePattern = await _gitignoreFileToGlobConverter(file);
