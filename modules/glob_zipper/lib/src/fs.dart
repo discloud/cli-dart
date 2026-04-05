@@ -60,9 +60,7 @@ class FS {
       if (entity is! File) continue;
 
       final folder = entity.dirname;
-      if (!visitedDirectories.contains(folder)) {
-        visitedDirectories.add(folder);
-
+      if (visitedDirectories.add(folder)) {
         await _resolveIgnoreFile(folder, filename);
 
         ignore = _ignoreGlob;
