@@ -60,11 +60,9 @@ class FS {
       if (entity is! File || ignore.matches(entity.path)) continue;
 
       final folder = entity.dirname;
-      if (visitedDirectories.add(folder)) {
-        await _resolveIgnoreFile(folder, filename);
-
+      if (visitedDirectories.add(folder) &&
+          await _resolveIgnoreFile(folder, filename)) {
         ignore = _ignoreGlob;
-
         if (ignore.matches(entity.path)) continue;
       }
 
@@ -82,10 +80,10 @@ class FS {
     }
   }
 
-  Future<void> _resolveIgnoreFile(String folder, String filename) async {
+  Future<bool> _resolveIgnoreFile(String folder, String filename) async {
     final File file = .new("$folder$_pSep$filename");
 
-    if (!await file.exists()) return;
+    if (!await file.exists()) return false;
 
     String ignorePattern = await _gitignoreFileToGlobConverter(file);
 
@@ -96,5 +94,7 @@ class FS {
     }
 
     _ignorePatterns.add(ignorePattern);
+
+    return true;
   }
 }
