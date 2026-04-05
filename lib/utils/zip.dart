@@ -10,7 +10,8 @@ Future<File> zip({
   required Directory directory,
   Iterable<String> glob = const ["**"],
   Iterable<String> ignore = const .empty(),
-  ZipCallback? callback,
+  ZipCallback? onData,
+  OnErrorCallback? onError,
   String? zipname,
 }) {
   return GlobZipper.isolated(
@@ -19,7 +20,8 @@ Future<File> zip({
     globPatterns: glob,
     ignorePatterns: ignore,
     ignoreFilename: _ignoreFilename,
-    onData: callback,
+    onData: onData,
+    onError: onError,
     zipname: zipname,
   );
 }
