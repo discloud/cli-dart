@@ -19,7 +19,7 @@ Future<File> zip({
     globPatterns: glob,
     ignorePatterns: ignore,
     ignoreFilename: _ignoreFilename,
-    callback: callback,
+    onData: callback,
     zipname: zipname,
   );
 }

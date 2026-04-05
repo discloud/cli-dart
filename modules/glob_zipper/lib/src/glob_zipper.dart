@@ -15,7 +15,10 @@ part "gitignore_glob_converter.dart";
 part "isolated.dart";
 part "zip_progress.dart";
 
+void _noop(_, _) {}
+
 typedef ZipCallback = void Function(ZipProgress progress);
+typedef OnErrorCallback = void Function(Object error, StackTrace trace);
 
 class GlobZipper {
   // ignore: constant_identifier_names
@@ -31,7 +34,8 @@ class GlobZipper {
     String? password,
     Directory? tempDirectory,
     String? zipname,
-    ZipCallback? callback,
+    ZipCallback? onData,
+    OnErrorCallback? onError,
   }) {
     return _zipInIsolate(
       directory: directory,
@@ -42,7 +46,8 @@ class GlobZipper {
       password: password,
       tempDirectory: tempDirectory,
       zipname: zipname,
-      callback: callback,
+      onData: onData,
+      onError: onError,
     );
   }
 
@@ -71,7 +76,7 @@ class GlobZipper {
     return ".temp-${_random.nextDouble()}.zip";
   }
 
-  Future<File> zip([ZipCallback? callback]) async {
+  Future<File> zip({ZipCallback? onData, OnErrorCallback? onError}) async {
     final tempFilename = _zipname;
 
     final fs = FS(
@@ -92,10 +97,10 @@ class GlobZipper {
       final encoder = ZipFileEncoder(password: password)
         ..create(tempFilePath, level: level);
 
-      if (callback case final callback?) {
-        await _zipWithCallback(encoder, fs.list, callback);
+      if (onData case final onData?) {
+        await _zipWithCallback(encoder, fs.list, onData, onError);
       } else {
-        await _zipWithoutCallback(encoder, fs.list);
+        await _zipWithoutCallback(encoder, fs.list, onError);
       }
 
       await encoder.close();
@@ -110,9 +115,11 @@ class GlobZipper {
 
   Future<void> _zipWithoutCallback(
     ZipFileEncoder encoder,
-    Stream<File> Function() fileStreamFactory,
-  ) async {
-    await for (final file in fileStreamFactory()) {
+    Stream<File> Function() fileStreamFactory, [
+    OnErrorCallback? onError,
+  ]) async {
+    onError ??= _noop;
+    await for (final file in fileStreamFactory().handleError(onError)) {
       final aFile = await _toArchiveFile(file, root: directory);
 
       encoder.addArchiveFile(aFile);
@@ -122,13 +129,15 @@ class GlobZipper {
   Future<void> _zipWithCallback(
     ZipFileEncoder encoder,
     Stream<File> Function() fileStreamFactory,
-    ZipCallback callback,
-  ) async {
+    ZipCallback onData, [
+    OnErrorCallback? onError,
+  ]) async {
+    onError ??= _noop;
     int processed = 0, i = 1;
-    await for (final file in fileStreamFactory()) {
+    await for (final file in fileStreamFactory().handleError(onError)) {
       final stat = await file.stat();
 
-      callback(
+      onData(
         .new(
           file: file,
           stat: stat,

@@ -7,8 +7,6 @@ const _gSep = ",";
 const _pSep = "/";
 const _rSlash = r"\";
 
-void _noop(_, _) {}
-
 class FS {
   static String _normalizeGlobPath(String path) {
     return path.replaceAll(_rSlash, _pSep);
@@ -19,23 +17,20 @@ class FS {
     this.globPatterns = const ["**"],
     this.ignoreFilename,
     Iterable<String> ignorePatterns = const .empty(),
-  }) : _glob = .new(
-         _transformIterableGlobToGlobPattern(
-           _transformIterableToGlob(globPatterns),
-         ),
-       ),
-       _originalIgnorePatterns = _transformIterableToGlob(
+  }) : _originalIgnorePatterns = _transformIterableToGlob(
          ignorePatterns,
-       ).toSet() {
-    _ignorePatterns = _originalIgnorePatterns.toSet();
-  }
+       ).toSet(),
+       _ignorePatterns = {};
 
   final Directory directory;
   final Iterable<String> globPatterns;
-  late final Glob _glob;
   final String? ignoreFilename;
-  late final Set<String> _ignorePatterns;
+  final Set<String> _ignorePatterns;
   final Set<String> _originalIgnorePatterns;
+
+  Glob get _glob => .new(
+    _transformIterableGlobToGlobPattern(_transformIterableToGlob(globPatterns)),
+  );
 
   Glob get _ignoreGlob {
     try {
@@ -46,6 +41,10 @@ class FS {
   }
 
   Stream<File> list() {
+    _ignorePatterns
+      ..clear()
+      ..addAll(_originalIgnorePatterns);
+
     if (ignoreFilename case final fname?) return _listWithIgnoreFilename(fname);
     return _listWithoutIgnoreFilename();
   }
@@ -55,8 +54,7 @@ class FS {
 
     final visitedDirectories = <String>{};
 
-    await for (final entity
-        in _glob.list(root: directory.path).handleError(_noop)) {
+    await for (final entity in _glob.list(root: directory.path)) {
       if (entity is! File) continue;
 
       final folder = entity.dirname;
@@ -75,8 +73,7 @@ class FS {
   Stream<File> _listWithoutIgnoreFilename() async* {
     final Glob ignore = _ignoreGlob;
 
-    await for (final entity
-        in _glob.list(root: directory.path).handleError(_noop)) {
+    await for (final entity in _glob.list(root: directory.path)) {
       if (entity is! File || ignore.matches(entity.path)) continue;
 
       yield entity as File;
