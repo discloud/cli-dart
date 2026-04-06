@@ -9,7 +9,7 @@ import "package:discloud/utils/messages.dart";
 import "package:discloud/utils/percent.dart";
 import "package:discloud/utils/zip.dart";
 import "package:discloud_config/discloud_config.dart";
-import "package:path/path.dart" as p;
+import "package:path/path.dart" hide context;
 
 class TeamCommitCommand extends Command<void> {
   TeamCommitCommand() {
@@ -43,10 +43,13 @@ class TeamCommitCommand extends Command<void> {
 
     final spinner = CliSpin().start("Zipping...");
 
-    final File file;
+    final zipath = joinAll([directory.path, "${basename(directory.path)}.zip"]);
+
+    final File file = .new(zipath);
     try {
-      file = await zip(
+      await zip(
         directory: directory,
+        zipfile: file,
         glob: glob,
         ignore: allBlockedFiles,
         onData: (progress) {
@@ -86,7 +89,7 @@ class TeamCommitCommand extends Command<void> {
   }
 
   Future<String?> _getDiscloudConfigAppId(Directory directory) async {
-    final configFilePath = p.joinAll([directory.path, DiscloudConfig.filename]);
+    final configFilePath = joinAll([directory.path, DiscloudConfig.filename]);
 
     final DiscloudConfig config = await .fromPath(configFilePath);
 

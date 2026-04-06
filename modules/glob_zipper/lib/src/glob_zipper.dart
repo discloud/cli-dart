@@ -2,12 +2,10 @@ import "dart:async";
 import "dart:convert";
 import "dart:io";
 import "dart:isolate";
-import "dart:math";
 
 import "package:archive/archive_io.dart";
 import "package:glob/glob.dart";
 import "package:glob/list_local_fs.dart";
-import "package:glob_zipper/src/extensions/file.dart";
 import "package:path/path.dart";
 
 part "exception.dart";
@@ -24,29 +22,26 @@ typedef OnErrorCallback = void Function(Object error, StackTrace trace);
 class GlobZipper {
   // ignore: constant_identifier_names
   static const _1e6 = 1e6;
-  static final _random = Random();
 
-  static Future<File> isolated({
+  static Future<void> isolated({
     required Directory directory,
+    required File zipfile,
     Iterable<String> globPatterns = const ["**"],
     Iterable<String> ignorePatterns = const .empty(),
     String? ignoreFilename,
     int? level,
     String? password,
-    Directory? tempDirectory,
-    String? zipname,
     ZipCallback? onData,
     OnErrorCallback? onError,
   }) {
     return _zipInIsolate(
       directory: directory,
+      zipfile: zipfile,
       globPatterns: globPatterns,
       ignoreFilename: ignoreFilename,
       ignorePatterns: ignorePatterns,
       level: level,
       password: password,
-      tempDirectory: tempDirectory,
-      zipname: zipname,
       onData: onData,
       onError: onError,
     );
@@ -54,49 +49,34 @@ class GlobZipper {
 
   const GlobZipper({
     required this.directory,
+    required this.zipfile,
     this.globPatterns = const ["**"],
     this.ignorePatterns = const .empty(),
     this.ignoreFilename,
     this.level,
     this.password,
-    this.tempDirectory,
-    this.zipname,
   });
 
   final Directory directory;
+  final File zipfile;
   final Iterable<String> globPatterns;
   final Iterable<String> ignorePatterns;
   final String? ignoreFilename;
+  /// Compression level
   final int? level;
   final String? password;
-  final Directory? tempDirectory;
-  final String? zipname;
 
-  String get _zipname {
-    if (zipname case final zname? when zname.isNotEmpty) return "$zname.zip";
-    return ".temp-${_random.nextDouble()}.zip";
-  }
-
-  Future<File> zip({ZipCallback? onData, OnErrorCallback? onError}) async {
-    final tempFilename = _zipname;
-
+  Future<void> zip({ZipCallback? onData, OnErrorCallback? onError}) async {
     final fs = FS(
       directory: directory,
       globPatterns: globPatterns,
       ignoreFilename: ignoreFilename,
-      ignorePatterns: ignorePatterns.followedBy([tempFilename]),
+      ignorePatterns: ignorePatterns.followedBy([zipfile.path]),
     );
 
-    final tempDirectory = this.tempDirectory ?? .systemTemp;
-
-    final tempFilePath = joinAll([tempDirectory.path, tempFilename]);
-
-    final File file = .new(tempFilePath);
-
-    bool success = false;
     try {
       final encoder = ZipFileEncoder(password: password)
-        ..create(tempFilePath, level: level);
+        ..create(zipfile.path, level: level);
 
       if (onData case final onData?) {
         await _zipWithCallback(encoder, fs.list, onData, onError);
@@ -105,16 +85,10 @@ class GlobZipper {
       }
 
       await encoder.close();
-
-      success = true;
     } on PathAccessException catch (e, s) {
       if (onError == null) rethrow;
       onError(e, s);
-    } finally {
-      if (!success) await file.safeDelete();
     }
-
-    return file;
   }
 
   Future<void> _zipWithoutCallback(

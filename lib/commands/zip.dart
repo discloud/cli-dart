@@ -3,6 +3,7 @@ import "dart:io";
 import "package:args/command_runner.dart";
 import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
+import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
 import "package:discloud/utils/zip.dart";
 import "package:path/path.dart" hide context;
@@ -23,18 +24,19 @@ class ZipCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final encoding = argResults?.option("encoding");
-    final out = argResults?.option("out");
-    final glob = argResults?.multiOption("glob") ?? const ["**"];
-
     final directory = context.workspaceFolder;
+
+    final encoding = argResults?.option("encoding");
+    final out = argResults?.option("out") ?? "${basename(directory.path)}.zip";
+    final glob = argResults?.multiOption("glob") ?? const ["**"];
 
     final spinner = CliSpin().start("Zipping...");
 
-    final File file;
+    final File file = .new(out);
     try {
-      file = await zip(
+      await zip(
         directory: directory,
+        zipfile: file,
         glob: glob,
         ignore: allBlockedFiles,
         onData: (progress) {
@@ -52,12 +54,8 @@ class ZipCommand extends Command<void> {
     switch (encoding) {
       case "buffer":
         await stdout.addStream(file.openRead());
-        await file.delete();
+        await file.safeDelete();
         return;
     }
-
-    final filename = out ?? "${basenameWithoutExtension(directory.path)}.zip";
-
-    await file.rename(joinAll([directory.path, filename]));
   }
 }

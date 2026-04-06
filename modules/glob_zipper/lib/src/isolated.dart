@@ -2,15 +2,14 @@ part of "glob_zipper.dart";
 
 typedef _ExceptionData = ({Object error, StackTrace trace});
 
-Future<File> _zipInIsolate({
+Future<void> _zipInIsolate({
   required Directory directory,
+  required File zipfile,
   Iterable<String> globPatterns = const ["**"],
   Iterable<String> ignorePatterns = const .empty(),
   String? ignoreFilename,
   int? level,
   String? password,
-  Directory? tempDirectory,
-  String? zipname,
   ZipCallback? onData,
   OnErrorCallback? onError,
 }) async {
@@ -24,13 +23,12 @@ Future<File> _zipInIsolate({
 
   final GlobZipper zipper = .new(
     directory: directory,
+    zipfile: zipfile,
     globPatterns: globPatterns,
     ignoreFilename: ignoreFilename,
     ignorePatterns: ignorePatterns,
     level: level,
     password: password,
-    tempDirectory: tempDirectory,
-    zipname: zipname,
   );
 
   isolatedSendPort
@@ -38,12 +36,8 @@ Future<File> _zipInIsolate({
     ..send(onData is ZipCallback)
     ..send(onError is OnErrorCallback);
 
-  File? maybeFile;
   await for (final message in mainPortBroadcast) {
-    if (message case final File file) {
-      maybeFile = file;
-      break;
-    }
+    if (message == null) break;
 
     switch (message) {
       case final ZipProgress progress:
@@ -62,10 +56,6 @@ Future<File> _zipInIsolate({
   }
 
   mainPort.close();
-
-  if (maybeFile == null) throw ZipException();
-
-  return maybeFile;
 }
 
 Future<void> _isolatedZip(SendPort mainSendPort) async {
@@ -87,14 +77,14 @@ Future<void> _isolatedZip(SendPort mainSendPort) async {
   }
 
   try {
-    final file = await zipper.zip(
+    await zipper.zip(
       onData: hasOnData ? mainSendPort.send : null,
       onError: hasOnError ? onError : null,
     );
-
-    mainSendPort.send(file);
   } catch (e, s) {
     onError(e, s);
+  } finally {
+    mainSendPort.send(null);
   }
 
   isolatedPort.close();

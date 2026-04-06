@@ -6,23 +6,22 @@ import "package:path/path.dart";
 
 const _ignoreFilename = ".discloudignore";
 
-Future<File> zip({
+Future<void> zip({
   required Directory directory,
+  required File zipfile,
   Iterable<String> glob = const ["**"],
   Iterable<String> ignore = const .empty(),
   ZipCallback? onData,
   OnErrorCallback? onError,
-  String? zipname,
 }) {
   return GlobZipper.isolated(
     directory: directory,
-    tempDirectory: directory,
+    zipfile: zipfile,
     globPatterns: glob,
     ignorePatterns: ignore,
     ignoreFilename: _ignoreFilename,
     onData: onData,
     onError: onError,
-    zipname: zipname,
   );
 }
 
