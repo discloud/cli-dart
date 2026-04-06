@@ -7,6 +7,7 @@ import "dart:math";
 import "package:archive/archive_io.dart";
 import "package:glob/glob.dart";
 import "package:glob/list_local_fs.dart";
+import "package:glob_zipper/src/extensions/file.dart";
 import "package:path/path.dart";
 
 part "exception.dart";
@@ -106,8 +107,11 @@ class GlobZipper {
       await encoder.close();
 
       success = true;
+    } on PathAccessException catch (e, s) {
+      if (onError == null) rethrow;
+      onError(e, s);
     } finally {
-      if (!success) await file.delete();
+      if (!success) await file.safeDelete();
     }
 
     return file;

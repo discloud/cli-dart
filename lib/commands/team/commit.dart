@@ -43,14 +43,21 @@ class TeamCommitCommand extends Command<void> {
 
     final spinner = CliSpin().start("Zipping...");
 
-    final file = await zip(
-      directory: directory,
-      glob: glob,
-      ignore: allBlockedFiles,
-      onData: (progress) {
-        spinner.text = formatZipProgress(progress, directory);
-      },
-    );
+    final File file;
+    try {
+      file = await zip(
+        directory: directory,
+        glob: glob,
+        ignore: allBlockedFiles,
+        onData: (progress) {
+          spinner.text = formatZipProgress(progress, directory);
+        },
+      );
+    } catch (e, s) {
+      spinner.fail(e.toString());
+      context.debug(s);
+      return;
+    }
 
     final fileStat = await file.stat();
     final total = fileStat.size;

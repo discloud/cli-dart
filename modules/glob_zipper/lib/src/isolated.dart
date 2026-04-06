@@ -1,6 +1,6 @@
 part of "glob_zipper.dart";
 
-typedef _ErrorData = ({Object error, StackTrace trace});
+typedef _ExceptionData = ({Object error, StackTrace trace});
 
 Future<File> _zipInIsolate({
   required Directory directory,
@@ -49,9 +49,15 @@ Future<File> _zipInIsolate({
       case final ZipProgress progress:
         onData!(progress);
         break;
-      case final _ErrorData error:
-        onError!(error.error, error.trace);
-        break;
+      case final _ExceptionData error:
+        if (onError case final onError?) {
+          onError(error.error, error.trace);
+          break;
+        }
+
+        // rethows PathAccessException or other
+        // ignore: only_throw_errors
+        throw error.error;
     }
   }
 
@@ -76,16 +82,20 @@ Future<void> _isolatedZip(SendPort mainSendPort) async {
   final bool hasOnError = await isolatePortBroadcast.first;
 
   void onError(Object error, StackTrace trace) {
-    final _ErrorData errorData = (error: error, trace: trace);
+    final _ExceptionData errorData = (error: error, trace: trace);
     mainSendPort.send(errorData);
   }
 
-  final file = await zipper.zip(
-    onData: hasOnData ? mainSendPort.send : null,
-    onError: hasOnError ? onError : null,
-  );
+  try {
+    final file = await zipper.zip(
+      onData: hasOnData ? mainSendPort.send : null,
+      onError: hasOnError ? onError : null,
+    );
 
-  mainSendPort.send(file);
+    mainSendPort.send(file);
+  } catch (e, s) {
+    onError(e, s);
+  }
 
   isolatedPort.close();
   await Isolate.exit();
