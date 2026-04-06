@@ -6,6 +6,7 @@ import "dart:isolate";
 import "package:archive/archive_io.dart";
 import "package:glob/glob.dart";
 import "package:glob/list_local_fs.dart";
+import "package:glob_zipper/src/extensions/file.dart";
 import "package:path/path.dart";
 
 part "exception.dart";
@@ -62,6 +63,7 @@ class GlobZipper {
   final Iterable<String> globPatterns;
   final Iterable<String> ignorePatterns;
   final String? ignoreFilename;
+
   /// Compression level
   final int? level;
   final String? password;
@@ -74,6 +76,7 @@ class GlobZipper {
       ignorePatterns: ignorePatterns.followedBy([zipfile.path]),
     );
 
+    bool success = false;
     try {
       final encoder = ZipFileEncoder(password: password)
         ..create(zipfile.path, level: level);
@@ -85,9 +88,13 @@ class GlobZipper {
       }
 
       await encoder.close();
+
+      success = true;
     } on PathAccessException catch (e, s) {
       if (onError == null) rethrow;
       onError(e, s);
+    } finally {
+      if (!success) await zipfile.safeDelete();
     }
   }
 
