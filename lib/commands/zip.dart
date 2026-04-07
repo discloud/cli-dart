@@ -1,7 +1,6 @@
 import "dart:io";
 
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
@@ -30,24 +29,19 @@ class ZipCommand extends Command<void> {
     final out = argResults?.option("out") ?? "${basename(directory.path)}.zip";
     final glob = argResults?.multiOption("glob") ?? const ["**"];
 
-    final spinner = CliSpin().start("Zipping...");
+    final spinner = context.printer.spin(text: "Zipping...");
 
     final File file = .new(out);
-    try {
-      await zip(
-        directory: directory,
-        zipfile: file,
-        glob: glob,
-        ignore: allBlockedFiles,
-        onData: (progress) {
-          spinner.text = formatZipProgress(progress, directory);
-        },
-      );
-    } catch (e, s) {
-      spinner.fail(e.toString());
-      context.debug(s);
-      return;
-    }
+
+    await zip(
+      directory: directory,
+      zipfile: file,
+      glob: glob,
+      ignore: allBlockedFiles,
+      onData: (progress) {
+        spinner.text = formatZipProgress(progress, directory);
+      },
+    );
 
     spinner.success("Success!");
 

@@ -20,10 +20,11 @@ void main(Iterable<String> arguments) async {
     await runner.runCommand(argResults);
     success = true;
   } /* on FormatException */ catch (e, s) {
-    stderr.writeln(e);
-    context.debug(s);
+    context.printer
+      ..error(e)
+      ..debug(s);
   } finally {
-    context.debug("""\t
+    context.printer.debug("""\t
 OS ${Platform.operatingSystemVersion}
 Dart SDK v${Platform.version}
 Discloud CLI v$packageVersion

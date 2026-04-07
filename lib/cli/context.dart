@@ -1,7 +1,10 @@
 import "dart:async";
 import "dart:io";
 
+import "package:cli_spin/cli_spin.dart";
 import "package:discloud/cli/disposable.dart";
+import "package:discloud/cli/printer/console_printer.dart";
+import "package:discloud/cli/printer/iprinter.dart";
 import "package:discloud/extensions/duration.dart";
 import "package:discloud/extensions/list.dart";
 import "package:discloud/services/discloud/api_client.dart";
@@ -12,11 +15,20 @@ import "package:tint/tint.dart";
 abstract class CliContext implements Disposable {
   static final CliContext I = _CliContext();
 
-  void config(Iterable<String> arguments) {
-    _start = .now();
-    _arguments = arguments;
-    _debug = arguments.contains("--debug");
+  @override
+  Future<void> dispose() async {
+    api.dispose();
+    await subscriptions.dispose();
+    _stopwatch.stop();
+
+    final elapsed = _stopwatch.elapsed.pretty();
+
+    _printer
+      ..writeln("Done in $elapsed".dim())
+      ..dispose();
   }
+
+  final List<Disposable> subscriptions = [];
 
   final Stopwatch _stopwatch = .new()..start();
 
@@ -27,9 +39,10 @@ abstract class CliContext implements Disposable {
   Iterable<String> get arguments => _arguments;
 
   bool _debug = false;
-  void debug(Object? object) {
-    if (_debug) stderr.writeln(object);
-  }
+  bool get isDebug => _debug;
+
+  final IPrinter<CliSpin> _printer = ConsolePrinter();
+  IPrinter<CliSpin> get printer => _printer;
 
   final DiscloudApiClient api = .new();
 
@@ -50,17 +63,14 @@ abstract class CliContext implements Disposable {
 
   late final cliConfigFilePath = joinAll([cliConfigDir, ".cli"]);
 
-  final List<Disposable> subscriptions = [];
+  void config(Iterable<String> arguments) {
+    _start = .now();
+    _arguments = arguments;
+    _debug = arguments.contains("--debug");
+  }
 
-  @override
-  Future<void> dispose() async {
-    api.dispose();
-    await subscriptions.dispose();
-    _stopwatch.stop();
-
-    final elapsed = _stopwatch.elapsed.pretty();
-
-    stderr.writeln("Done in $elapsed".dim());
+  void debug(Object? object) {
+    _printer.debug(object);
   }
 }
 
