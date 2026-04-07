@@ -451,8 +451,9 @@ Usage: discloud user locale [arguments]
 Make zip
 
 Usage: discloud zip [arguments]
--h, --help        Print this usage information.
--e, --encoding    [buffer]
--g, --glob        (defaults to "**")
--o, --out         
+-h, --help           Print this usage information.
+-g, --glob           (defaults to "**")
+-o, --out            Zip output
+-l, --level=<0-9>    Compression level
+-p, --password       Zip password
 ```
