@@ -28,6 +28,7 @@ Available subcommands:
   info      Get information of your apps
   logs      View the logs from application in Discloud
   mod       Manage your app team
+  profile   Updates the profile information (avatar and name) for a specific app
   ram       Set amount of ram for your app
   restart   Restart one or all of your apps on Discloud
   start     Start one or all of your apps on Discloud
@@ -196,6 +197,18 @@ Usage: discloud app mod info [arguments]
     --app (mandatory)    
 ```
 
+#### app profile
+
+```sh
+Updates the profile information (avatar and name) for a specific app
+
+Usage: discloud app profile [arguments]
+-h, --help                  Print this usage information.
+    --app (mandatory)       
+    --name (mandatory)      
+    --avatar (mandatory)    
+```
+
 #### app ram
 
 ```sh
@@ -300,6 +313,7 @@ Available subcommands:
   commit    Commit one app or site to Discloud
   info      Get information of your apps
   logs      View the logs from application in Discloud
+  ram       Set amount of ram for your app
   restart   Restart one or all of your apps on Discloud
   start     Start one or all of your apps on Discloud
   status    Get status of your app
@@ -334,7 +348,7 @@ Get information of your apps
 
 Usage: discloud team info [arguments]
 -h, --help    Print this usage information.
-    --app     (defaults to "all")
+    --app     
 ```
 
 #### team logs
@@ -346,6 +360,17 @@ Usage: discloud team logs [arguments]
 -h, --help                     Print this usage information.
     --app=<all> (mandatory)    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
     --out                      Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
+```
+
+#### team ram
+
+```sh
+Set amount of ram for your app
+
+Usage: discloud team ram [arguments]
+-h, --help                        Print this usage information.
+    --app (mandatory)             
+    --amount=<100> (mandatory)    
 ```
 
 #### team restart
