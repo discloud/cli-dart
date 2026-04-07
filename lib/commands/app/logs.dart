@@ -35,7 +35,7 @@ class AppLogsCommand extends Command<void> {
   Future<void> run() async {
     final appId = argResults!.option("app");
 
-    final spinner = CliSpin().start();
+    final spinner = context.printer.spin();
 
     try {
       final response = await context.api.get("/app/$appId/logs");
@@ -54,7 +54,7 @@ class AppLogsCommand extends Command<void> {
       spinner.stop();
     } catch (e, s) {
       spinner.fail(resolveResponseMessage(e));
-      context.debug(s);
+      context.printer.debug(s);
     }
   }
 

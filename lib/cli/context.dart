@@ -17,15 +17,14 @@ abstract class CliContext implements Disposable {
 
   @override
   Future<void> dispose() async {
+    printer.dispose();
     api.dispose();
     await subscriptions.dispose();
     _stopwatch.stop();
 
     final elapsed = _stopwatch.elapsed.pretty();
 
-    _printer
-      ..writeln("Done in $elapsed".dim())
-      ..dispose();
+    stderr.writeln("Done in $elapsed".dim());
   }
 
   final List<Disposable> subscriptions = [];
@@ -41,8 +40,7 @@ abstract class CliContext implements Disposable {
   bool _debug = false;
   bool get isDebug => _debug;
 
-  final IPrinter<CliSpin> _printer = ConsolePrinter();
-  IPrinter<CliSpin> get printer => _printer;
+  final IPrinter<CliSpin> printer = ConsolePrinter();
 
   final DiscloudApiClient api = .new();
 
@@ -67,10 +65,6 @@ abstract class CliContext implements Disposable {
     _start = .now();
     _arguments = arguments;
     _debug = arguments.contains("--debug");
-  }
-
-  void debug(Object? object) {
-    _printer.debug(object);
   }
 }
 

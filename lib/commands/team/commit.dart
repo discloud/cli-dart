@@ -1,7 +1,6 @@
 import "dart:io";
 
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
@@ -41,26 +40,21 @@ class TeamCommitCommand extends Command<void> {
 
     final glob = argResults!.multiOption("glob");
 
-    final spinner = CliSpin().start("Zipping...");
+    final spinner = context.printer.spin(text: "Zipping...");
 
     final zipath = joinAll([directory.path, "${basename(directory.path)}.zip"]);
 
     final File file = .new(zipath);
-    try {
-      await zip(
-        directory: directory,
-        zipfile: file,
-        glob: glob,
-        ignore: allBlockedFiles,
-        onData: (progress) {
-          spinner.text = formatZipProgress(progress, directory);
-        },
-      );
-    } catch (e, s) {
-      spinner.fail(e.toString());
-      context.debug(s);
-      return;
-    }
+
+    await zip(
+      directory: directory,
+      zipfile: file,
+      glob: glob,
+      ignore: allBlockedFiles,
+      onData: (progress) {
+        spinner.text = formatZipProgress(progress, directory);
+      },
+    );
 
     final fileStat = await file.stat();
     final total = fileStat.size;
@@ -82,7 +76,7 @@ class TeamCommitCommand extends Command<void> {
       spinner.success(resolveResponseMessage(response));
     } catch (e, s) {
       spinner.fail(resolveResponseMessage(e));
-      context.debug(s);
+      context.printer.debug(s);
     } finally {
       await file.safeDelete();
     }

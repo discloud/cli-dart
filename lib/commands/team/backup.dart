@@ -26,7 +26,7 @@ class TeamBackupCommand extends Command<void> {
   Future<void> run() async {
     final appId = argResults!.option("app");
 
-    final spinner = CliSpin().start();
+    final spinner = context.printer.spin();
 
     try {
       final response = await context.api.get("/team/$appId/backup");
@@ -45,7 +45,7 @@ class TeamBackupCommand extends Command<void> {
       spinner.stop();
     } catch (e, s) {
       spinner.fail(resolveResponseMessage(e));
-      context.debug(s);
+      context.printer.debug(s);
     }
   }
 
@@ -63,7 +63,7 @@ class TeamBackupCommand extends Command<void> {
             ..start(_downloadingText);
         } catch (e, s) {
           spinner.fail(resolveResponseMessage(e));
-          context.debug(s);
+          context.printer.debug(s);
         }
         return;
       }
@@ -101,7 +101,7 @@ class TeamBackupCommand extends Command<void> {
           ..start(_downloadingText);
       } catch (e, s) {
         spinner.fail(resolveResponseMessage(e));
-        context.debug(s);
+        context.printer.debug(s);
         spinner.start(_downloadingText);
       }
     }

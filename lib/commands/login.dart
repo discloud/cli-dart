@@ -1,5 +1,4 @@
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/services/discloud/utils.dart";
 import "package:discloud/utils/messages.dart";
@@ -19,7 +18,7 @@ class LoginCommand extends Command<void> {
 
     if (!isDiscloudJwt(token)) throw Exception("Invalid token");
 
-    final spinner = CliSpin().start();
+    final spinner = context.printer.spin();
 
     try {
       final response = await context.api.get(
@@ -33,7 +32,7 @@ class LoginCommand extends Command<void> {
     } catch (e, s) {
       spinner.fail(resolveResponseMessage(e));
 
-      context.debug(s);
+      context.printer.debug(s);
     }
   }
 }

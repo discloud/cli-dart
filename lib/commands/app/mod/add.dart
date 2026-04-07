@@ -1,7 +1,6 @@
 import "dart:async";
 
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/services/discloud/constants.dart";
 import "package:discloud/utils/messages.dart";
@@ -26,7 +25,7 @@ class AppModAddCommand extends Command<void> {
     final modId = argResults!.option("mod");
     final perms = argResults!.multiOption("perms");
 
-    final spinner = CliSpin().start();
+    final spinner = context.printer.spin();
 
     try {
       final response = await context.api.post(
@@ -37,7 +36,7 @@ class AppModAddCommand extends Command<void> {
       spinner.success(resolveResponseMessage(response));
     } catch (e, s) {
       spinner.fail(resolveResponseMessage(e));
-      context.debug(s);
+      context.printer.debug(s);
     }
   }
 }

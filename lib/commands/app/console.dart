@@ -89,11 +89,11 @@ class AppConsoleCommand extends Command<void> {
       };
 
       spinner.fail(text);
-      context.debug(s);
+      context.printer.debug(s);
       return false;
     } catch (e, s) {
       spinner.fail(e.toString());
-      context.debug(s);
+      context.printer.debug(s);
       return false;
     }
   }

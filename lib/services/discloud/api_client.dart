@@ -33,19 +33,19 @@ class DiscloudApiClient implements Disposable {
   }
 
   static Future<Map?> _resolveResponseBody(HttpClientResponse response) async {
-    CliContext.I.debug(
+    CliContext.I.printer.debug(
       "Response status: ${response.statusCode} ${response.reasonPhrase}"
       "\n"
       "Response content length: ${response.contentLength}",
     );
 
     if (response.headers.contentType case final contentType?) {
-      CliContext.I.debug("Response content type: $contentType");
+      CliContext.I.printer.debug("Response content type: $contentType");
 
       switch (contentType.mimeType) {
         case _jsonContentType:
           final body = await response.json();
-          CliContext.I.debug(body);
+          CliContext.I.printer.debug(body);
           return body;
       }
     }

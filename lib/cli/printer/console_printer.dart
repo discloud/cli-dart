@@ -22,7 +22,9 @@ class ConsolePrinter implements IPrinter<CliSpin> {
   void debug(Object? object) {
     if (!_context.isDebug) return;
     if (_spin case final spin?) {
-      spin.info(object.toString());
+      spin
+        ..info(object.toString())
+        ..start();
       return;
     }
     stderr.writeln(object);
