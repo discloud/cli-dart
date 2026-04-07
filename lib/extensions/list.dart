@@ -1,6 +1,6 @@
 import "dart:async";
 
-import "package:discloud/structures/disposable.dart";
+import "package:discloud/cli/disposable.dart";
 
 extension ListDisposableExtension on List<Disposable> {
   Future<void> dispose() async {

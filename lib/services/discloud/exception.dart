@@ -3,11 +3,9 @@ import "package:freezed_annotation/freezed_annotation.dart";
 part "exception.freezed.dart";
 
 @Freezed(map: .all, unionKey: "code", when: .all)
-abstract class DiscloudApiException
+abstract interface class DiscloudApiException
     with _$DiscloudApiException
     implements Exception {
-  const DiscloudApiException._();
-
   const factory DiscloudApiException({
     @Default(500) final int code,
     @Default("Unknown") final String message,

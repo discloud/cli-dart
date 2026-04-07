@@ -2,12 +2,12 @@ import "dart:convert";
 import "dart:io";
 
 import "package:discloud/cli/context.dart";
+import "package:discloud/cli/disposable.dart";
 import "package:discloud/extensions/io_http_client.dart";
 import "package:discloud/extensions/string.dart";
 import "package:discloud/services/discloud/exception.dart";
 import "package:discloud/services/discloud/user_agent.dart";
 import "package:discloud/services/discloud/utils.dart";
-import "package:discloud/structures/disposable.dart";
 import "package:path/path.dart";
 
 typedef VoidUploadProgressCallback = void Function(int processed);

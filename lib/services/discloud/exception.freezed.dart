@@ -210,8 +210,8 @@ return $default(_that.code,_that.message,_that.path,_that.body,_that.logs,_that.
 /// @nodoc
 
 
-class _DiscloudApiException extends DiscloudApiException {
-  const _DiscloudApiException({this.code = 500, this.message = "Unknown", this.path = "/", final  Map? body, this.logs, final  List<dynamic>? localeList}): _body = body,_localeList = localeList,super._();
+class _DiscloudApiException implements DiscloudApiException {
+  const _DiscloudApiException({this.code = 500, this.message = "Unknown", this.path = "/", final  Map? body, this.logs, final  List<dynamic>? localeList}): _body = body,_localeList = localeList;
   
 
 @override@JsonKey() final  int code;

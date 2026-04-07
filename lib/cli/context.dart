@@ -1,10 +1,10 @@
 import "dart:async";
 import "dart:io";
 
+import "package:discloud/cli/disposable.dart";
 import "package:discloud/extensions/duration.dart";
 import "package:discloud/extensions/list.dart";
 import "package:discloud/services/discloud/api_client.dart";
-import "package:discloud/structures/disposable.dart";
 import "package:local_store/local_store.dart";
 import "package:path/path.dart";
 import "package:tint/tint.dart";
