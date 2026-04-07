@@ -11,8 +11,8 @@ Future<void> zip({
   required File zipfile,
   Iterable<String> glob = const ["**"],
   Iterable<String> ignore = const .empty(),
-    int? level,
-    String? password,
+  int? level,
+  String? password,
   ZipCallback? onData,
   OnErrorCallback? onError,
 }) {
