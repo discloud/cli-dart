@@ -4,7 +4,7 @@ import "package:args/args.dart";
 import "package:pub_semver/pub_semver.dart";
 
 void main(Iterable<String> args) async {
-  final parser = ArgParser()..addOption("version", abbr: "-v", mandatory: true);
+  final parser = ArgParser()..addOption("version", mandatory: true);
   final parsed = parser.parse(args);
   final version = parsed.option("version")!;
   Version.parse(version);

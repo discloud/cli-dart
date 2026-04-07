@@ -63,7 +63,7 @@ jobs:
         run: dart pub get
 
       - name: Prepare pubspec
-        run: dart run scripts/prepare_pubspec.dart -v ${{ env.version }}
+        run: dart run scripts/prepare_pubspec.dart --version ${{ env.version }}
 
       - name: Run build runner
         run: dart run build_runner build -r -v --low-resources-mode
@@ -99,7 +99,7 @@ jobs:
         run: dart pub get
 
       - name: Prepare inno setup
-        run: dart run scripts/prepare_inno_setup.dart -v ${{ env.version }}
+        run: dart run scripts/prepare_inno_setup.dart --version ${{ env.version }}
 
       - name: Generate docs
         run: dart run scripts/docs/generate.dart
