@@ -19,17 +19,11 @@ class UserInfoCommand extends Command<void> {
   Future<void> run() async {
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.get("/user");
-      spinner.success(resolveResponseMessage(response));
+    final response = await context.api.get("/user");
+    spinner.success(resolveResponseMessage(response));
 
-      if (response["user"] case final Map data) {
-        stdout.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
-      }
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-
-      context.printer.debug(s);
+    if (response["user"] case final Map data) {
+      stdout.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
     }
   }
 }

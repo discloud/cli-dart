@@ -37,22 +37,17 @@ class AppInfoCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.get("/app/$appId");
+    final response = await context.api.get("/app/$appId");
 
-      spinner.success(resolveResponseMessage(response));
+    spinner.success(resolveResponseMessage(response));
 
-      switch (response["apps"]) {
-        case final List list:
-          stdout.writeln(listToAsciiTable(list, _keysIgnore));
-          break;
-        case final Map data:
-          stdout.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
-          break;
-      }
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
+    switch (response["apps"]) {
+      case final List list:
+        stdout.writeln(listToAsciiTable(list, _keysIgnore));
+        break;
+      case final Map data:
+        stdout.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
+        break;
     }
   }
 }

@@ -21,13 +21,8 @@ class AppStartCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.put("/app/$appId/start");
+    final response = await context.api.put("/app/$appId/start");
 
-      spinner.success(resolveResponseMessage(response));
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
-    }
+    spinner.success(resolveResponseMessage(response));
   }
 }

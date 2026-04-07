@@ -31,12 +31,8 @@ class UserLocaleCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.put("/locale/$locale");
-      spinner.success(resolveResponseMessage(response));
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
-    }
+    final response = await context.api.put("/locale/$locale");
+
+    spinner.success(resolveResponseMessage(response));
   }
 }

@@ -24,13 +24,8 @@ class AppModDeleteCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.delete("/app/$appId/team$modId");
+    final response = await context.api.delete("/app/$appId/team$modId");
 
-      spinner.success(resolveResponseMessage(response));
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
-    }
+    spinner.success(resolveResponseMessage(response));
   }
 }

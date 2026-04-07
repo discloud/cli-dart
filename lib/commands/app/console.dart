@@ -29,17 +29,17 @@ class AppConsoleCommand extends Command<void> {
     final appId = argResults!.option("app")!;
     String? command = argResults!.option("command");
 
-    final spinner = CliSpin();
+    final spinner = context.printer.spin(start: false);
 
     if (command case final command?) {
       await _send(appId: appId, command: command, spinner: spinner);
       return;
     }
 
-    stdout.writeln("Enter 'exit' to stop.");
+    context.printer("Enter 'exit' to stop.");
 
     while (true) {
-      stderr.write("?> ".dim());
+      context.printer.write("?> ".dim());
 
       command = stdin.readLineSync();
       if (command == null || command == "exit") break;
@@ -62,9 +62,9 @@ class AppConsoleCommand extends Command<void> {
         body: {"command": command},
       );
 
-      spinner.stop();
-
       if (response["status"] == "ok") {
+        spinner.stop();
+
         if (response["apps"]?["shell"] case final Map shell) {
           if (shell["stdout"] case final String content
               when content.isNotEmpty) {
@@ -77,7 +77,7 @@ class AppConsoleCommand extends Command<void> {
           }
         }
       } else {
-        stderr.writeln(resolveResponseMessage(response));
+        spinner.fail(resolveResponseMessage(response));
       }
       return true;
     } on DiscloudApiException catch (e, s) {
@@ -89,10 +89,6 @@ class AppConsoleCommand extends Command<void> {
       };
 
       spinner.fail(text);
-      context.printer.debug(s);
-      return false;
-    } catch (e, s) {
-      spinner.fail(e.toString());
       context.printer.debug(s);
       return false;
     }

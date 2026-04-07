@@ -20,19 +20,13 @@ class LoginCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.get(
-        "/user",
-        headers: {"api-token": token},
-      );
+    final response = await context.api.get(
+      "/user",
+      headers: {"api-token": token},
+    );
 
-      await context.store.set("token", token);
+    await context.store.set("token", token);
 
-      spinner.success(resolveResponseMessage(response));
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-
-      context.printer.debug(s);
-    }
+    spinner.success(resolveResponseMessage(response));
   }
 }

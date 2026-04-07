@@ -6,6 +6,7 @@ import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/download.dart";
 import "package:discloud/utils/messages.dart";
+import "package:discloud/utils/percent.dart";
 import "package:path/path.dart" hide context;
 
 class AppBackupCommand extends Command<void> {
@@ -40,24 +41,17 @@ class AppBackupCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.get("/app/$appId/backup");
+    final response = await context.api.get("/app/$appId/backup");
 
-      spinner.success(resolveResponseMessage(response));
+    spinner.success(resolveResponseMessage(response));
 
-      switch (response["backups"]) {
-        case final Map data:
-          await _handleSingle(data, spinner);
-          break;
-        case final List list:
-          await _handleMulti(list, spinner);
-          break;
-      }
-
-      spinner.stop();
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
+    switch (response["backups"]) {
+      case final Map data:
+        await _handleSingle(data, spinner);
+        break;
+      case final List list:
+        await _handleMulti(list, spinner);
+        break;
     }
   }
 
@@ -68,25 +62,24 @@ class AppBackupCommand extends Command<void> {
     if (data["url"] case final String url) {
       if (argResults?.option("out") case final out?) {
         spinner.start(_downloadingText);
-        try {
-          await download(url, out: out);
-          spinner
-            ..success(out)
-            ..start(_downloadingText);
-        } catch (e, s) {
-          spinner.fail(resolveResponseMessage(e));
-          context.printer.debug(s);
-        }
+
+        await download(
+          url,
+          out: out,
+          onProgress: (processed, total) {
+            spinner.text = "$_downloadingText ${percent(processed, total)}%";
+          },
+        );
+
+        spinner.success(out);
         return;
       }
-      stdout.writeln(url);
+      context.printer.writeln(url);
       return;
     }
   }
 
   Future<void> _handleMulti(List list, CliSpin spinner) async {
-    spinner.start(_downloadingText);
-
     final client = HttpClient();
     final out = argResults?.option("out") ?? ".";
 
@@ -95,10 +88,8 @@ class AppBackupCommand extends Command<void> {
       final String status = data["status"];
 
       if (status != "ok") {
-        spinner
-          ..fail("$appId - bad backup status")
-          ..start(_downloadingText);
-        return;
+        spinner.fail("$appId - bad backup status");
+        continue;
       }
 
       final appZipName = "$appId.zip";
@@ -107,14 +98,21 @@ class AppBackupCommand extends Command<void> {
       final String url = data["url"];
 
       try {
-        await download(url, out: appZipPath, client: client);
-        spinner
-          ..success(out)
-          ..start(_downloadingText);
+        spinner.start(_downloadingText);
+
+        await download(
+          url,
+          out: appZipPath,
+          client: client,
+          onProgress: (processed, total) {
+            spinner.text = "$_downloadingText ${percent(processed, total)}%";
+          },
+        );
+
+        spinner.success(appZipPath);
       } catch (e, s) {
         spinner.fail(resolveResponseMessage(e));
         context.printer.debug(s);
-        spinner.start(_downloadingText);
       }
     }
 

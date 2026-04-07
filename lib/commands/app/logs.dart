@@ -37,24 +37,17 @@ class AppLogsCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.get("/app/$appId/logs");
+    final response = await context.api.get("/app/$appId/logs");
 
-      spinner.success(resolveResponseMessage(response));
+    spinner.success(resolveResponseMessage(response));
 
-      switch (response["apps"]) {
-        case final Map data:
-          await _handleSingle(data, argResults?.option("out"), spinner);
-          break;
-        case final List list:
-          await _handleMulti(list, spinner);
-          break;
-      }
-
-      spinner.stop();
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
+    switch (response["apps"]) {
+      case final Map data:
+        await _handleSingle(data, argResults?.option("out"), spinner);
+        break;
+      case final List list:
+        await _handleMulti(list, spinner);
+        break;
     }
   }
 
@@ -64,12 +57,8 @@ class AppLogsCommand extends Command<void> {
     CliSpin spinner,
   ) async {
     if (data["terminal"]?["big"] case final String data) {
-      if (out case final out?) {
-        await _saveLog(data, out, spinner);
-        return;
-      }
-      stdout.writeln(data);
-      return;
+      if (out case final out?) return _saveLog(data, out, spinner);
+      context.printer.writeln(data);
     }
   }
 

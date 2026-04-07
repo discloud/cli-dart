@@ -27,16 +27,11 @@ class AppModAddCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.post(
-        "/app/$appId/team",
-        body: {"modID": modId, "perms": perms},
-      );
+    final response = await context.api.post(
+      "/app/$appId/team",
+      body: {"modID": modId, "perms": perms},
+    );
 
-      spinner.success(resolveResponseMessage(response));
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
-    }
+    spinner.success(resolveResponseMessage(response));
   }
 }

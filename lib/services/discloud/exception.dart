@@ -14,4 +14,17 @@ abstract interface class DiscloudApiException
     final String? logs,
     final List<dynamic>? localeList,
   }) = _DiscloudApiException;
+
+  @override
+  String toString() {
+    final buffer = StringBuffer("[Error $code]: $message");
+
+    if (localeList case final localeList? when localeList.isNotEmpty) {
+      buffer.write(" (${localeList.join(", ")})");
+    }
+
+    if (logs case final logs? when logs.isNotEmpty) buffer.write("\n$logs");
+
+    return buffer.toString();
+  }
 }

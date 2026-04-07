@@ -74,9 +74,6 @@ class TeamCommitCommand extends Command<void> {
       );
 
       spinner.success(resolveResponseMessage(response));
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
     } finally {
       await file.safeDelete();
     }

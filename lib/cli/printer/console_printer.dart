@@ -14,8 +14,15 @@ class ConsolePrinter implements IPrinter<CliSpin> {
   }
 
   @override
-  CliSpin spin({String? text}) {
-    return (_spin ??= CliSpin(text: text)).start();
+  CliSpin spin({String? text, bool start = true}) {
+    final spin = _spin ??= .new(text: text);
+    if (start) return spin.start();
+    return spin;
+  }
+
+  @override
+  void call(Object? object) {
+    return info(object);
   }
 
   @override

@@ -25,17 +25,12 @@ class TeamStatusCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.get("/team/$appId/status");
+    final response = await context.api.get("/team/$appId/status");
 
-      spinner.success(resolveResponseMessage(response));
+    spinner.success(resolveResponseMessage(response));
 
-      if (response["apps"] case final data?) {
-        stdout.writeln(mapToVerticalAsciiTable(data, _keysToIgnore));
-      }
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
+    if (response["apps"] case final data?) {
+      stdout.writeln(mapToVerticalAsciiTable(data, _keysToIgnore));
     }
   }
 }

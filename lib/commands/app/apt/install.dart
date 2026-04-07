@@ -27,16 +27,11 @@ class AppAptInstallCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.put(
-        "/app/$appId/apt",
-        body: {"apt": apts.join(",")},
-      );
+    final response = await context.api.put(
+      "/app/$appId/apt",
+      body: {"apt": apts.join(",")},
+    );
 
-      spinner.success(resolveResponseMessage(response));
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
-    }
+    spinner.success(resolveResponseMessage(response));
   }
 }

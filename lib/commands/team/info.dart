@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
@@ -22,7 +21,7 @@ const _keysIgnore = {
 
 class TeamInfoCommand extends Command<void> {
   TeamInfoCommand() {
-    argParser.addOption("app", defaultsTo: "all");
+    argParser.addOption("app");
   }
 
   @override
@@ -37,22 +36,19 @@ class TeamInfoCommand extends Command<void> {
 
     final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.get("/team/$appId");
+    final route = appId == null ? "/team" : "/team/$appId";
 
-      spinner.success(resolveResponseMessage(response));
+    final response = await context.api.get(route);
 
-      switch (response["apps"]) {
-        case final List list:
-          stdout.writeln(listToAsciiTable(list, _keysIgnore));
-          break;
-        case final Map data:
-          stdout.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
-          break;
-      }
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.printer.debug(s);
+    spinner.success(resolveResponseMessage(response));
+
+    switch (response["apps"]) {
+      case final List list:
+        context.printer.writeln(listToAsciiTable(list, _keysIgnore));
+        break;
+      case final Map data:
+        context.printer.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
+        break;
     }
   }
 }
