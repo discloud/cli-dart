@@ -7,6 +7,7 @@ import "package:discloud/commands/app/delete.dart";
 import "package:discloud/commands/app/info.dart";
 import "package:discloud/commands/app/logs.dart";
 import "package:discloud/commands/app/mod.dart";
+import "package:discloud/commands/app/profile.dart";
 import "package:discloud/commands/app/ram.dart";
 import "package:discloud/commands/app/restart.dart";
 import "package:discloud/commands/app/start.dart";
@@ -24,6 +25,7 @@ class AppCommand extends Command<void> {
     addSubcommand(AppInfoCommand());
     addSubcommand(AppLogsCommand());
     addSubcommand(AppModCommand());
+    addSubcommand(AppProfileCommand());
     addSubcommand(AppRamCommand());
     addSubcommand(AppRestartCommand());
     addSubcommand(AppStartCommand());

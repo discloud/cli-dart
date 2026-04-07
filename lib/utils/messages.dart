@@ -15,9 +15,7 @@ String resolveResponseMessage<T>(T response) {
 
       return buffer.toString();
     case final DiscloudApiException e:
-      final buffer = StringBuffer();
-
-      buffer.write("[Error ${e.code}]: ${e.message}");
+      final buffer = StringBuffer("[Error ${e.code}]: ${e.message}");
 
       if (e.localeList case final localeList? when localeList.isNotEmpty) {
         buffer.write(" (${localeList.join(", ")})");

@@ -1,7 +1,6 @@
 import "dart:async";
 
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
@@ -20,15 +19,10 @@ class AppStartCommand extends Command<void> {
   Future<void> run() async {
     final appId = argResults!.option("app");
 
-    final spinner = CliSpin().start();
+    final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.put("/app/$appId/start");
+    final response = await context.api.put("/app/$appId/start");
 
-      spinner.success(resolveResponseMessage(response));
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.debug(s);
-    }
+    spinner.success(resolveResponseMessage(response));
   }
 }

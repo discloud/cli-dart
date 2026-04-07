@@ -1,7 +1,6 @@
 import "dart:io";
 
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
@@ -30,14 +29,10 @@ class UserLocaleCommand extends Command<void> {
   Future<void> run() async {
     final locale = argResults!.option("locale");
 
-    final spinner = CliSpin().start();
+    final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.put("/locale/$locale");
-      spinner.success(resolveResponseMessage(response));
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.debug(s);
-    }
+    final response = await context.api.put("/locale/$locale");
+
+    spinner.success(resolveResponseMessage(response));
   }
 }

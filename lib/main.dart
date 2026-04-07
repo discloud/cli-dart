@@ -3,6 +3,7 @@ import "dart:io";
 import "package:args/args.dart";
 import "package:discloud/cli/context.dart";
 import "package:discloud/cli/runner.dart";
+import "package:discloud/utils/messages.dart";
 import "package:discloud/version.dart";
 import "package:tint/tint.dart";
 
@@ -18,12 +19,14 @@ void main(Iterable<String> arguments) async {
     _printCliHeader(argResults);
 
     await runner.runCommand(argResults);
+
     success = true;
   } /* on FormatException */ catch (e, s) {
-    stderr.writeln(e);
-    context.debug(s);
+    context.printer
+      ..error(resolveResponseMessage(e))
+      ..debug(s);
   } finally {
-    context.debug("""\t
+    context.printer.debug("""\t
 OS ${Platform.operatingSystemVersion}
 Dart SDK v${Platform.version}
 Discloud CLI v$packageVersion

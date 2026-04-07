@@ -2,7 +2,6 @@ import "dart:async";
 import "dart:io";
 
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/ascii_table.dart";
 import "package:discloud/utils/messages.dart";
@@ -22,19 +21,14 @@ class AppModInfoCommand extends Command<void> {
   Future<void> run() async {
     final appId = argResults!.option("app");
 
-    final spinner = CliSpin().start();
+    final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.get("/app/$appId/team");
+    final response = await context.api.get("/app/$appId/team");
 
-      spinner.success(resolveResponseMessage(response));
+    spinner.success(resolveResponseMessage(response));
 
-      if (response["app"] case final Map data) {
-        stdout.writeln(mapToVerticalAsciiTable(data));
-      }
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.debug(s);
+    if (response["app"] case final Map data) {
+      stdout.writeln(mapToVerticalAsciiTable(data));
     }
   }
 }

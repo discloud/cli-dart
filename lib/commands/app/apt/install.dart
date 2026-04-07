@@ -1,7 +1,6 @@
 import "dart:async";
 
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/services/discloud/constants.dart";
 import "package:discloud/utils/messages.dart";
@@ -26,18 +25,13 @@ class AppAptInstallCommand extends Command<void> {
 
     if (apts.isEmpty) usageException("Apt option cannot be empty");
 
-    final spinner = CliSpin().start();
+    final spinner = context.printer.spin();
 
-    try {
-      final response = await context.api.put(
-        "/app/$appId/apt",
-        body: {"apt": apts.join(",")},
-      );
+    final response = await context.api.put(
+      "/app/$appId/apt",
+      body: {"apt": apts.join(",")},
+    );
 
-      spinner.success(resolveResponseMessage(response));
-    } catch (e, s) {
-      spinner.fail(resolveResponseMessage(e));
-      context.debug(s);
-    }
+    spinner.success(resolveResponseMessage(response));
   }
 }

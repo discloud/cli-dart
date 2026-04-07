@@ -6,8 +6,8 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 import "package:discloud_config/discloud_config.dart";
 
-class AppRamCommand extends Command<void> {
-  AppRamCommand() {
+class TeamRamCommand extends Command<void> {
+  TeamRamCommand() {
     argParser
       ..addOption("app", mandatory: true)
       ..addOption(
@@ -35,7 +35,7 @@ class AppRamCommand extends Command<void> {
     final spinner = context.printer.spin();
 
     final response = await context.api.put(
-      "/app/$appId/ram",
+      "/team/$appId/ram",
       body: {"ramMB": ramMB},
     );
 
