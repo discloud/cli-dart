@@ -15,7 +15,7 @@ Future<void> download(
   await file.create(recursive: true);
   final sink = file.openWrite();
 
-  final client_ = client ?? HttpClient();
+  final client_ = client ?? .new();
 
   try {
     final request = await client_.getUrl(uri);

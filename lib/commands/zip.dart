@@ -4,6 +4,7 @@ import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
+import "package:discloud/utils/bytes.dart";
 import "package:discloud/utils/zip.dart";
 import "package:path/path.dart" hide context;
 
@@ -59,7 +60,7 @@ class ZipCommand extends Command<void> {
       },
     );
 
-    spinner.success("Success!");
+    spinner.success("[${Bytes(await file.length())}]: ${file.path}");
 
     switch (encoding) {
       case "buffer":

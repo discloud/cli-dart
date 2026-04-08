@@ -127,13 +127,16 @@ class GlobZipper {
           file: file,
           stat: stat,
           current: i++,
-          processed: processed += stat.size,
+          processed: processed,
+          compressed: await zipfile.length(),
         ),
       );
 
       final aFile = await _toArchiveFile(file, root: directory, stat: stat);
 
       encoder.addArchiveFile(aFile);
+
+      processed += stat.size;
     }
   }
 
@@ -148,11 +151,9 @@ class GlobZipper {
 
     final fileStream = InputFileStream(file.path);
 
-    final archiveFile = ArchiveFile.stream(filename, fileStream)
+    return .stream(filename, fileStream)
       ..compressionLevel = level
       ..lastModTime = stat.modified.microsecondsSinceEpoch ~/ _1e6
       ..mode = stat.mode;
-
-    return archiveFile;
   }
 }

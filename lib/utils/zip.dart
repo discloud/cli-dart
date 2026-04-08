@@ -30,9 +30,10 @@ Future<void> zip({
 }
 
 String formatZipProgress(ZipProgress progress, Directory root) {
-  final buffer = StringBuffer("Zipping...")
+  final buffer = StringBuffer("Zipping")
     ..writeAll([
-      "\n[${progress.current}]:",
+      " [${progress.current}]",
+      "[${Bytes(progress.processed)} > ${Bytes(progress.compressed)}]",
       "(${Bytes(progress.stat.size)})",
       relative(progress.file.path, from: root.path),
     ], " ");
