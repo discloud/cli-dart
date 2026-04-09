@@ -1,8 +1,19 @@
+import "dart:async";
+
 import "package:cli_spin/cli_spin.dart";
 import "package:discloud/cli/spin/ispin.dart";
+import "package:discloud/extensions/duration.dart";
+import "package:tint/tint.dart";
+
+part "timer_cli_spin.dart";
+
+const _defaultTimerInterval = 100;
+
+void _noop() {}
 
 class CLISpin implements ISpin {
-  factory CLISpin({String? text}) => ._(.new(text: text));
+  factory CLISpin({String? text, bool showDuration = false}) =>
+      showDuration ? _TimerCliSpin._(text: text) : ._(.new(text: text));
 
   const CLISpin._(this._spin);
 
