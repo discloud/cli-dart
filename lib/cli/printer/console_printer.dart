@@ -20,8 +20,8 @@ class ConsolePrinter implements IPrinter<CLISpin> {
   }
 
   @override
-  CLISpin spin({String? text, bool start = true}) {
-    final spin = _spin ??= .new(text: text);
+  CLISpin spin({String? text, bool start = true, bool showDuration = false}) {
+    final spin = _spin ??= .new(text: text, showDuration: showDuration);
     if (start) spin.start();
     return spin;
   }
