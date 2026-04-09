@@ -7,11 +7,20 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/download.dart";
 import "package:discloud/utils/messages.dart";
 import "package:discloud/utils/percent.dart";
-import "package:path/path.dart" hide context;
+
+const _pSep = "/";
 
 class TeamBackupCommand extends Command<void> {
   TeamBackupCommand() {
-    argParser.addOption("app", mandatory: true, valueHelp: "all");
+    argParser
+      ..addOption("app", mandatory: true, valueHelp: "all")
+      ..addOption(
+        "dir",
+        abbr: "d",
+        aliases: ["out"],
+        help:
+            "Specifies the destination path for downloading backups. The destination path will be considered a directory.",
+      );
   }
 
   @override
@@ -45,18 +54,22 @@ class TeamBackupCommand extends Command<void> {
 
   Future<void> _handleSingle(Map<dynamic, dynamic> data, ISpin spinner) async {
     if (data["url"] case final String url) {
-      if (argResults?.option("out") case final out?) {
+      if (argResults?.option("dir") case final dir?) {
         spinner.start(_downloadingText);
 
+        final Uri uri = .parse(url);
+        final filename = uri.pathSegments.last;
+        final appZipPath = "$dir$_pSep$filename";
+
         await download(
-          url,
-          out: out,
+          uri.toString(),
+          out: appZipPath,
           onProgress: (processed, total) {
             spinner.text = "$_downloadingText ${percent(processed, total)}%";
           },
         );
 
-        spinner.success(out);
+        spinner.success(appZipPath);
         return;
       }
       context.printer.writeln(url);
@@ -66,7 +79,7 @@ class TeamBackupCommand extends Command<void> {
 
   Future<void> _handleMulti(List list, ISpin spinner) async {
     final client = HttpClient();
-    final out = argResults?.option("out") ?? ".";
+    final dir = argResults?.option("dir") ?? ".";
 
     for (final data in list) {
       final String appId = data["id"];
@@ -77,16 +90,17 @@ class TeamBackupCommand extends Command<void> {
         continue;
       }
 
-      final appZipName = "$appId.zip";
-      final appZipPath = joinAll([out, appZipName]);
-
       final String url = data["url"];
+
+      final Uri uri = .parse(url);
+      final filename = uri.pathSegments.last;
+      final appZipPath = "$dir$_pSep$filename";
 
       try {
         spinner.start(_downloadingText);
 
         await download(
-          url,
+          uri.toString(),
           out: appZipPath,
           client: client,
           onProgress: (processed, total) {
