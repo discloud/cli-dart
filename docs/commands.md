@@ -79,8 +79,8 @@ Get backup of your app code from Discloud
 
 Usage: discloud app backup [arguments]
 -h, --help                     Print this usage information.
-    --app=<all> (mandatory)    When set to 'all', this command will automatically download backups and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
-    --out                      Specifies the destination path for downloading backups. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
+    --app=<all> (mandatory)    
+-d, --dir                      Specifies the destination path for downloading backups. The destination path will be considered a directory.
 ```
 
 #### app commit
@@ -328,6 +328,7 @@ Get backup of your team app code from Discloud
 Usage: discloud team backup [arguments]
 -h, --help                     Print this usage information.
     --app=<all> (mandatory)    
+-d, --dir                      Specifies the destination path for downloading backups. The destination path will be considered a directory.
 ```
 
 #### team commit
