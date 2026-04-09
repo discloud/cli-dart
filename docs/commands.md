@@ -203,10 +203,10 @@ Usage: discloud app mod info [arguments]
 Updates the profile information (avatar and name) for a specific app
 
 Usage: discloud app profile [arguments]
--h, --help                  Print this usage information.
-    --app (mandatory)       
-    --name (mandatory)      
-    --avatar (mandatory)    
+-h, --help               Print this usage information.
+    --app (mandatory)    
+    --name               
+    --avatar             
 ```
 
 #### app ram
