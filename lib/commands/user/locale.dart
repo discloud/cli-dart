@@ -29,7 +29,7 @@ class UserLocaleCommand extends Command<void> {
   Future<void> run() async {
     final locale = argResults!.option("locale");
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Defining locale...");
 
     final response = await context.api.put("/locale/$locale");
 

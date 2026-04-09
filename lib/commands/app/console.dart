@@ -2,7 +2,7 @@ import "dart:async";
 import "dart:io";
 
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
+import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/services/discloud/exception.dart";
 import "package:discloud/utils/messages.dart";
@@ -52,9 +52,9 @@ class AppConsoleCommand extends Command<void> {
   Future<bool> _send({
     required String appId,
     required String command,
-    required CliSpin spinner,
+    required ISpin spinner,
   }) async {
-    spinner.start();
+    spinner.start("Sending command...");
 
     try {
       final response = await context.api.put(

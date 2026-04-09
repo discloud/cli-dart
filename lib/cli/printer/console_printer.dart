@@ -1,12 +1,12 @@
 import "dart:io";
 
-import "package:cli_spin/cli_spin.dart";
 import "package:discloud/cli/context.dart";
 import "package:discloud/cli/printer/iprinter.dart";
+import "package:discloud/cli/spin/cli_spin.dart";
 
-class ConsolePrinter implements IPrinter<CliSpin> {
+class ConsolePrinter implements IPrinter<CLISpin> {
   static final CliContext _context = .I;
-  CliSpin? _spin;
+  CLISpin? _spin;
 
   @override
   void dispose() {
@@ -14,9 +14,9 @@ class ConsolePrinter implements IPrinter<CliSpin> {
   }
 
   @override
-  CliSpin spin({String? text, bool start = true}) {
+  CLISpin spin({String? text, bool start = true}) {
     final spin = _spin ??= .new(text: text);
-    if (start) return spin.start();
+    if (start) spin.start();
     return spin;
   }
 

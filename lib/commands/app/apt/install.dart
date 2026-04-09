@@ -25,7 +25,7 @@ class AppAptInstallCommand extends Command<void> {
 
     if (apts.isEmpty) usageException("Apt option cannot be empty");
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Installing app apt...");
 
     final response = await context.api.put(
       "/app/$appId/apt",

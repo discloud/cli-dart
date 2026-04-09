@@ -22,7 +22,7 @@ class AppModDeleteCommand extends Command<void> {
     final appId = argResults!.option("app");
     final modId = argResults!.option("mod");
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Deleting app MOD...");
 
     final response = await context.api.delete("/app/$appId/team$modId");
 

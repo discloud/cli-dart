@@ -18,7 +18,7 @@ class LoginCommand extends Command<void> {
 
     if (!isDiscloudJwt(token)) throw Exception("Invalid token");
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Logging in...");
 
     final response = await context.api.get(
       "/user",

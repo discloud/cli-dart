@@ -2,7 +2,7 @@ import "dart:async";
 import "dart:io";
 
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
+import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/download.dart";
 import "package:discloud/utils/messages.dart";
@@ -27,7 +27,7 @@ class TeamBackupCommand extends Command<void> {
   Future<void> run() async {
     final appId = argResults!.option("app");
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Fetching backup...");
 
     final response = await context.api.get("/team/$appId/backup");
 
@@ -43,10 +43,7 @@ class TeamBackupCommand extends Command<void> {
     }
   }
 
-  Future<void> _handleSingle(
-    Map<dynamic, dynamic> data,
-    CliSpin spinner,
-  ) async {
+  Future<void> _handleSingle(Map<dynamic, dynamic> data, ISpin spinner) async {
     if (data["url"] case final String url) {
       if (argResults?.option("out") case final out?) {
         spinner.start(_downloadingText);
@@ -67,7 +64,7 @@ class TeamBackupCommand extends Command<void> {
     }
   }
 
-  Future<void> _handleMulti(List list, CliSpin spinner) async {
+  Future<void> _handleMulti(List list, ISpin spinner) async {
     final client = HttpClient();
     final out = argResults?.option("out") ?? ".";
 
@@ -93,7 +90,8 @@ class TeamBackupCommand extends Command<void> {
           out: appZipPath,
           client: client,
           onProgress: (processed, total) {
-            spinner.text = "$_downloadingText ${percent(processed, total)}%";
+            spinner.text =
+                "Downloading backup of $appId: ${percent(processed, total)}%";
           },
         );
 

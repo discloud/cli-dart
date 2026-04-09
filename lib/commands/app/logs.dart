@@ -3,7 +3,7 @@ import "dart:io";
 
 import "package:ansi_strip/ansi_strip.dart";
 import "package:args/command_runner.dart";
-import "package:cli_spin/cli_spin.dart";
+import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 import "package:path/path.dart" hide context;
@@ -54,7 +54,7 @@ class AppLogsCommand extends Command<void> {
   Future<void> _handleSingle(
     Map<dynamic, dynamic> data,
     String? out,
-    CliSpin spinner,
+    ISpin spinner,
   ) async {
     if (data["terminal"]?["big"] case final String data) {
       if (out case final out?) return _saveLog(data, out, spinner);
@@ -62,7 +62,7 @@ class AppLogsCommand extends Command<void> {
     }
   }
 
-  Future<void> _handleMulti(List list, CliSpin spinner) async {
+  Future<void> _handleMulti(List list, ISpin spinner) async {
     final out = argResults?.option("out") ?? ".";
 
     for (final data in list) {
@@ -73,7 +73,7 @@ class AppLogsCommand extends Command<void> {
     }
   }
 
-  Future<void> _saveLog(String data, String out, CliSpin spinner) async {
+  Future<void> _saveLog(String data, String out, ISpin spinner) async {
     final file = File(out);
     await file.create(recursive: true);
     await file.writeAsString(stripAnsi(data));

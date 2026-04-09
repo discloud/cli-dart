@@ -25,7 +25,7 @@ class AppModEditCommand extends Command<void> {
     final modId = argResults!.option("mod");
     final perms = argResults!.multiOption("perms");
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Editing app MOD...");
 
     final response = await context.api.put(
       "/app/$appId/team",

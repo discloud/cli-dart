@@ -1,3 +1,3 @@
-String percent(num actual, num total, [int precision = 2]) {
-  return (actual / total * 100).toStringAsPrecision(precision);
+String percent(num actual, num total, [int fractionDigits = 2]) {
+  return (actual / total * 100).toStringAsFixed(fractionDigits);
 }

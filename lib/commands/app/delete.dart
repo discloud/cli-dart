@@ -36,7 +36,7 @@ class AppDeleteCommand extends Command<void> {
 
     if (!result) return;
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Deleting app...");
 
     final response = await context.api.delete("/app/$appId/delete");
 

@@ -17,7 +17,7 @@ class UserInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Fetching user info...");
 
     final response = await context.api.get("/user");
     spinner.success(resolveResponseMessage(response));

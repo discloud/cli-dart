@@ -32,7 +32,7 @@ class TeamRamCommand extends Command<void> {
       DiscloudRamMinByType.lowest.value,
     );
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Defining amount of RAM...");
 
     final response = await context.api.put(
       "/team/$appId/ram",

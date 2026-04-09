@@ -19,7 +19,7 @@ class TeamStopCommand extends Command<void> {
   Future<void> run() async {
     final appId = argResults!.option("app");
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Stopping app...");
 
     final response = await context.api.put("/team/$appId/stop");
 

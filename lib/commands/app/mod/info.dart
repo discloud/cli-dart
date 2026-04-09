@@ -21,7 +21,7 @@ class AppModInfoCommand extends Command<void> {
   Future<void> run() async {
     final appId = argResults!.option("app");
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Fetching app MODs...");
 
     final response = await context.api.get("/app/$appId/team");
 

@@ -34,7 +34,7 @@ class TeamInfoCommand extends Command<void> {
   Future<void> run() async {
     final appId = argResults!.option("app");
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Fetching app info...");
 
     final route = appId == null ? "/team" : "/team/$appId";
 

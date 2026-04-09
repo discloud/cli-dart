@@ -23,7 +23,7 @@ class AppStatusCommand extends Command<void> {
   Future<void> run() async {
     final appId = argResults!.option("app");
 
-    final spinner = context.printer.spin();
+    final spinner = context.printer.spin(text: "Fetching app status...");
 
     final response = await context.api.get("/app/$appId/status");
 

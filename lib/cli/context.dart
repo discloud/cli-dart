@@ -1,10 +1,10 @@
 import "dart:async";
 import "dart:io";
 
-import "package:cli_spin/cli_spin.dart";
 import "package:discloud/cli/disposable.dart";
 import "package:discloud/cli/printer/console_printer.dart";
 import "package:discloud/cli/printer/iprinter.dart";
+import "package:discloud/cli/spin/cli_spin.dart";
 import "package:discloud/extensions/duration.dart";
 import "package:discloud/extensions/list.dart";
 import "package:discloud/services/discloud/api_client.dart";
@@ -40,7 +40,7 @@ abstract class CliContext implements Disposable {
   bool _debug = false;
   bool get isDebug => _debug;
 
-  final IPrinter<CliSpin> printer = ConsolePrinter();
+  final IPrinter<CLISpin> printer = ConsolePrinter();
 
   final DiscloudApiClient api = .new();
 
