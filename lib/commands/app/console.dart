@@ -22,7 +22,7 @@ class AppConsoleCommand extends Command<void> {
   final description = "Use the app terminal";
 
   @override
-  final aliases = ["terminal"];
+  final aliases = const ["terminal"];
 
   @override
   Future<void> run() async {

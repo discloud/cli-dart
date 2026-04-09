@@ -17,7 +17,7 @@ class AppBackupCommand extends Command<void> {
       ..addOption(
         "dir",
         abbr: "d",
-        aliases: ["out"],
+        aliases: const ["out"],
         help:
             "Specifies the destination path for downloading backups. The destination path will be considered a directory.",
       );
@@ -30,7 +30,7 @@ class AppBackupCommand extends Command<void> {
   final description = "Get backup of your app code from Discloud";
 
   @override
-  final aliases = ["bkp"];
+  final aliases = const ["bkp"];
 
   @override
   Future<void> run() async {
