@@ -8,7 +8,7 @@ import "package:discloud/version.dart";
 import "package:tint/tint.dart";
 
 void main(Iterable<String> arguments) async {
-  final context = CliContext.I..config(arguments);
+  final context = CliContext(arguments);
 
   final runner = CliCommandRunner();
 

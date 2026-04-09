@@ -1,11 +1,17 @@
 import "dart:io";
 
-import "package:discloud/cli/context.dart";
 import "package:discloud/cli/printer/iprinter.dart";
 import "package:discloud/cli/spin/cli_spin.dart";
 
+part "debug_console_printer.dart";
+
 class ConsolePrinter implements IPrinter<CLISpin> {
-  static final CliContext _context = .I;
+  factory ConsolePrinter._debug() = _DebugConsolePrinter;
+
+  factory ConsolePrinter({bool isDebug = false}) => isDebug ? ._debug() : ._();
+
+  ConsolePrinter._();
+
   CLISpin? _spin;
 
   @override
@@ -26,16 +32,7 @@ class ConsolePrinter implements IPrinter<CLISpin> {
   }
 
   @override
-  void debug(Object? object) {
-    if (!_context.isDebug) return;
-    if (_spin case final spin?) {
-      spin
-        ..info(object.toString())
-        ..start();
-      return;
-    }
-    stderr.writeln(object);
-  }
+  void debug(Object? object) {}
 
   @override
   void error(Object? object) {

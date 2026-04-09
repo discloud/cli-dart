@@ -1,5 +1,6 @@
 import "dart:convert";
 import "dart:io";
+import "dart:math";
 
 import "package:discloud/cli/context.dart";
 import "package:discloud/cli/disposable.dart";
@@ -23,7 +24,10 @@ class DiscloudApiClient implements Disposable {
   static const _apiTokenHeader = "api-token";
   static const UserAgent _userAgent = .new();
 
+  static CliContext get _context => .I;
+
   static Uri _resolveUrl(String path, {Map<String, String>? query}) {
+    path = path.startsWith(_slash) ? path.substring(1) : path;
     return .new(
       scheme: _apiScheme,
       host: _apiHost,
@@ -33,19 +37,20 @@ class DiscloudApiClient implements Disposable {
   }
 
   static Future<Map?> _resolveResponseBody(HttpClientResponse response) async {
-    CliContext.I.printer.debug(
-      "Response status: ${response.statusCode} ${response.reasonPhrase}"
-      "\n"
-      "Response content length: ${response.contentLength}",
+    _context.printer.debug(
+      StringBuffer()..writeAll([
+        "[Response] status: ${response.statusCode} ${response.reasonPhrase}",
+        "[Response] content length: ${response.contentLength}",
+      ], "\n"),
     );
 
     if (response.headers.contentType case final contentType?) {
-      CliContext.I.printer.debug("Response content type: $contentType");
+      _context.printer.debug("[Response] content type: $contentType");
 
       switch (contentType.mimeType) {
         case _jsonContentType:
           final body = await response.json();
-          CliContext.I.printer.debug(body);
+          _context.printer.debug(body);
           return body;
       }
     }
@@ -60,11 +65,9 @@ class DiscloudApiClient implements Disposable {
 
   final HttpClient _client;
 
-  CliContext get context => .I;
-
   Future<String?> get _maybeToken async =>
       Platform.environment["DISCLOUD_TOKEN"] ??
-      await context.store.get("token");
+      await _context.store.get("token");
 
   @override
   void dispose() {
@@ -78,6 +81,8 @@ class DiscloudApiClient implements Disposable {
     Map<String, String>? query,
   }) async {
     final url = _resolveUrl(path, query: query);
+
+    _context.printer.debug("DELETE ${url.path}");
 
     final request = await _client.deleteUrl(url);
 
@@ -105,6 +110,8 @@ class DiscloudApiClient implements Disposable {
   }) async {
     final url = _resolveUrl(path, query: query);
 
+    _context.printer.debug("GET ${url.path}");
+
     final request = await _client.getUrl(url);
 
     await _prepareRequest(request, headers: headers);
@@ -130,6 +137,8 @@ class DiscloudApiClient implements Disposable {
     Map<String, String>? query,
   }) async {
     final url = _resolveUrl(path, query: query);
+
+    _context.printer.debug("POST ${url.path}");
 
     final request = await _client.postUrl(url);
 
@@ -157,6 +166,8 @@ class DiscloudApiClient implements Disposable {
     Map<String, String>? query,
   }) async {
     final url = _resolveUrl(path, query: query);
+
+    _context.printer.debug("PUT ${url.path}");
 
     final request = await _client.putUrl(url);
 
@@ -306,29 +317,47 @@ class DiscloudApiClient implements Disposable {
     Map<String, String>? headers,
     Map? body,
   }) async {
-    if (await _maybeToken case final value?) {
-      request.headers.set(_apiTokenHeader, value);
-    }
+    final sb = StringBuffer();
 
+    bool hasApiToken = false;
     if (headers case final headers?) {
+      hasApiToken = headers.containsKey(_apiTokenHeader);
+
       for (final entry in headers.entries) {
         request.headers.set(entry.key, entry.value);
+        sb.writeln("[Request] Header: ${entry.key}:${entry.value.length}");
+      }
+    }
+
+    if (!hasApiToken) {
+      if (await _maybeToken case final value?) {
+        request.headers.set(_apiTokenHeader, value);
+        sb.writeln("[Request] Header: $_apiTokenHeader:${value.length}");
       }
     }
 
     if (!isDiscloudJwt(request.headers.value(_apiTokenHeader).orEmpty)) {
+      _context.printer.debug(sb);
       throw const DiscloudApiException(
         code: 401,
         message: "Please use the discloud login command first.",
       );
     }
 
-    request.headers.set(HttpHeaders.userAgentHeader, _userAgent);
+    final userAgent = _userAgent.toString();
+
+    request.headers.set(HttpHeaders.userAgentHeader, userAgent);
+
+    sb.writeln("[Request] Header: ${HttpHeaders.userAgentHeader}:$userAgent");
 
     if (body case final body?) {
       request
         ..headers.contentType = .json
         ..write(jsonEncode(body));
     }
+
+    sb.write("[Request] Body: ${body?.length}");
+
+    _context.printer.debug(sb);
   }
 }

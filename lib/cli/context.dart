@@ -12,14 +12,22 @@ import "package:local_store/local_store.dart";
 import "package:path/path.dart";
 import "package:tint/tint.dart";
 
-abstract class CliContext implements Disposable {
-  static final CliContext I = _CliContext();
+class CliContext implements Disposable {
+  static late final CliContext I;
+
+  CliContext(this.arguments)
+    : _start = .now(),
+      debug = arguments.contains("--debug") {
+    I = this;
+    printer = ConsolePrinter(isDebug: debug);
+  }
 
   @override
   Future<void> dispose() async {
-    printer.dispose();
-    api.dispose();
     await subscriptions.dispose();
+    api.dispose();
+    printer.dispose();
+
     _stopwatch.stop();
 
     final elapsed = _stopwatch.elapsed.pretty();
@@ -34,13 +42,11 @@ abstract class CliContext implements Disposable {
   DateTime? _start;
   DateTime get start => _start ??= .now();
 
-  Iterable<String> _arguments = const .empty();
-  Iterable<String> get arguments => _arguments;
+  final Iterable<String> arguments;
 
-  bool _debug = false;
-  bool get isDebug => _debug;
+  final bool debug;
 
-  final IPrinter<CLISpin> printer = ConsolePrinter();
+  late final IPrinter<CLISpin> printer;
 
   final DiscloudApiClient api = .new();
 
@@ -60,12 +66,4 @@ abstract class CliContext implements Disposable {
   late final cliConfigDir = joinAll([userHomePath, ".discloud"]);
 
   late final cliConfigFilePath = joinAll([cliConfigDir, ".cli"]);
-
-  void config(Iterable<String> arguments) {
-    _start = .now();
-    _arguments = arguments;
-    _debug = arguments.contains("--debug");
-  }
 }
-
-class _CliContext extends CliContext {}
