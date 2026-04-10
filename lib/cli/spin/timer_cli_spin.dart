@@ -1,6 +1,11 @@
 part of "cli_spin.dart";
 
 class _TimerCliSpin extends CLISpin {
+  static String? _resolveSuffixText(Stopwatch stopwatch) {
+    if (stopwatch.isRunning) return stopwatch.elapsed.pretty().dim();
+    return null;
+  }
+
   _TimerCliSpin._({String? text})
     : _stopwatch = .new()..start(),
       super._(.new(text: text)) {
@@ -15,35 +20,34 @@ class _TimerCliSpin extends CLISpin {
   late final Duration _timerInterval;
   late Timer _timer;
 
-  void _resetSuffixText() {
-    _spin.suffixText = null;
+  void _setSuffixTextAndStopTimers() {
+    _timer.cancel();
+    _spin.suffixText = _resolveSuffixText(_stopwatch);
+    _stopwatch.stop();
   }
 
-  void _setSuffixText([_]) {
-    _spin.suffixText = _stopwatch.elapsed.pretty().dim();
+  void _timerCallback(_) {
+    _spin.suffixText = _resolveSuffixText(_stopwatch);
   }
 
   @override
   void fail([String? text]) {
-    _timer.cancel();
-    _setSuffixText();
+    _setSuffixTextAndStopTimers();
     super.fail(text);
-    _resetSuffixText();
   }
 
   @override
   void info([String? text]) {
-    _timer.cancel();
-    _setSuffixText();
+    _setSuffixTextAndStopTimers();
     super.info(text);
-    _resetSuffixText();
+    _stopwatch.stop();
   }
 
   @override
   void start([String? text]) {
+    _stopwatch.resetAndStart();
     _timer.cancel();
-    _stopwatch.reset();
-    _timer = .periodic(_timerInterval, _setSuffixText);
+    _timer = .periodic(_timerInterval, _timerCallback);
     super.start(text);
   }
 
@@ -51,8 +55,7 @@ class _TimerCliSpin extends CLISpin {
   void stop() {
     _timer.cancel();
     super.stop();
-    _stopwatch.stop();
-    _resetSuffixText();
+    _stopwatch.stopAndReset();
   }
 
   @override
@@ -60,22 +63,19 @@ class _TimerCliSpin extends CLISpin {
     _timer.cancel();
     super.stopAndPersist(symbol: symbol, text: text);
     _stopwatch.stop();
-    _resetSuffixText();
   }
 
   @override
   void success([String? text]) {
-    _timer.cancel();
-    _setSuffixText();
+    _setSuffixTextAndStopTimers();
     super.success(text);
-    _resetSuffixText();
+    _stopwatch.stop();
   }
 
   @override
   void warn([String? text]) {
-    _timer.cancel();
-    _setSuffixText();
+    _setSuffixTextAndStopTimers();
     super.warn(text);
-    _resetSuffixText();
+    _stopwatch.stop();
   }
 }

@@ -3,6 +3,7 @@ import "dart:async";
 import "package:cli_spin/cli_spin.dart";
 import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/duration.dart";
+import "package:discloud/extensions/stopwatch.dart";
 import "package:tint/tint.dart";
 
 part "timer_cli_spin.dart";
