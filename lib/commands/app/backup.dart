@@ -64,7 +64,7 @@ class AppBackupCommand extends Command<void> {
         await download(
           uri.toString(),
           out: appZipPath,
-          onProgress: (processed, total) {
+          onProgress: (bytes, processed, total) {
             spinner.text = "$_downloadingText ${percent(processed, total)}";
           },
         );
@@ -103,7 +103,7 @@ class AppBackupCommand extends Command<void> {
           uri.toString(),
           out: appZipPath,
           client: client,
-          onProgress: (processed, total) {
+          onProgress: (bytes, processed, total) {
             spinner.text =
                 "Downloading backup of $appId: ${percent(processed, total)}";
           },
