@@ -40,11 +40,7 @@ Discloud CLI v$packageVersion
 
 void _printCliHeader(ArgResults argResults) {
   final buffer = StringBuffer()
-    ..writeAll([
-      "discloud",
-      ?argResults.commandName,
-      "v$packageVersion",
-    ], " ");
+    ..writeAll(["discloud", ?argResults.commandName, "v$packageVersion"], " ");
 
   stderr.writeln(buffer.toString().bold());
 }

@@ -1,6 +1,6 @@
 import "package:intl/intl.dart";
 
-final _formatters = <int, NumberFormat>{};
+final Map<int, NumberFormat> _formatters = .new();
 
 String percent(
   num actual,

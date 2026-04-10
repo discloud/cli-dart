@@ -18,6 +18,8 @@ enum Dimension {
 }
 
 class Bytes<N extends num> {
+  static final Map<int, NumberFormat> _formatters = .new();
+
   const Bytes(this.n, {this.dimension = .binary});
 
   final N n;
@@ -42,8 +44,10 @@ class Bytes<N extends num> {
 
   @override
   String toString([int fractionDigits = 2]) {
-    final formatter = NumberFormat.decimalPattern()
-      ..maximumFractionDigits = fractionDigits;
+    final formatter = _formatters.putIfAbsent(
+      fractionDigits,
+      () => .decimalPattern()..maximumFractionDigits = fractionDigits,
+    );
     return "${formatter.format(bytes)} ${unit.name}";
   }
 
