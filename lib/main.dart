@@ -3,6 +3,7 @@ import "dart:io";
 import "package:args/args.dart";
 import "package:discloud/cli/context.dart";
 import "package:discloud/cli/runner.dart";
+import "package:discloud/extensions/arg_results.dart";
 import "package:discloud/utils/messages.dart";
 import "package:discloud/version.dart";
 import "package:tint/tint.dart";
@@ -41,25 +42,9 @@ void _printCliHeader(ArgResults argResults) {
   final buffer = StringBuffer()
     ..writeAll([
       "discloud",
-      ?_getCommandName(argResults),
+      ?argResults.commandName,
       "v$packageVersion",
     ], " ");
 
   stderr.writeln(buffer.toString().bold());
-}
-
-String? _getCommandName(ArgResults argResults) {
-  final list = <String>[];
-
-  ArgResults? command = argResults;
-  do {
-    if (command case final subcommand?) {
-      if (subcommand.name case final name?) list.add(name);
-      command = subcommand.command;
-    }
-  } while (command != null);
-
-  if (list.isEmpty) return null;
-
-  return list.join(" ");
 }

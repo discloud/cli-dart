@@ -55,17 +55,17 @@ class AppBackupCommand extends Command<void> {
   Future<void> _handleSingle(Map<dynamic, dynamic> data, ISpin spinner) async {
     if (data["url"] case final String url) {
       if (argResults?.option("dir") case final dir?) {
-        spinner.start(_downloadingText);
-
         final Uri uri = .parse(url);
         final filename = uri.pathSegments.last;
         final appZipPath = "$dir$_pSep$filename";
+
+        spinner.start(_downloadingText);
 
         await download(
           uri.toString(),
           out: appZipPath,
           onProgress: (processed, total) {
-            spinner.text = "$_downloadingText ${percent(processed, total)}%";
+            spinner.text = "$_downloadingText ${percent(processed, total)}";
           },
         );
 
@@ -105,7 +105,7 @@ class AppBackupCommand extends Command<void> {
           client: client,
           onProgress: (processed, total) {
             spinner.text =
-                "Downloading backup of $appId: ${percent(processed, total)}%";
+                "Downloading backup of $appId: ${percent(processed, total)}";
           },
         );
 

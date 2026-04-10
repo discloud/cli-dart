@@ -62,7 +62,7 @@ class AppUploadCommand extends Command<void> {
         "/upload",
         file: file,
         onUploadProgress: (processed) {
-          spinner.start("Uploading... ${percent(processed, total)}%");
+          spinner.start("Uploading... ${percent(processed, total)}");
         },
         onUploadDone: () {
           spinner.start("Processing...");

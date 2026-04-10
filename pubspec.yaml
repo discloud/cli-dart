@@ -1,5 +1,6 @@
 name: discloud
 description: A sample command-line application with basic argument parsing.
+# auto sync when release create
 version: 0.0.0
 publish_to: none
 repository: https://github.com/discloud/cli-dart

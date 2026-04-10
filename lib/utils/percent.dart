@@ -1,3 +1,18 @@
-String percent(num actual, num total, [int fractionDigits = 2]) {
-  return (actual / total * 100).toStringAsFixed(fractionDigits);
+import "package:intl/intl.dart";
+
+final _formatters = <int, NumberFormat>{};
+
+String percent(
+  num actual,
+  num total, {
+  int minimumFractionDigits = 1,
+  int maximumFractionDigits = 2,
+}) {
+  final formatter = _formatters.putIfAbsent(
+    minimumFractionDigits,
+    () => .percentPattern()
+      ..minimumFractionDigits = minimumFractionDigits
+      ..maximumFractionDigits = maximumFractionDigits,
+  );
+  return formatter.format(actual / total);
 }

@@ -67,7 +67,7 @@ class AppCommitCommand extends Command<void> {
         "/app/$appId/commit",
         file: file,
         onUploadProgress: (processed) {
-          spinner.start("Committing... ${percent(processed, total)}%");
+          spinner.start("Committing... ${percent(processed, total)}");
         },
         onUploadDone: () {
           spinner.start("Processing...");
