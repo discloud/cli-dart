@@ -3,9 +3,9 @@ import "dart:collection";
 import "package:discloud/cli/disposable.dart";
 
 final class _SpeedSample with LinkedListEntry<_SpeedSample> {
-  _SpeedSample(this.bytes, this.time);
+  _SpeedSample(this.units, this.time);
 
-  final int bytes;
+  final int units;
   final int time;
 }
 
@@ -23,10 +23,10 @@ class SpeedMonitor implements Disposable {
     _samples.clear();
   }
 
-  double add(int totalProcessedBytes) {
+  double add(int totalProcessedUnits) {
     final now = DateTime.now().microsecondsSinceEpoch;
 
-    final _SpeedSample last = .new(totalProcessedBytes, now);
+    final _SpeedSample last = .new(totalProcessedUnits, now);
 
     _samples.add(last);
 
@@ -40,8 +40,8 @@ class SpeedMonitor implements Disposable {
 
     if (deltaTime <= _zero) return _zero;
 
-    final deltaBytes = last.bytes - first.bytes;
+    final deltaUnits = last.units - first.units;
 
-    return deltaBytes / deltaTime;
+    return deltaUnits / deltaTime;
   }
 }
