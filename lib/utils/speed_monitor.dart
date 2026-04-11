@@ -11,7 +11,7 @@ final class _SpeedSample with LinkedListEntry<_SpeedSample> {
 
 /// A utility class for monitoring processing speed over a sliding time window.
 ///
-/// It tracks the number of units processed over a specified [windowDuration] 
+/// It tracks the number of units processed over a specified [windowDuration]
 /// (defaulting to 1 second) and calculates the current speed.
 class SpeedMonitor implements Disposable {
   static const double _zero = 0;
