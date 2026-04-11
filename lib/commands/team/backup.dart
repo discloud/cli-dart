@@ -56,32 +56,11 @@ class TeamBackupCommand extends Command<void> {
     if (data["url"] case final String url) {
       if (argResults?.option("dir") case final dir?) {
         final Uri uri = .parse(url);
-        final filename = uri.pathSegments.last;
-        final appZipPath = "$dir$_pSep$filename";
 
-        spinner.start("Downloading...");
-
-        final monitor = SpeedMonitor();
-
-        await download(
-          uri.toString(),
-          out: appZipPath,
-          onProgress: (bytes, processed, total) {
-            spinner.text = formatDownloadProgress(
-              speed: monitor.add(processed),
-              processed: processed,
-              total: total,
-            );
-          },
-        );
-
-        monitor.dispose();
-
-        spinner.success(appZipPath);
-        return;
+        return _download(dir: dir, spinner: spinner, uri: uri);
       }
+
       context.printer.writeln(url);
-      return;
     }
   }
 
@@ -101,37 +80,47 @@ class TeamBackupCommand extends Command<void> {
       final String url = data["url"];
 
       final Uri uri = .parse(url);
-      final filename = uri.pathSegments.last;
-      final appZipPath = "$dir$_pSep$filename";
 
-      try {
-        spinner.start("Downloading backup of $appId...");
-
-        final monitor = SpeedMonitor();
-
-        await download(
-          uri.toString(),
-          out: appZipPath,
-          client: client,
-          onProgress: (bytes, processed, total) {
-            spinner.text = formatDownloadProgress(
-              prefixText: "Downloading backup of $appId:",
-              speed: monitor.add(processed),
-              processed: processed,
-              total: total,
-            );
-          },
-        );
-
-        monitor.dispose();
-
-        spinner.success(appZipPath);
-      } catch (e, s) {
-        spinner.fail(resolveResponseMessage(e));
-        context.printer.debug(s);
-      }
+      await _download(dir: dir, spinner: spinner, uri: uri, client: client);
     }
 
     client.close();
+  }
+
+  Future<void> _download({
+    required String dir,
+    required ISpin spinner,
+    required Uri uri,
+    HttpClient? client,
+  }) async {
+    final filename = uri.pathSegments.last;
+    final filepath = "$dir$_pSep$filename";
+    final File file = .new(filepath);
+
+    final monitor = SpeedMonitor();
+
+    try {
+      spinner.start("Downloading...");
+
+      await download(
+        uri,
+        file: file,
+        client: client,
+        onProgress: (processed, total) {
+          spinner.text = formatDownloadProgress(
+            speed: monitor.add(processed),
+            processed: processed,
+            total: total,
+          );
+        },
+      );
+
+      spinner.success(filepath);
+    } catch (e, s) {
+      spinner.fail(resolveResponseMessage(e));
+      context.printer.debug(s);
+    } finally {
+      monitor.dispose();
+    }
   }
 }

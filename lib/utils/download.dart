@@ -3,26 +3,22 @@ import "dart:io";
 import "package:discloud/utils/bytes.dart";
 import "package:discloud/utils/formatters.dart";
 
-typedef VoidProgressCallback =
-    void Function(int bytes, int processed, int total);
+typedef VoidProgressCallback = void Function(int processed, int total);
 
 Future<void> download(
-  String url, {
-  String? out,
+  Uri url, {
+  File? file,
   HttpClient? client,
   VoidProgressCallback? onProgress,
 }) async {
-  final uri = Uri.parse(url);
-  out ??= uri.pathSegments.last;
-
-  final file = File(out);
+  file ??= .new(url.pathSegments.last);
   await file.create(recursive: true);
   final sink = file.openWrite();
 
-  final client_ = client ?? .new();
+  final client0 = client ?? .new();
 
   try {
-    final request = await client_.getUrl(uri);
+    final request = await client0.getUrl(url);
 
     if (onProgress case final onProgress?) {
       await _downloadWithProgress(
@@ -40,7 +36,7 @@ Future<void> download(
     rethrow;
   } finally {
     await sink.close();
-    if (client == null) client_.close();
+    if (client == null) client0.close();
   }
 }
 
@@ -57,7 +53,7 @@ Future<void> _downloadWithProgress({
   await for (final data in response) {
     sink.add(data);
 
-    onProgress(data.length, processed += data.length, total);
+    onProgress(processed += data.length, total);
   }
 }
 
