@@ -32,8 +32,8 @@ class SpeedMonitor implements Disposable {
 
     _SpeedSample first = _samples.first;
     while (now - first.time > windowDuration.inMicroseconds) {
-      _samples.first.unlink();
-      first = first.next!;
+      first.unlink();
+      first = _samples.first;
     }
 
     final deltaTime = (last.time - first.time) / Duration.microsecondsPerSecond;
