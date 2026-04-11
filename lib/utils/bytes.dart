@@ -1,7 +1,7 @@
 import "dart:math";
 
 import "package:discloud/extensions/num.dart";
-import "package:intl/intl.dart";
+import "package:discloud/utils/formatters.dart";
 
 /// binary: KB = 1024 B
 /// decimal: KB = 1000 B
@@ -18,7 +18,7 @@ enum Dimension {
 }
 
 class Bytes<N extends num> {
-  static final Map<int, NumberFormat> _formatters = .new();
+  const factory Bytes.bits(N n) = _Bits;
 
   const Bytes(this.n, {this.dimension = .binary});
 
@@ -35,20 +35,14 @@ class Bytes<N extends num> {
     return n / pow(dimension.value.toDouble(), index);
   }
 
-  ByteUnit get unit {
-    final index = this.index;
-    return index < ByteUnit.values.length ? .values[index] : .values.last;
-  }
+  int get unitIndex => min(index, ByteUnit.values.length);
 
   bool get _isInvalid => n.isNaN || n.isInfinite || n.isZero || n.isNegative;
 
   @override
-  String toString([int fractionDigits = 2]) {
-    final formatter = _formatters.putIfAbsent(
-      fractionDigits,
-      () => .decimalPattern()..maximumFractionDigits = fractionDigits,
-    );
-    return "${formatter.format(bytes)} ${unit.name}";
+  String toString([String separator = ""]) {
+    final unit = ByteUnit.values[unitIndex];
+    return "${decimalFormatter.format(bytes)}$separator${unit.name}";
   }
 
   Bytes operator +(Object? other) {
@@ -145,6 +139,19 @@ class Bytes<N extends num> {
   int get hashCode => super.hashCode;
 }
 
+class _Bits<N extends num> extends Bytes<N> {
+  const _Bits(super.n);
+
+  @override
+  int get unitIndex => min(index, _BitUnit.values.length);
+
+  @override
+  String toString([String separator = ""]) {
+    final unit = _BitUnit.values[unitIndex];
+    return "${decimalFormatter.format(bytes * 8)}$separator${unit.name}";
+  }
+}
+
 enum ByteUnit<N extends num> {
   B(1),
 
@@ -184,3 +191,6 @@ enum ByteUnit<N extends num> {
 
   final N value;
 }
+
+// ignore: constant_identifier_names
+enum _BitUnit { b, Kb, Mb, Gb, Tb, Pb, Eb, Zb, Yb }

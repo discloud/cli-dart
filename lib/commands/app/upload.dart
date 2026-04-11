@@ -4,8 +4,8 @@ import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
+import "package:discloud/utils/formatters.dart";
 import "package:discloud/utils/messages.dart";
-import "package:discloud/utils/percent.dart";
 import "package:discloud/utils/zip.dart";
 import "package:discloud_config/discloud_config.dart";
 import "package:path/path.dart" hide context;
@@ -62,7 +62,9 @@ class AppUploadCommand extends Command<void> {
         "/upload",
         file: file,
         onUploadProgress: (processed) {
-          spinner.start("Uploading... ${percent(processed, total)}");
+          spinner.start(
+            "Uploading... ${percentFormatter.format(processed / total)}",
+          );
         },
         onUploadDone: () {
           spinner.start("Processing...");

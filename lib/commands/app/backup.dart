@@ -5,8 +5,8 @@ import "package:args/command_runner.dart";
 import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/download.dart";
+import "package:discloud/utils/formatters.dart";
 import "package:discloud/utils/messages.dart";
-import "package:discloud/utils/percent.dart";
 
 const _pSep = "/";
 
@@ -65,7 +65,8 @@ class AppBackupCommand extends Command<void> {
           uri.toString(),
           out: appZipPath,
           onProgress: (bytes, processed, total) {
-            spinner.text = "$_downloadingText ${percent(processed, total)}";
+            spinner.text =
+                "$_downloadingText ${percentFormatter.format(processed / total)}";
           },
         );
 
@@ -105,7 +106,7 @@ class AppBackupCommand extends Command<void> {
           client: client,
           onProgress: (bytes, processed, total) {
             spinner.text =
-                "Downloading backup of $appId: ${percent(processed, total)}";
+                "Downloading backup of $appId: ${percentFormatter.format(processed / total)}";
           },
         );
 
