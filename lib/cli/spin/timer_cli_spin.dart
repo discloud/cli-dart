@@ -8,17 +8,17 @@ class _TimerCliSpin extends CLISpin {
 
   _TimerCliSpin._({String? text})
     : _stopwatch = .new()..start(),
+      _timer = .new(.zero, _noop),
       super._(.new(text: text)) {
     _interval = _spin.spinner?.interval ?? _defaultTimerInterval;
     _timerInterval = .new(milliseconds: _interval);
-    _timer = .new(.zero, _noop);
   }
 
   final Stopwatch _stopwatch;
 
+  Timer _timer;
   late final int _interval;
   late final Duration _timerInterval;
-  late Timer _timer;
 
   void _setSuffixTextAndStopTimers() {
     _timer.cancel();
