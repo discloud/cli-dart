@@ -12,15 +12,22 @@ import "package:local_store/local_store.dart";
 import "package:path/path.dart";
 import "package:tint/tint.dart";
 
+part "paths.dart";
+
 class CliContext implements Disposable {
   static late final CliContext I;
 
   CliContext(this.arguments)
-    : _start = .now(),
-      debug = arguments.contains("--debug") {
+    : subscriptions = [],
+      _stopwatch = .new()..start(),
+      debug = arguments.contains("--debug"),
+      api = .new() {
     I = this;
     printer = ConsolePrinter(isDebug: debug);
+    store = .json(cliConfigFilePath);
   }
+
+  final List<Disposable> subscriptions;
 
   @override
   Future<void> dispose() async {
@@ -35,35 +42,24 @@ class CliContext implements Disposable {
     stderr.writeln("Done in $elapsed".dim());
   }
 
-  final List<Disposable> subscriptions = [];
-
-  final Stopwatch _stopwatch = .new()..start();
-
-  DateTime? _start;
-  DateTime get start => _start ??= .now();
+  final Stopwatch _stopwatch;
 
   final Iterable<String> arguments;
-
   final bool debug;
+  final DiscloudApiClient api;
 
   late final IPrinter<CLISpin> printer;
+  late final LocalStore store;
 
-  final DiscloudApiClient api = .new();
+  Directory get workspaceFolder => _workspaceFolder;
 
-  late final LocalStore store = .json(cliConfigFilePath);
+  String get rootFilePath => _rootFilePath;
 
-  final Directory workspaceFolder = .current;
+  String get rootPath => _rootPath;
 
-  final rootFilePath = Platform.resolvedExecutable;
+  String get userHomePath => _userHomePath;
 
-  late final rootPath = dirname(rootFilePath);
+  String get cliConfigDir => _cliConfigDir;
 
-  late final userHomePath =
-      Platform.environment["HOME"] ??
-      Platform.environment["USERPROFILE"] ??
-      (throw Exception("User home path not found"));
-
-  late final cliConfigDir = joinAll([userHomePath, ".discloud"]);
-
-  late final cliConfigFilePath = joinAll([cliConfigDir, ".cli"]);
+  String get cliConfigFilePath => _cliConfigFilePath;
 }
