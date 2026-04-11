@@ -1,24 +1,32 @@
 import "dart:collection";
 
-final class SpeedSample with LinkedListEntry<SpeedSample> {
+import "package:discloud/cli/disposable.dart";
+
+final class _SpeedSample with LinkedListEntry<_SpeedSample> {
+  _SpeedSample(this.bytes, this.time);
+
   final int bytes;
   final int time;
-
-  SpeedSample(this.bytes, this.time);
 }
 
-class SpeedMonitor {
+class SpeedMonitor implements Disposable {
   static const double _zero = 0;
-  final Duration windowDuration;
-  final LinkedList<SpeedSample> _samples;
 
   SpeedMonitor({this.windowDuration = const .new(seconds: 1)})
     : _samples = .new();
 
+  final Duration windowDuration;
+  final LinkedList<_SpeedSample> _samples;
+
+  @override
+  void dispose() {
+    _samples.clear();
+  }
+
   double add(int totalProcessedBytes) {
     final now = DateTime.now().microsecondsSinceEpoch;
 
-    final SpeedSample last = .new(totalProcessedBytes, now);
+    final _SpeedSample last = .new(totalProcessedBytes, now);
 
     _samples.add(last);
 

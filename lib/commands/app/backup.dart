@@ -5,8 +5,8 @@ import "package:args/command_runner.dart";
 import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/download.dart";
-import "package:discloud/utils/formatters.dart";
 import "package:discloud/utils/messages.dart";
+import "package:discloud/utils/speed_monitor.dart";
 
 const _pSep = "/";
 
@@ -59,16 +59,23 @@ class AppBackupCommand extends Command<void> {
         final filename = uri.pathSegments.last;
         final appZipPath = "$dir$_pSep$filename";
 
-        spinner.start(_downloadingText);
+        spinner.start("Downloading...");
+
+        final monitor = SpeedMonitor();
 
         await download(
           uri.toString(),
           out: appZipPath,
           onProgress: (bytes, processed, total) {
-            spinner.text =
-                "$_downloadingText ${percentFormatter.format(processed / total)}";
+            spinner.text = formatDownloadProgress(
+              speed: monitor.add(processed),
+              processed: processed,
+              total: total,
+            );
           },
         );
+
+        monitor.dispose();
 
         spinner.success(appZipPath);
         return;
@@ -98,17 +105,25 @@ class AppBackupCommand extends Command<void> {
       final appZipPath = "$dir$_pSep$filename";
 
       try {
-        spinner.start(_downloadingText);
+        spinner.start("Downloading backup of $appId...");
+
+        final monitor = SpeedMonitor();
 
         await download(
           uri.toString(),
           out: appZipPath,
           client: client,
           onProgress: (bytes, processed, total) {
-            spinner.text =
-                "Downloading backup of $appId: ${percentFormatter.format(processed / total)}";
+            spinner.text = formatDownloadProgress(
+              prefixText: "Downloading backup of $appId:",
+              speed: monitor.add(processed),
+              processed: processed,
+              total: total,
+            );
           },
         );
+
+        monitor.dispose();
 
         spinner.success(appZipPath);
       } catch (e, s) {
@@ -120,5 +135,3 @@ class AppBackupCommand extends Command<void> {
     client.close();
   }
 }
-
-const _downloadingText = "Downloading...";

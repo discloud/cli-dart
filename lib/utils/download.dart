@@ -1,5 +1,8 @@
 import "dart:io";
 
+import "package:discloud/utils/bytes.dart";
+import "package:discloud/utils/formatters.dart";
+
 typedef VoidProgressCallback =
     void Function(int bytes, int processed, int total);
 
@@ -56,4 +59,16 @@ Future<void> _downloadWithProgress({
 
     onProgress(data.length, processed += data.length, total);
   }
+}
+
+String formatDownloadProgress({
+  required int processed,
+  required int total,
+  double? speed,
+  String prefixText = "Downloading:",
+}) {
+  if (speed case final speed?) {
+    return "$prefixText ↓${Bytes.bits(speed)}/s ${percentFormatter.format(processed / total)}";
+  }
+  return "$prefixText ${percentFormatter.format(processed / total)}";
 }
