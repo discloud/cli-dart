@@ -27,11 +27,12 @@ class DiscloudApiClient implements Disposable {
   static CliContext get _context => .I;
 
   static Uri _resolveUrl(String path, {Map<String, String>? query}) {
-    path = path.startsWith(_slash) ? path.substring(1) : path;
+    Iterable<String> segments = path.split(_slash);
+    if (segments.first.isEmpty) segments = segments.skip(1);
     return .new(
       scheme: _apiScheme,
       host: _apiHost,
-      pathSegments: const [_apiVersionPath].followedBy(path.split(_slash)),
+      pathSegments: const [_apiVersionPath].followedBy(segments),
       queryParameters: query,
     );
   }
