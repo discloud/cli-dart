@@ -68,7 +68,7 @@ class AppUploadCommand extends Command<void> {
           spinner.text = formatProgressMessage(
             speed: monitor.add(processed),
             prefixText: "Uploading:",
-            symbol: .up,
+            direction: .up,
             processed: processed,
             total: total,
           );

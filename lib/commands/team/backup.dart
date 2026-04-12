@@ -111,7 +111,7 @@ class TeamBackupCommand extends Command<void> {
           spinner.text = formatProgressMessage(
             prefixText: "Downloading:",
             speed: monitor.add(processed),
-            symbol: .down,
+            direction: .down,
             processed: processed,
             total: total,
           );

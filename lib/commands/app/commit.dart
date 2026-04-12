@@ -73,7 +73,7 @@ class AppCommitCommand extends Command<void> {
           spinner.text = formatProgressMessage(
             speed: monitor.add(processed),
             prefixText: "Committing:",
-            symbol: .up,
+            direction: .up,
             processed: processed,
             total: total,
           );
