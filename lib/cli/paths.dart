@@ -6,14 +6,13 @@ final _rootFilePath = Platform.resolvedExecutable;
 
 final _rootPath = dirname(_rootFilePath);
 
-final String _userHomePath = .fromEnvironment(
-  const ["HOME", "USERPROFILE"].firstWhere(
-    bool.hasEnvironment,
-    orElse: () {
-      throw Exception("User home path not found");
-    },
-  ),
-);
+final String _userHomePath =
+    Platform.environment[const ["HOME", "USERPROFILE"].firstWhere(
+      Platform.environment.containsKey,
+      orElse: () {
+        throw Exception("User home path not found");
+      },
+    )]!;
 
 final _cliConfigDir = joinAll([_userHomePath, ".discloud"]);
 

@@ -18,7 +18,7 @@ class CliContext implements Disposable {
   static late final CliContext I;
 
   CliContext(this.arguments)
-    : subscriptions = .empty(),
+    : subscriptions = .empty(growable: true),
       _stopwatch = .new()..start(),
       debug = arguments.contains("--debug"),
       api = .new() {
