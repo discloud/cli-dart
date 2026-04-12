@@ -1,6 +1,6 @@
 import "package:args/args.dart";
 
-extension ArgResultsExtension on ArgResults? {
+extension NullableArgResultsExtension on ArgResults? {
   String? get commandName {
     final list = <String>[];
 
