@@ -4,8 +4,9 @@ import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
-import "package:discloud/utils/formatters.dart";
 import "package:discloud/utils/messages.dart";
+import "package:discloud/utils/progress.dart";
+import "package:discloud/utils/speed_monitor.dart";
 import "package:discloud/utils/zip.dart";
 import "package:discloud_config/discloud_config.dart";
 import "package:path/path.dart" hide context;
@@ -55,24 +56,32 @@ class AppUploadCommand extends Command<void> {
     final fileStat = await file.stat();
     final total = fileStat.size;
 
-    spinner.start("Uploading...");
+    final monitor = SpeedMonitor();
 
     try {
+      spinner.start("Uploading...");
+
       final response = await context.api.postMultipart(
         "/upload",
         file: file,
         onUploadProgress: (processed) {
-          spinner.start(
-            "Uploading... ${percentFormatter.format(processed / total)}",
+          spinner.text = formatProgressMessage(
+            speed: monitor.add(processed),
+            prefixText: "Uploading:",
+            symbol: .up,
+            processed: processed,
+            total: total,
           );
         },
         onUploadDone: () {
           spinner.start("Processing...");
         },
       );
+
       spinner.success(resolveResponseMessage(response));
     } finally {
       await file.safeDelete();
+      monitor.dispose();
     }
   }
 }

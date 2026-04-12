@@ -6,6 +6,7 @@ import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/download.dart";
 import "package:discloud/utils/messages.dart";
+import "package:discloud/utils/progress.dart";
 import "package:discloud/utils/speed_monitor.dart";
 
 const _pSep = "/";
@@ -107,8 +108,10 @@ class TeamBackupCommand extends Command<void> {
         file: file,
         client: client,
         onProgress: (processed, total) {
-          spinner.text = formatDownloadProgress(
+          spinner.text = formatProgressMessage(
+            prefixText: "Downloading:",
             speed: monitor.add(processed),
+            symbol: .down,
             processed: processed,
             total: total,
           );

@@ -18,7 +18,7 @@ enum Dimension {
 }
 
 class Bytes<N extends num> {
-  const factory Bytes.bits(N n) = _Bits;
+  const factory Bytes.bits(N n, {Dimension dimension}) = _Bits;
 
   const Bytes(this.n, {this.dimension = .binary});
 
@@ -32,7 +32,7 @@ class Bytes<N extends num> {
 
   double get bytes {
     if (_isInvalid) return 0;
-    return n / pow(dimension.value.toDouble(), index);
+    return n / pow(dimension.value, index);
   }
 
   int get unitIndex => min(index, ByteUnit.values.length);
@@ -140,7 +140,7 @@ class Bytes<N extends num> {
 }
 
 class _Bits<N extends num> extends Bytes<N> {
-  const _Bits(super.n);
+  const _Bits(N n, {super.dimension = .binary}) : super(n * 8 as N);
 
   @override
   int get unitIndex => min(index, _BitUnit.values.length);
@@ -148,7 +148,7 @@ class _Bits<N extends num> extends Bytes<N> {
   @override
   String toString([String separator = ""]) {
     final unit = _BitUnit.values[unitIndex];
-    return "${decimalFormatter.format(bytes * 8)}$separator${unit.name}";
+    return "${decimalFormatter.format(bytes)}$separator${unit.name}";
   }
 }
 
