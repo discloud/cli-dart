@@ -44,12 +44,13 @@ class SpeedMonitor implements Disposable {
 
     if (first == last) return _zero;
 
-    while (last.time - first.time > windowDuration.inMicroseconds) {
+    int baseDeltaTime = last.time - first.time;
+
+    while (baseDeltaTime > windowDuration.inMicroseconds) {
       first.unlink();
       first = _samples.first;
+      baseDeltaTime = last.time - first.time;
     }
-
-    final baseDeltaTime = last.time - first.time;
 
     final deltaTime = baseDeltaTime / windowDuration.inMicroseconds;
 
