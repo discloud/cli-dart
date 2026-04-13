@@ -4,6 +4,7 @@ import "dart:math";
 
 import "package:discloud/cli/context.dart";
 import "package:discloud/cli/disposable.dart";
+import "package:discloud/extensions/file.dart";
 import "package:discloud/extensions/io_http_client.dart";
 import "package:discloud/extensions/string.dart";
 import "package:discloud/services/discloud/exception.dart";
@@ -190,7 +191,7 @@ class DiscloudApiClient implements Disposable {
     );
   }
 
-  Future<HttpClientResponse> postMultipart(
+  Future<T> postMultipart<T extends Map>(
     String path, {
     required File file,
     Map<String, String>? fields,
@@ -213,18 +214,19 @@ class DiscloudApiClient implements Disposable {
 
     final response = await request.close();
 
-    if (response.ok) return response;
+    final body = await _resolveResponseBody(response);
 
-    final body = await response.json();
+    if (response.ok) return body as T;
 
     throw DiscloudApiException(
       code: response.statusCode,
-      message: body["message"] ?? response.reasonPhrase,
-      logs: body["logs"],
+      message: body?["message"] ?? response.reasonPhrase,
+      logs: body?["logs"],
+      path: path,
     );
   }
 
-  Future<HttpClientResponse> putMultipart(
+  Future<T> putMultipart<T extends Map>(
     String path, {
     required File file,
     Map<String, String>? fields,
@@ -247,14 +249,15 @@ class DiscloudApiClient implements Disposable {
 
     final response = await request.close();
 
-    if (response.ok) return response;
+    final body = await _resolveResponseBody(response);
 
-    final body = await response.json();
+    if (response.ok) return body as T;
 
     throw DiscloudApiException(
       code: response.statusCode,
-      message: body["message"] ?? response.reasonPhrase,
-      logs: body["logs"],
+      message: body?["message"] ?? response.reasonPhrase,
+      logs: body?["logs"],
+      path: path,
     );
   }
 
@@ -306,9 +309,7 @@ class DiscloudApiClient implements Disposable {
 
     request.write("\r\n--$boundary--\r\n");
 
-    try {
-      await file.delete();
-    } catch (_) {}
+    await file.safeDelete();
 
     onUploadDone?.call();
   }
