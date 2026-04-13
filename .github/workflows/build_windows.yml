@@ -73,6 +73,9 @@ jobs:
           dart format .
           dart fix --apply
 
+      - name: Run tests
+        run: dart test
+
       - name: Compile
         run: dart compile exe lib/main.dart -o discloud-cli-${{ matrix.target_arch }}.exe --target-os=${{ matrix.target_os }} --target-arch=${{ matrix.target_arch }}
 

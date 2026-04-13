@@ -56,6 +56,9 @@ jobs:
           dart format .
           dart fix --apply
 
+      - name: Run tests
+        run: dart test
+
       - name: Compile
         run: |
           dart compile exe lib/main.dart -o ${{ env.binary_base_name }}-macos-arm64 --target-os=macos --target-arch=arm64
