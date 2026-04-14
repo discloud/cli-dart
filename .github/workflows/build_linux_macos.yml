@@ -116,8 +116,7 @@ jobs:
         run: dart test
 
       - name: Compile
-        run: |
-          dart compile exe lib/main.dart -o ${{ env.binary_base_name }}-macos-x64 --target-os=macos --target-arch=x64
+        run: dart compile exe lib/main.dart -o ${{ env.binary_base_name }}-macos-x64 --target-os=macos --target-arch=x64
 
       - name: Save artifacts
         uses: actions/upload-artifact@v7
