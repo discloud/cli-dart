@@ -31,7 +31,7 @@ You must download the binary manually and ensure it is executable and accessible
 
 ## 🪟 For Windows
 
-The distribution for Windows is provided through a **standalone executable setup** (`.exe`) and **winget**. This setup bundles the binary and automatically configures the system environment variables.
+The distribution for Windows is provided through [**winget**](#winget) or [**standalone executable setup** (`.exe`)](#setup-exe). This setup bundles the binary and automatically configures the system environment variables.
 
 ### Winget
 
