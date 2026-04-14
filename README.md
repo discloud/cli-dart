@@ -21,17 +21,27 @@ Welcome to the **Discloud CLI** installation documentation. Follow the instructi
 
 ## 🐧 For Linux / MacOS
 
-On Linux or MacOS, the CLI is distributed as a raw binary file. There is **no graphical setup** (`.deb` or `.rpm`). You must download the binary manually and ensure it is executable and accessible in your system's `PATH`.
+On Linux or MacOS, the CLI is distributed as a raw binary file.
+There is **no graphical setup** (`.deb` or `.rpm`).
+You must download the binary manually and ensure it is executable and accessible in your system's `PATH`.
 
 - You can install the CLI using the script in the [`linux-macos-setup.sh`](linux-macos-setup.sh) file.
 
 ---
 
-## 🪟 For Windows (With Setup)
+## 🪟 For Windows
 
-The distribution for Windows is provided through a **standalone executable setup** (`.exe`). This setup bundles the binary and automatically configures the system environment variables.
+The distribution for Windows is provided through a **standalone executable setup** (`.exe`) and **winget**. This setup bundles the binary and automatically configures the system environment variables.
 
-### Step-by-Step
+### Winget
+
+- Open the terminal and paste the command below.
+
+```sh
+winget install Discloud.CLI
+```
+
+### Setup .exe
 
 1. **Download the Setup:**
     Go to the official [releases](https://github.com/discloud/cli-dart/releases/latest) page and download the file `discloud-cli-x64-setup.exe`.
@@ -46,7 +56,7 @@ The distribution for Windows is provided through a **standalone executable setup
     - Click **Install**.
 
 4. **Finish:**
-    Once completed, click **Finish**. You may check "Launch Discloud CLI" to open immediately.
+    Once completed, click **Finish**.
 
 ---
 
