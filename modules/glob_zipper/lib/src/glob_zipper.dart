@@ -6,6 +6,7 @@ import "dart:isolate";
 import "package:archive/archive_io.dart";
 import "package:glob/glob.dart";
 import "package:glob/list_local_fs.dart";
+import "package:glob_zipper/src/extensions/date_time.dart";
 import "package:glob_zipper/src/extensions/file.dart";
 import "package:path/path.dart";
 
@@ -21,9 +22,6 @@ typedef ZipCallback = void Function(ZipProgress progress);
 typedef OnErrorCallback = void Function(Object error, StackTrace trace);
 
 class GlobZipper {
-  // ignore: constant_identifier_names
-  static const _1e6 = 1e6;
-
   static Future<void> isolated({
     required Directory directory,
     required File zipfile,
@@ -34,19 +32,17 @@ class GlobZipper {
     String? password,
     ZipCallback? onData,
     OnErrorCallback? onError,
-  }) {
-    return _zipInIsolate(
-      directory: directory,
-      zipfile: zipfile,
-      globPatterns: globPatterns,
-      ignoreFilename: ignoreFilename,
-      ignorePatterns: ignorePatterns,
-      level: level,
-      password: password,
-      onData: onData,
-      onError: onError,
-    );
-  }
+  }) => _zipInIsolate(
+    directory: directory,
+    zipfile: zipfile,
+    globPatterns: globPatterns,
+    ignoreFilename: ignoreFilename,
+    ignorePatterns: ignorePatterns,
+    level: level,
+    password: password,
+    onData: onData,
+    onError: onError,
+  );
 
   const GlobZipper({
     required this.directory,
@@ -153,7 +149,7 @@ class GlobZipper {
 
     return .stream(filename, fileStream)
       ..compressionLevel = level
-      ..lastModTime = stat.modified.microsecondsSinceEpoch ~/ _1e6
+      ..lastModTime = stat.modified.secondsSinceEpoch
       ..mode = stat.mode;
   }
 }
