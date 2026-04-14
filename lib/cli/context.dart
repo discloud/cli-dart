@@ -17,15 +17,29 @@ part "paths.dart";
 class CliContext implements Disposable {
   static late final CliContext I;
 
-  CliContext(this.arguments)
-    : subscriptions = .empty(growable: true),
-      _stopwatch = .new()..start(),
-      debug = arguments.contains("--debug"),
-      api = .new() {
-    I = this;
-    printer = ConsolePrinter(isDebug: debug);
-    store = .json(cliConfigFilePath);
+  factory CliContext(Iterable<String> arguments) {
+    final bool debug = arguments.contains("--debug");
+
+    return I = ._(
+      api: .new(),
+      arguments: arguments,
+      debug: debug,
+      printer: ConsolePrinter(isDebug: debug),
+      stopwatch: .new()..start(),
+      store: .json(_cliConfigFilePath),
+      subscriptions: [],
+    );
   }
+
+  const CliContext._({
+    required this.api,
+    required this.arguments,
+    required this.debug,
+    required this.printer,
+    required this.store,
+    required this.subscriptions,
+    required Stopwatch stopwatch,
+  }) : _stopwatch = stopwatch;
 
   final List<Disposable> subscriptions;
 
@@ -47,9 +61,8 @@ class CliContext implements Disposable {
   final Iterable<String> arguments;
   final bool debug;
   final DiscloudApiClient api;
-
-  late final IPrinter<CLISpin> printer;
-  late final LocalStore store;
+  final LocalStore store;
+  final IPrinter<CLISpin> printer;
 
   Directory get workspaceFolder => _workspaceFolder;
 
