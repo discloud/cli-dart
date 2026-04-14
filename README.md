@@ -22,8 +22,6 @@ Welcome to the **Discloud CLI** installation documentation. Follow the instructi
 ## 🐧 For Linux / MacOS
 
 On Linux or MacOS, the CLI is distributed as a raw binary file.
-There is **no graphical setup** (`.deb` or `.rpm`).
-You must download the binary manually and ensure it is executable and accessible in your system's `PATH`.
 
 - You can install the CLI using the script in the [`linux-macos-setup.sh`](linux-macos-setup.sh) file.
 
