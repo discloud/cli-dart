@@ -47,7 +47,7 @@ winget install Discloud.CLI
     Go to the official [releases](https://github.com/discloud/cli-dart/releases/latest) page and download the file `discloud-cli-x64-setup.exe`.
 
 2. **Run the Setup:**
-    Double-click the downloaded file. If Windows SmartScreen or Defender prompts you, select **More info** > **Run anyway** (as it is a community tool signed by the developer).
+    Double-click the downloaded file. If Windows SmartScreen or Defender prompts you, select **More info** > **Run anyway**.
 
 3. **Follow the Wizard:**
     - Click **Next**.
