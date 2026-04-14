@@ -77,8 +77,63 @@ jobs:
             ${{ env.binary_base_name }}-linux-arm64
             ${{ env.binary_base_name }}-linux-x64
 
-  archive:
+  build-macos-x64:
     needs: build
+    runs-on: macos-15-intel
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Get artifacts
+        continue-on-error: true
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ env.version }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Get dependencies
+        run: dart pub get
+
+      - name: Prepare pubspec
+        run: dart run scripts/prepare_pubspec.dart --version ${{ env.version }}
+
+      - name: Run build runner
+        run: dart run build_runner build -r -v --low-resources-mode
+
+      - name: Generate docs
+        run: dart run scripts/docs/generate.dart
+
+      - name: Dart format
+        run: |
+          dart format .
+          dart fix --apply
+
+      - name: Run tests
+        run: dart test
+
+      - name: Compile
+        run: |
+          dart compile exe lib/main.dart -o ${{ env.binary_base_name }}-macos-x64 --target-os=macos --target-arch=x64
+
+      - name: Save artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          if-no-files-found: error
+          name: ${{ env.version }}
+          overwrite: true
+          retention-days: 1
+          path: |
+            ${{ env.binary_base_name }}-macos-arm64
+            ${{ env.binary_base_name }}-macos-x64
+            ${{ env.binary_base_name }}-linux-arm64
+            ${{ env.binary_base_name }}-linux-x64
+
+  archive:
+    needs: build-macos-x64
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -86,6 +141,8 @@ jobs:
         include:
           - target_os: macos
             target_arch: arm64
+          - target_os: macos
+            target_arch: x64
           - target_os: linux
             target_arch: arm64
           - target_os: linux
