@@ -50,8 +50,7 @@ Future<void> _zipInIsolate({
         }
 
         // rethows PathAccessException or other
-        // ignore: only_throw_errors
-        throw error.error;
+        Error.throwWithStackTrace(error.error, error.trace);
     }
   }
 
