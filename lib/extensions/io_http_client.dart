@@ -7,7 +7,7 @@ extension HttpClientResponseExtension on HttpClientResponse {
 
   bool get ok => statusCode < _badRequestStatusCode;
 
-  Future<List<int>> get bodyBytes => reduce((p, e) => p..addAll(e));
+  Future<List<int>> get bodyBytes async => [await for (final e in this) ...e];
 
   Future<String> get body => transform(utf8.decoder).join();
 
