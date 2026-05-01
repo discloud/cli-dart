@@ -20,6 +20,8 @@
       "import \"package:discloud/extensions/command.dart\";",
       "",
       "class ${1:${TM_FILENAME_BASE/(^\\w)/${1:/upcase}/}}Command extends Command<void> {",
+      "\t${1:${TM_FILENAME_BASE/(^\\w)/${1:/upcase}/}}Command() {$4}",
+      "",
       "\t@override",
       "\tfinal name = \"${2:$TM_FILENAME_BASE}\";",
       "",
