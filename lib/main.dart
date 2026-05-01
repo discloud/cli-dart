@@ -35,9 +35,12 @@ void main(Iterable<String> arguments) async {
       () => runner.runCommand(argResults!),
       dispose: () async {
         if (runner.getCommand(argResults!) case final Disposable disposable) {
-          print("Disposing...");
+          context.printer.debug("Disposing...");
           await disposable.dispose();
         }
+
+        context.printer.debug(_version);
+        await context.dispose();
       },
     );
   } catch (e, s) {
@@ -45,12 +48,9 @@ void main(Iterable<String> arguments) async {
       ..error(resolveResponseMessage(e))
       ..debug(s)
       ..debug(_version);
-    await context.dispose();
     exit(1);
   }
 
-  context.printer.debug(_version);
-  await context.dispose();
   exit(signal.signed ? 2 : 0);
 }
 
