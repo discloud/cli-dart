@@ -2,6 +2,7 @@ import "dart:math";
 
 import "package:discloud/extensions/num.dart";
 import "package:discloud/utils/formatters.dart";
+import "package:intl/intl.dart";
 
 /// binary: KB = 1024 B
 /// decimal: KB = 1000 B
@@ -18,12 +19,19 @@ enum Dimension {
 }
 
 class Bytes<N extends num> {
-  const factory Bytes.bits(N n, {Dimension dimension}) = _Bits;
+  const factory Bytes.bits(
+    N n, {
+    Dimension dimension,
+    NumberFormat? numberFormatter,
+  }) = _Bits;
 
-  const Bytes(this.n, {this.dimension = .binary});
+  const Bytes(this.n, {this.dimension = .binary, this.numberFormatter});
 
   final N n;
   final Dimension dimension;
+  final NumberFormat? numberFormatter;
+
+  UnitType get type => .byte;
 
   int get index {
     if (_isInvalid) return 0;
@@ -35,92 +43,92 @@ class Bytes<N extends num> {
     return n / pow(dimension.value, index);
   }
 
-  int get unitIndex => min(index, ByteUnit.values.length);
+  int get unitIndex => min(index, type.units.length);
 
   bool get _isInvalid => n.isNaN || n.isInfinite || n.isZero || n.isNegative;
 
   @override
   String toString([String separator = ""]) {
-    final unit = ByteUnit.values[unitIndex];
-    return "${decimalFormatter.format(bytes)}$separator${unit.name}";
+    final unit = type.units[unitIndex];
+    return "${(numberFormatter ?? decimalFormatter).format(bytes)}$separator${unit.name}";
   }
 
   Bytes operator +(Object? other) {
     return switch (other) {
-      final num other => .new(other + n),
       final Bytes other => .new(other.n + n),
+      final num other => .new(other + n),
       _ => this,
     };
   }
 
   Bytes operator -(Object? other) {
     return switch (other) {
-      final num other => .new(other - n),
       final Bytes other => .new(other.n - n),
+      final num other => .new(other - n),
       _ => this,
     };
   }
 
   Bytes operator *(Object? other) {
     return switch (other) {
-      final num other => .new(other * n),
       final Bytes other => .new(other.n * n),
+      final num other => .new(other * n),
       _ => this,
     };
   }
 
   Bytes operator /(Object? other) {
     return switch (other) {
-      final num other => .new(other / n),
       final Bytes other => .new(other.n / n),
+      final num other => .new(other / n),
       _ => this,
     };
   }
 
   Bytes operator ~/(Object? other) {
     return switch (other) {
-      final num other => .new(other ~/ n),
       final Bytes other => .new(other.n ~/ n),
+      final num other => .new(other ~/ n),
       _ => this,
     };
   }
 
   Bytes operator %(Object? other) {
     return switch (other) {
-      final num other => .new(other % n),
       final Bytes other => .new(other.n % n),
+      final num other => .new(other % n),
       _ => this,
     };
   }
 
   bool operator >(Object? other) {
     return switch (other) {
-      final num other => other > n,
       final Bytes other => other.n > n,
+      final num other => other > n,
       _ => false,
     };
   }
 
   bool operator >=(Object? other) {
     return switch (other) {
-      final num other => other >= n,
       final Bytes other => other.n >= n,
+      final num other => other >= n,
       _ => false,
     };
   }
 
   bool operator <(Object? other) {
     return switch (other) {
-      final num other => other < n,
       final Bytes other => other.n < n,
+      final num other => other < n,
       _ => false,
     };
   }
 
   bool operator <=(Object? other) {
     return switch (other) {
-      final num other => other <= n,
       final Bytes other => other.n <= n,
+      final num other => other <= n,
       _ => false,
     };
   }
@@ -128,9 +136,9 @@ class Bytes<N extends num> {
   @override
   bool operator ==(other) {
     return switch (other) {
-      final num other => other == n,
       final Bytes other => other.n == n,
-      _ => hashCode == other.hashCode,
+      final num other => other == n,
+      _ => false,
     };
   }
 
@@ -140,57 +148,146 @@ class Bytes<N extends num> {
 }
 
 class _Bits<N extends num> extends Bytes<N> {
-  const _Bits(N n, {super.dimension = .binary}) : super(n * 8 as N);
+  const _Bits(super.n, {super.dimension = .binary, super.numberFormatter});
 
   @override
-  int get unitIndex => min(index, _BitUnit.values.length);
+  UnitType get type => .bit;
+
+  @override
+  int get unitIndex => min(index, type.units.length);
 
   @override
   String toString([String separator = ""]) {
-    final unit = _BitUnit.values[unitIndex];
-    return "${decimalFormatter.format(bytes)}$separator${unit.name}";
+    final unit = type.units[unitIndex];
+    return "${(numberFormatter ?? decimalFormatter).format(bytes)}$separator${unit.name}";
   }
-}
 
-enum ByteUnit<N extends num> {
-  B(1),
+  @override
+  _Bits operator +(Object? other) {
+    return switch (other) {
+      final _Bits other => .new(other.n + n),
+      final Bytes other => .new(other.n * 8 + n),
+      final num other => .new(other + n),
+      _ => this,
+    };
+  }
 
-  /// 1_024
-  // ignore: constant_identifier_names
-  KB(1_024),
+  @override
+  _Bits operator -(Object? other) {
+    return switch (other) {
+      final _Bits other => .new(other.n - n),
+      final Bytes other => .new(other.n * 8 - n),
+      final num other => .new(other - n),
+      _ => this,
+    };
+  }
 
-  /// 1_048_576
-  // ignore: constant_identifier_names
-  MB(1_048_576),
+  @override
+  _Bits operator *(Object? other) {
+    return switch (other) {
+      final _Bits other => .new(other.n * n),
+      final Bytes other => .new(other.n * 8 * n),
+      final num other => .new(other * n),
+      _ => this,
+    };
+  }
 
-  /// 1_073_741_824
-  // ignore: constant_identifier_names
-  GB(1_073_741_824),
+  @override
+  _Bits operator /(Object? other) {
+    return switch (other) {
+      final _Bits other => .new(other.n / n),
+      final Bytes other => .new(other.n * 8 / n),
+      final num other => .new(other / n),
+      _ => this,
+    };
+  }
 
-  /// 1_099_511_627_776
-  // ignore: constant_identifier_names
-  TB(1_099_511_627_776),
+  @override
+  _Bits operator ~/(Object? other) {
+    return switch (other) {
+      final _Bits other => .new(other.n ~/ n),
+      final Bytes other => .new(other.n * 8 ~/ n),
+      final num other => .new(other ~/ n),
+      _ => this,
+    };
+  }
 
-  /// 1_125_899_906_842_624
-  // ignore: constant_identifier_names
-  PB(1_125_899_906_842_624),
+  @override
+  _Bits operator %(Object? other) {
+    return switch (other) {
+      final _Bits other => .new(other.n % n),
+      final Bytes other => .new(other.n * 8 % n),
+      final num other => .new(other % n),
+      _ => this,
+    };
+  }
 
-  /// 1_152_921_504_606_846_976
-  // ignore: constant_identifier_names
-  EB(1_152_921_504_606_846_976),
+  @override
+  bool operator >(Object? other) {
+    return switch (other) {
+      final _Bits other => other.n > n,
+      final Bytes other => other.n * 8 > n,
+      final num other => other > n,
+      _ => false,
+    };
+  }
 
-  /// 1_180_591_620_717_411_303_424
-  // ignore: constant_identifier_names
-  ZB(1_180_591_620_717_411_303_424.0),
+  @override
+  bool operator >=(Object? other) {
+    return switch (other) {
+      final _Bits other => other.n >= n,
+      final Bytes other => other.n * 8 >= n,
+      final num other => other >= n,
+      _ => false,
+    };
+  }
 
-  /// 1_208_925_819_614_629_174_706_176
-  // ignore: constant_identifier_names
-  YB(1_208_925_819_614_629_174_706_176.0);
+  @override
+  bool operator <(Object? other) {
+    return switch (other) {
+      final _Bits other => other.n < n,
+      final Bytes other => other.n * 8 < n,
+      final num other => other < n,
+      _ => false,
+    };
+  }
 
-  const ByteUnit(this.value);
+  @override
+  bool operator <=(Object? other) {
+    return switch (other) {
+      final _Bits other => other.n <= n,
+      final Bytes other => other.n * 8 <= n,
+      final num other => other <= n,
+      _ => false,
+    };
+  }
 
-  final N value;
+  @override
+  bool operator ==(other) {
+    return switch (other) {
+      final _Bits other => other.n == n,
+      final Bytes other => other.n * 8 == n,
+      final num other => other == n,
+      _ => false,
+    };
+  }
+
+  @override
+  // ignore: unnecessary_overrides
+  int get hashCode => super.hashCode;
 }
 
 // ignore: constant_identifier_names
+enum _ByteUnit { B, KB, MB, GB, TB, PB, EB, ZB, YB }
+
+// ignore: constant_identifier_names
 enum _BitUnit { b, Kb, Mb, Gb, Tb, Pb, Eb, Zb, Yb }
+
+enum UnitType {
+  bit(_BitUnit.values),
+  byte(_ByteUnit.values);
+
+  const UnitType(this.units);
+
+  final List<Enum> units;
+}

@@ -24,7 +24,7 @@ String formatProgressMessage({
   final buffer = StringBuffer("$prefixText ");
 
   if (speed case final speed?) {
-    buffer.writeAll([?direction, Bytes.bits(speed), "/s "]);
+    buffer.writeAll([?direction, Bytes.bits(speed * 8), "/s "]);
   }
 
   buffer.write(percentFormatter.format(processed / total));
