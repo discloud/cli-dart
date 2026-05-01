@@ -1,6 +1,7 @@
 import "dart:io";
 
 import "package:args/command_runner.dart";
+import "package:discloud/cli/disposable.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
@@ -11,7 +12,7 @@ import "package:discloud/utils/zip.dart";
 import "package:discloud_config/discloud_config.dart";
 import "package:path/path.dart" hide context;
 
-class AppUploadCommand extends Command<void> {
+class AppUploadCommand extends Command<void> with Disposable {
   AppUploadCommand() {
     argParser.addMultiOption("glob", abbr: "g", defaultsTo: const ["**"]);
   }
@@ -24,6 +25,9 @@ class AppUploadCommand extends Command<void> {
 
   @override
   final aliases = const ["up"];
+
+  File? _file;
+  SpeedMonitor? _monitor;
 
   @override
   Future<void> run() async {
@@ -41,7 +45,7 @@ class AppUploadCommand extends Command<void> {
 
     final zipath = joinAll([directory.path, "${basename(directory.path)}.zip"]);
 
-    final File file = .new(zipath);
+    final file = _file = .new(zipath);
 
     await zip(
       directory: directory,
@@ -56,32 +60,33 @@ class AppUploadCommand extends Command<void> {
     final fileStat = await file.stat();
     final total = fileStat.size;
 
-    final monitor = SpeedMonitor();
+    final monitor = _monitor = .new();
 
-    try {
-      spinner.start("Uploading...");
+    spinner.start("Uploading...");
 
-      final response = await context.api.postMultipart(
-        "/upload",
-        file: file,
-        onUploadProgress: (processed) {
-          spinner.text = formatProgressMessage(
-            speed: monitor.add(processed),
-            prefixText: "Uploading:",
-            direction: .up,
-            processed: processed,
-            total: total,
-          );
-        },
-        onUploadDone: () {
-          spinner.start("Processing...");
-        },
-      );
+    final response = await context.api.postMultipart(
+      "/upload",
+      file: file,
+      onUploadProgress: (processed) {
+        spinner.text = formatProgressMessage(
+          speed: monitor.add(processed),
+          prefixText: "Uploading:",
+          direction: .up,
+          processed: processed,
+          total: total,
+        );
+      },
+      onUploadDone: () {
+        spinner.start("Processing...");
+      },
+    );
 
-      spinner.success(resolveResponseMessage(response));
-    } finally {
-      await file.safeDelete();
-      monitor.dispose();
-    }
+    spinner.success(resolveResponseMessage(response));
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _file?.safeDelete();
+    _monitor?.dispose();
   }
 }

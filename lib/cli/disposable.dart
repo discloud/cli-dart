@@ -1,3 +1,5 @@
-abstract class Disposable {
-  void dispose();
+import "dart:async";
+
+abstract mixin class Disposable {
+  FutureOr<void> dispose();
 }
