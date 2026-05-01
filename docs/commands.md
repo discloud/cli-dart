@@ -446,6 +446,15 @@ Usage: discloud user locale [arguments]
 -l, --locale=<en-US> (mandatory)    
 ```
 
+### wait
+
+```sh
+Wait N seconds
+
+Usage: discloud wait [arguments]
+-h, --help    Print this usage information.
+```
+
 ### zip
 
 ```sh
