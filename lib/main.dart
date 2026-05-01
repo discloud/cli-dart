@@ -15,7 +15,7 @@ void main(Iterable<String> arguments) async {
 
   final runner = CliCommandRunner();
 
-  ArgResults? argResults;
+  late final ArgResults argResults;
   try {
     argResults = runner.parse(arguments);
   } /* on FormatException */ catch (e, s) {
@@ -29,20 +29,21 @@ void main(Iterable<String> arguments) async {
 
   _printCliHeader(argResults);
 
-  final signal = SignalWrapper(.sigint);
-  try {
-    await signal.run(
-      () => runner.runCommand(argResults!),
-      dispose: () async {
-        if (runner.getCommand(argResults!) case final Disposable disposable) {
-          context.printer.debug("Disposing...");
-          await disposable.dispose();
-        }
+  final signal = SignalWrapper(
+    .sigint,
+    onSignal: (signal) async {
+      if (runner.getCommand(argResults) case final Disposable disposable) {
+        context.printer.debug("Disposing...");
+        await disposable.dispose();
+      }
 
-        context.printer.debug(_version);
-        await context.dispose();
-      },
-    );
+      context.printer.debug(_version);
+      await context.dispose();
+    },
+  );
+
+  try {
+    await signal.run(() => runner.runCommand(argResults));
   } catch (e, s) {
     context.printer
       ..error(resolveResponseMessage(e))
