@@ -13,13 +13,13 @@ void main() {
     test("null", () {
       final buffer = StringBuffer()
         ..writeAllCapitalized(const [null, null, null], separator);
-      expect(buffer.toString(), "");
+      expect(buffer.toString(), "Null null null");
     });
 
     test("text", () {
       final buffer = StringBuffer()
         ..writeAllCapitalized(const [null, "first", "last"], separator);
-      expect(buffer.toString(), "First last");
+      expect(buffer.toString(), "Null first last");
     });
   });
 }
