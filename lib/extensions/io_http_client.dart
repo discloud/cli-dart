@@ -1,13 +1,30 @@
 import "dart:convert";
 import "dart:io";
 import "dart:isolate";
+import "dart:typed_data";
 
 extension HttpClientResponseExtension on HttpClientResponse {
   static const _badRequestStatusCode = 400;
 
   bool get ok => statusCode < _badRequestStatusCode;
 
-  Future<List<int>> get bodyBytes async => [await for (final e in this) ...e];
+  Future<Uint8List> get bodyBytes async {
+    if (contentLength case final length when length != -1) {
+      final bytes = Uint8List(length);
+      int index = 0;
+      await for (final e in this) {
+        bytes.setAll(index, e);
+        index += e.length;
+      }
+      return bytes;
+    }
+
+    final bytes = <int>[];
+    await for (final e in this) {
+      bytes.addAll(e);
+    }
+    return .fromList(bytes);
+  }
 
   Future<String> get body => transform(utf8.decoder).join();
 

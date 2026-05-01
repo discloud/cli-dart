@@ -1,6 +1,8 @@
+import "dart:async";
 import "dart:io";
 
 import "package:args/command_runner.dart";
+import "package:discloud/cli/disposable.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
@@ -8,7 +10,7 @@ import "package:discloud/utils/bytes.dart";
 import "package:discloud/utils/zip.dart";
 import "package:path/path.dart" hide context;
 
-class ZipCommand extends Command<void> {
+class ZipCommand extends Command<void> with Disposable {
   ZipCommand() {
     argParser
       ..addOption("encoding", abbr: "e", allowed: const ["buffer"], hide: true)
@@ -34,6 +36,8 @@ class ZipCommand extends Command<void> {
     return null;
   }
 
+  File? _file;
+
   @override
   Future<void> run() async {
     final directory = context.workspaceFolder;
@@ -46,7 +50,7 @@ class ZipCommand extends Command<void> {
 
     final spinner = context.printer.spin(text: "Zipping...");
 
-    final File file = .new(out);
+    final file = _file = .new(out);
 
     await zip(
       directory: directory,
@@ -65,8 +69,15 @@ class ZipCommand extends Command<void> {
     switch (encoding) {
       case "buffer":
         await stdout.addStream(file.openRead());
-        await file.safeDelete();
         return;
     }
+
+    // no delete on dispose
+    _file = null;
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _file?.safeDelete();
   }
 }

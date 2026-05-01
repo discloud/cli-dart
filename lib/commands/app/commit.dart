@@ -2,6 +2,7 @@ import "dart:async";
 import "dart:io";
 
 import "package:args/command_runner.dart";
+import "package:discloud/cli/disposable.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/services/discloud/constants.dart";
@@ -12,7 +13,7 @@ import "package:discloud/utils/zip.dart";
 import "package:discloud_config/discloud_config.dart";
 import "package:path/path.dart" hide context;
 
-class AppCommitCommand extends Command<void> {
+class AppCommitCommand extends Command<void> with Disposable {
   AppCommitCommand() {
     argParser
       ..addOption(
@@ -31,6 +32,9 @@ class AppCommitCommand extends Command<void> {
   @override
   final aliases = const ["c"];
 
+  File? _file;
+  SpeedMonitor? _monitor;
+
   @override
   Future<void> run() async {
     final directory = context.workspaceFolder;
@@ -46,7 +50,7 @@ class AppCommitCommand extends Command<void> {
 
     final zipath = joinAll([directory.path, "${basename(directory.path)}.zip"]);
 
-    final File file = .new(zipath);
+    final file = _file = .new(zipath);
 
     await zip(
       directory: directory,
@@ -61,33 +65,28 @@ class AppCommitCommand extends Command<void> {
     final fileStat = await file.stat();
     final total = fileStat.size;
 
-    final monitor = SpeedMonitor();
+    final monitor = _monitor = .new();
 
-    try {
-      spinner.start("Committing...");
+    spinner.start("Committing...");
 
-      final response = await context.api.putMultipart(
-        "/app/$appId/commit",
-        file: file,
-        onUploadProgress: (processed) {
-          spinner.text = formatProgressMessage(
-            speed: monitor.add(processed),
-            prefixText: "Committing:",
-            direction: .up,
-            processed: processed,
-            total: total,
-          );
-        },
-        onUploadDone: () {
-          spinner.start("Processing...");
-        },
-      );
+    final response = await context.api.putMultipart(
+      "/app/$appId/commit",
+      file: file,
+      onUploadProgress: (processed) {
+        spinner.text = formatProgressMessage(
+          speed: monitor.add(processed),
+          prefixText: "Committing:",
+          direction: .up,
+          processed: processed,
+          total: total,
+        );
+      },
+      onUploadDone: () {
+        spinner.start("Processing...");
+      },
+    );
 
-      spinner.success(resolveResponseMessage(response));
-    } finally {
-      await file.safeDelete();
-      monitor.dispose();
-    }
+    spinner.success(resolveResponseMessage(response));
   }
 
   Future<String?> _getDiscloudConfigAppId(Directory directory) async {
@@ -96,5 +95,11 @@ class AppCommitCommand extends Command<void> {
     final DiscloudConfig config = await .fromPath(configFilePath);
 
     return config.appId;
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _file?.safeDelete();
+    _monitor?.dispose();
   }
 }

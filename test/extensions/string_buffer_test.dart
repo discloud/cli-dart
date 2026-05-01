@@ -12,8 +12,8 @@ void main() {
 
     test("null", () {
       final buffer = StringBuffer()
-        ..writeAllCapitalized(const [null, null, null], separator);
-      expect(buffer.toString(), "Null null null");
+        ..writeAllCapitalized(const [null, ?null, null], separator);
+      expect(buffer.toString(), "Null null");
     });
 
     test("text", () {

@@ -1,8 +1,10 @@
 import "dart:io";
 
+import "package:args/args.dart";
 import "package:args/command_runner.dart";
 import "package:discloud/commands/commands.dart";
 import "package:discloud/commands/team.dart";
+import "package:discloud/commands/wait.dart";
 import "package:discloud/version.dart";
 
 class CliCommandRunner extends CommandRunner<void> {
@@ -31,6 +33,23 @@ class CliCommandRunner extends CommandRunner<void> {
     addCommand(LoginCommand());
     addCommand(TeamCommand());
     addCommand(UserCommand());
+    addCommand(WaitCommand());
     addCommand(ZipCommand());
+  }
+
+  Command<void>? getCommand(ArgResults topLevelResults) {
+    var argResults = topLevelResults.command;
+    var commands = super.commands;
+    Command<void>? command;
+
+    while (argResults != null) {
+      command = commands[argResults.name];
+      if (command == null) break;
+
+      commands = command.subcommands;
+      argResults = argResults.command;
+    }
+
+    return command;
   }
 }

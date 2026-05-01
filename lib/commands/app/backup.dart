@@ -2,8 +2,10 @@ import "dart:async";
 import "dart:io";
 
 import "package:args/command_runner.dart";
+import "package:discloud/cli/disposable.dart";
 import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
+import "package:discloud/extensions/file.dart";
 import "package:discloud/utils/download.dart";
 import "package:discloud/utils/messages.dart";
 import "package:discloud/utils/progress.dart";
@@ -11,7 +13,7 @@ import "package:discloud/utils/speed_monitor.dart";
 
 const _pSep = "/";
 
-class AppBackupCommand extends Command<void> {
+class AppBackupCommand extends Command<void> with Disposable {
   AppBackupCommand() {
     argParser
       ..addOption("app", mandatory: true, valueHelp: "all")
@@ -32,6 +34,10 @@ class AppBackupCommand extends Command<void> {
 
   @override
   final aliases = const ["bkp"];
+
+  HttpClient? _client;
+  File? _file;
+  SpeedMonitor? _monitor;
 
   @override
   Future<void> run() async {
@@ -66,7 +72,7 @@ class AppBackupCommand extends Command<void> {
   }
 
   Future<void> _handleMulti(List list, ISpin spinner) async {
-    final client = HttpClient();
+    final client = _client = .new();
     final dir = argResults?.option("dir") ?? ".";
 
     for (final data in list) {
@@ -84,8 +90,6 @@ class AppBackupCommand extends Command<void> {
 
       await _download(dir: dir, spinner: spinner, uri: uri, client: client);
     }
-
-    client.close();
   }
 
   Future<void> _download({
@@ -96,9 +100,9 @@ class AppBackupCommand extends Command<void> {
   }) async {
     final filename = uri.pathSegments.last;
     final filepath = "$dir$_pSep$filename";
-    final File file = .new(filepath);
+    final file = _file = .new(filepath);
 
-    final monitor = SpeedMonitor();
+    final monitor = _monitor = .new();
 
     try {
       spinner.start("Downloading...");
@@ -118,12 +122,20 @@ class AppBackupCommand extends Command<void> {
         },
       );
 
+      // no delete on dispose
+      _file = null;
+
       spinner.success(filepath);
     } catch (e, s) {
       spinner.fail(resolveResponseMessage(e));
       context.printer.debug(s);
-    } finally {
-      monitor.dispose();
     }
+  }
+
+  @override
+  Future<void> dispose() async {
+    _client?.close();
+    await _file?.safeDelete();
+    _monitor?.dispose();
   }
 }
