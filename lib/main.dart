@@ -31,7 +31,10 @@ void main(Iterable<String> arguments) async {
 
   final signal = SignalWrapper(
     .sigint,
-    onSignal: (signal) async {
+    onSignal: (signal) {
+      context.printer.debug("Received signal: $signal");
+    },
+    onDispose: () async {
       if (runner.getCommand(argResults) case final Disposable disposable) {
         context.printer.debug("Disposing...");
         await disposable.dispose();
