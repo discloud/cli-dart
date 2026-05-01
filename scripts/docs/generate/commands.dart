@@ -16,6 +16,8 @@ Future<void> commands({required CommandRunner runner}) async {
 """);
 
   for (final command in runner.commands.values) {
+    if (command.hidden) continue;
+
     const level = 3;
 
     final prefix = "".padRight(level, "#");
@@ -50,6 +52,8 @@ void _recursiveDocsGenerate(
   for (final command in subcommands.values) {
     if (visited.contains(command)) continue;
     visited.add(command);
+
+    if (command.hidden) continue;
 
     final prefix = "".padRight(level, "#");
 
