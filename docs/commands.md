@@ -2,15 +2,6 @@
 
 ## [Commands](commands.md)
 
-### help
-
-```sh
-Display help information for discloud.
-
-Usage: discloud help [command]
--h, --help    Print this usage information.
-```
-
 ### app
 
 ```sh
@@ -444,15 +435,6 @@ Set your locale
 Usage: discloud user locale [arguments]
 -h, --help                          Print this usage information.
 -l, --locale=<en-US> (mandatory)    
-```
-
-### wait
-
-```sh
-Wait N seconds
-
-Usage: discloud wait [arguments]
--h, --help    Print this usage information.
 ```
 
 ### zip
