@@ -6,7 +6,7 @@ publish_to: none
 repository: https://github.com/discloud/cli-dart
 
 environment:
-  sdk: ^3.11.4
+  sdk: ^3.11.5
 
 dependencies:
   glob_zipper:
