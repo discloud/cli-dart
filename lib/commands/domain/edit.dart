@@ -25,7 +25,7 @@ class CustomdomainEditCommand extends Command<void> with Disposable {
 
     final spinner = context.printer.spin(text: "Editting a domain...");
 
-    final response = await context.api.post(
+    final response = await context.api.put(
       "/customdomain/$domain/edit",
       body: {"newAppID": subdomain},
     );
