@@ -261,6 +261,90 @@ Usage: discloud app upload [arguments]
 -g, --glob    (defaults to "**")
 ```
 
+### customdomain
+
+```sh
+Manage your customdomains
+
+Usage: discloud customdomain <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  create   Create a domain
+  delete   Delete a domain
+  edit     Edit a domain
+  info     Get information of your domains
+  verify   Verify a domain
+```
+
+#### customdomain create
+
+```sh
+Create a domain
+
+Usage: discloud customdomain create [arguments]
+-h, --help               Print this usage information.
+    --id (mandatory)     
+    --app (mandatory)    
+```
+
+#### customdomain delete
+
+```sh
+Delete a domain
+
+Usage: discloud customdomain delete [arguments]
+-h, --help              Print this usage information.
+    --id (mandatory)    
+```
+
+#### customdomain edit
+
+```sh
+Edit a domain
+
+Usage: discloud customdomain edit [arguments]
+-h, --help               Print this usage information.
+    --id (mandatory)     
+    --app (mandatory)    
+```
+
+#### customdomain info
+
+```sh
+Get information of your domains
+
+Usage: discloud customdomain info [arguments]
+-h, --help    Print this usage information.
+    --id      (defaults to "all")
+```
+
+#### customdomain verify
+
+```sh
+Verify a domain
+
+Usage: discloud customdomain verify [arguments]
+-h, --help              Print this usage information.
+    --id (mandatory)    
+```
+
+### customdomain
+
+```sh
+Manage your customdomains
+
+Usage: discloud customdomain <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  create   Create a domain
+  delete   Delete a domain
+  edit     Edit a domain
+  info     Get information of your domains
+  verify   Verify a domain
+```
+
 ### init
 
 ```sh
@@ -289,6 +373,50 @@ Login on Discloud API
 
 Usage: discloud login [arguments]
 -h, --help    Print this usage information.
+```
+
+### subdomain
+
+```sh
+Manage your subdomains
+
+Usage: discloud subdomain <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  create   Create a subdomain
+  delete   Delete a subdomain
+  info     Get information of your subdomains
+```
+
+#### subdomain create
+
+```sh
+Create a subdomain
+
+Usage: discloud subdomain create [arguments]
+-h, --help              Print this usage information.
+    --id (mandatory)    
+```
+
+#### subdomain delete
+
+```sh
+Delete a subdomain
+
+Usage: discloud subdomain delete [arguments]
+-h, --help              Print this usage information.
+    --id (mandatory)    
+```
+
+#### subdomain info
+
+```sh
+Get information of your subdomains
+
+Usage: discloud subdomain info [arguments]
+-h, --help    Print this usage information.
+    --id      (defaults to "all")
 ```
 
 ### team
