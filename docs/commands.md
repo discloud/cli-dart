@@ -261,12 +261,12 @@ Usage: discloud app upload [arguments]
 -g, --glob    (defaults to "**")
 ```
 
-### customdomain
+### domain
 
 ```sh
-Manage your customdomains
+Manage your domains
 
-Usage: discloud customdomain <subcommand> [arguments]
+Usage: discloud domain <subcommand> [arguments]
 -h, --help    Print this usage information.
 
 Available subcommands:
@@ -277,64 +277,64 @@ Available subcommands:
   verify   Verify a domain
 ```
 
-#### customdomain create
+#### domain create
 
 ```sh
 Create a domain
 
-Usage: discloud customdomain create [arguments]
+Usage: discloud domain create [arguments]
 -h, --help               Print this usage information.
     --id (mandatory)     
     --app (mandatory)    
 ```
 
-#### customdomain delete
+#### domain delete
 
 ```sh
 Delete a domain
 
-Usage: discloud customdomain delete [arguments]
+Usage: discloud domain delete [arguments]
 -h, --help              Print this usage information.
     --id (mandatory)    
 ```
 
-#### customdomain edit
+#### domain edit
 
 ```sh
 Edit a domain
 
-Usage: discloud customdomain edit [arguments]
+Usage: discloud domain edit [arguments]
 -h, --help               Print this usage information.
     --id (mandatory)     
     --app (mandatory)    
 ```
 
-#### customdomain info
+#### domain info
 
 ```sh
 Get information of your domains
 
-Usage: discloud customdomain info [arguments]
+Usage: discloud domain info [arguments]
 -h, --help    Print this usage information.
     --id      (defaults to "all")
 ```
 
-#### customdomain verify
+#### domain verify
 
 ```sh
 Verify a domain
 
-Usage: discloud customdomain verify [arguments]
+Usage: discloud domain verify [arguments]
 -h, --help              Print this usage information.
     --id (mandatory)    
 ```
 
-### customdomain
+### domain
 
 ```sh
-Manage your customdomains
+Manage your domains
 
-Usage: discloud customdomain <subcommand> [arguments]
+Usage: discloud domain <subcommand> [arguments]
 -h, --help    Print this usage information.
 
 Available subcommands:
