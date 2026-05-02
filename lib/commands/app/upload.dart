@@ -24,7 +24,7 @@ class AppUploadCommand extends Command<void> with Disposable {
   final description = "Upload one app or site to Discloud";
 
   @override
-  final aliases = const ["up"];
+  final aliases = const ["create", "up"];
 
   File? _file;
   SpeedMonitor? _monitor;

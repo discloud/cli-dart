@@ -30,7 +30,7 @@ class AppCommitCommand extends Command<void> with Disposable {
   final description = "Commit one app or site to Discloud";
 
   @override
-  final aliases = const ["c"];
+  final aliases = const ["c", "update"];
 
   File? _file;
   SpeedMonitor? _monitor;

@@ -29,8 +29,10 @@ class CliCommandRunner extends CommandRunner<void> {
       );
 
     addCommand(AppCommand());
+    addCommand(CustomdomainCommand());
     addCommand(InitCommand());
     addCommand(LoginCommand());
+    addCommand(SubdomainCommand());
     addCommand(TeamCommand());
     addCommand(UserCommand());
     addCommand(WaitCommand());
