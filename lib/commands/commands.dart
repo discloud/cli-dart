@@ -1,5 +1,5 @@
 export "app.dart";
-export "customdomain.dart";
+export "domain.dart";
 export "init.dart";
 export "login.dart";
 export "subdomain.dart";
