@@ -9,9 +9,9 @@ extension HttpClientResponseExtension on HttpClientResponse {
   bool get ok => statusCode < _badRequestStatusCode;
 
   Future<Uint8List> get bodyBytes async {
-    if (contentLength case final length when length != -1) {
-      final bytes = Uint8List(length);
+    if (contentLength case final length when !length.isNegative) {
       int index = 0;
+      final bytes = Uint8List(length);
       await for (final e in this) {
         bytes.setAll(index, e);
         index += e.length;
