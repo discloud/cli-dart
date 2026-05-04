@@ -29,10 +29,13 @@ void main(Iterable<String> arguments) async {
 
   _printCliHeader(argResults);
 
+  ProcessSignal? firstReceivedSignal;
+
   final signal = SignalWrapper(
     .sigint,
     onSignal: (signal) {
-      context.printer.debug("Received signal: $signal");
+      firstReceivedSignal ??= signal;
+      context.printer.debug("Received signal $signal ${signal.signalNumber}");
     },
     onDispose: () async {
       if (runner.getCommand(argResults) case final Disposable disposable) {
@@ -55,7 +58,7 @@ void main(Iterable<String> arguments) async {
     exit(1);
   }
 
-  exit(signal.signed ? 2 : 0);
+  exit(firstReceivedSignal?.signalNumber ?? 0);
 }
 
 String get _version =>
