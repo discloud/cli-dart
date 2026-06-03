@@ -563,7 +563,7 @@ Set your locale
 Usage: discloud user locale [arguments]
 -h, --help              Print this usage information.
 -l, --locale=<en-US>    
--s, --system            Use current system language (C.UTF-8)
+-s, --system            Use current system language (en-US)
 ```
 
 ### zip
