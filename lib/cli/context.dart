@@ -8,10 +8,12 @@ import "package:discloud/cli/spin/cli_spin.dart";
 import "package:discloud/extensions/duration.dart";
 import "package:discloud/extensions/list.dart";
 import "package:discloud/services/discloud/api_client.dart";
+import "package:intl/intl.dart";
 import "package:local_store/local_store.dart";
 import "package:path/path.dart";
 import "package:tint/tint.dart";
 
+part "locale.dart";
 part "paths.dart";
 
 class CliContext implements Disposable {
@@ -64,7 +66,7 @@ class CliContext implements Disposable {
   final LocalStore store;
   final IPrinter<CLISpin> printer;
 
-  String get locale => Platform.localeName;
+  String get locale => _localeName;
 
   Directory get workspaceFolder => _workspaceFolder;
 
