@@ -17,6 +17,7 @@ final class UserLocaleCommand extends Command<void> {
         "system",
         abbr: "s",
         help: "Use current system language (${Platform.localeName})",
+        negatable: false,
       );
   }
 
