@@ -8,7 +8,7 @@ extension DurationExtension on Duration {
   static final DurationLocale _durationLocale =
       .fromLanguageCode(Platform.localeName) ??
       .fromLanguageCode(Intl.shortLocale(Platform.localeName)) ??
-      const EnglishDurationLocale();
+      englishLocale;
 
   String pretty({
     bool abbreviated = true,
