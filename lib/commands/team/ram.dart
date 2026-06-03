@@ -6,7 +6,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 import "package:discloud_config/discloud_config.dart";
 
-class TeamRamCommand extends Command<void> {
+final class TeamRamCommand extends Command<void> {
   TeamRamCommand() {
     argParser
       ..addOption("app", mandatory: true)

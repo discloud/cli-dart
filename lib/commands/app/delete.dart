@@ -5,7 +5,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 import "package:interact/interact.dart";
 
-class AppDeleteCommand extends Command<void> {
+final class AppDeleteCommand extends Command<void> {
   AppDeleteCommand() {
     argParser
       ..addFlag(

@@ -13,7 +13,7 @@ import "package:discloud/utils/zip.dart";
 import "package:discloud_config/discloud_config.dart";
 import "package:path/path.dart" hide context;
 
-class AppCommitCommand extends Command<void> with Disposable {
+final class AppCommitCommand extends Command<void> with Disposable {
   AppCommitCommand() {
     argParser
       ..addOption(
@@ -82,6 +82,7 @@ class AppCommitCommand extends Command<void> with Disposable {
         );
       },
       onUploadDone: () {
+        _file = null;
         spinner.start("Processing...");
       },
     );

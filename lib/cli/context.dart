@@ -38,8 +38,8 @@ class CliContext implements Disposable {
     required this.printer,
     required this.store,
     required this.subscriptions,
-    required Stopwatch stopwatch,
-  }) : _stopwatch = stopwatch;
+    required this._stopwatch,
+  });
 
   final List<Disposable> subscriptions;
 
@@ -63,6 +63,8 @@ class CliContext implements Disposable {
   final DiscloudApiClient api;
   final LocalStore store;
   final IPrinter<CLISpin> printer;
+
+  String get locale => Platform.localeName;
 
   Directory get workspaceFolder => _workspaceFolder;
 

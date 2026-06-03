@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 
 const _keysIgnore = {"avatar"};
 
-class UserInfoCommand extends Command<void> {
+final class UserInfoCommand extends Command<void> {
   @override
   final name = "info";
 

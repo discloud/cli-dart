@@ -2,7 +2,7 @@ import "package:args/command_runner.dart";
 import "package:discloud/commands/user/info.dart";
 import "package:discloud/commands/user/locale.dart";
 
-class UserCommand extends Command<void> {
+final class UserCommand extends Command<void> {
   UserCommand() {
     addSubcommand(UserInfoCommand());
     addSubcommand(UserLocaleCommand());

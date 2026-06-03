@@ -4,7 +4,7 @@ import "package:discloud/commands/app/mod/delete.dart";
 import "package:discloud/commands/app/mod/edit.dart";
 import "package:discloud/commands/app/mod/info.dart";
 
-class AppModCommand extends Command<void> {
+final class AppModCommand extends Command<void> {
   AppModCommand() {
     addSubcommand(AppModAddCommand());
     addSubcommand(AppModDeleteCommand());

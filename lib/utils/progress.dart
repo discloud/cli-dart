@@ -21,10 +21,10 @@ String formatProgressMessage({
   UnitDirection? direction,
   String prefixText = "Processing:",
 }) {
-  final buffer = StringBuffer("$prefixText ");
+  final StringBuffer buffer = .new(prefixText);
 
   if (speed case final speed?) {
-    buffer.writeAll([?direction, Bytes.bits(speed * 8), "/s "]);
+    buffer.writeAll([" ", ?direction, Bytes.bits(speed * 8), "/s "]);
   }
 
   buffer.write(percentFormatter.format(processed / total));

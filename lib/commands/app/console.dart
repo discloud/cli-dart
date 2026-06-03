@@ -8,7 +8,7 @@ import "package:discloud/services/discloud/exception.dart";
 import "package:discloud/utils/messages.dart";
 import "package:tint/tint.dart";
 
-class AppConsoleCommand extends Command<void> {
+final class AppConsoleCommand extends Command<void> {
   AppConsoleCommand() {
     argParser
       ..addOption("app", mandatory: true)

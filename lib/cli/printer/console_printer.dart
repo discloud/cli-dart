@@ -36,37 +36,25 @@ class ConsolePrinter implements IPrinter<CLISpin> {
 
   @override
   void error(Object? object) {
-    if (_spin case final spin?) {
-      spin.fail(object.toString());
-      return;
-    }
+    if (_spin case final spin?) return spin.fail(object.toString());
     stderr.writeln(object);
   }
 
   @override
   void info(Object? object) {
-    if (_spin case final spin?) {
-      spin.info(object.toString());
-      return;
-    }
+    if (_spin case final spin?) return spin.info(object.toString());
     writeln(object);
   }
 
   @override
   void success(Object? object) {
-    if (_spin case final spin?) {
-      spin.success(object.toString());
-      return;
-    }
+    if (_spin case final spin?) return spin.success(object.toString());
     writeln(object);
   }
 
   @override
   void warn(Object? object) {
-    if (_spin case final spin?) {
-      spin.warn(object.toString());
-      return;
-    }
+    if (_spin case final spin?) return spin.warn(object.toString());
     writeln(object);
   }
 

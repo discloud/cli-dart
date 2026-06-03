@@ -6,7 +6,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/ascii_table.dart";
 import "package:discloud/utils/messages.dart";
 
-class SubdomainCreateCommand extends Command<void> {
+final class SubdomainCreateCommand extends Command<void> {
   SubdomainCreateCommand() {
     argParser.addOption("id", aliases: const ["subdomain"], mandatory: true);
   }

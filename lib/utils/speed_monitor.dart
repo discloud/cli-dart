@@ -17,8 +17,10 @@ class SpeedMonitor implements Disposable {
   static const double _zero = 0;
 
   /// Creates a [SpeedMonitor] with a given [windowDuration].
-  SpeedMonitor({this.windowDuration = const .new(seconds: 1)})
-    : _samples = .new();
+  factory SpeedMonitor() => ._(samples: .new());
+
+  const SpeedMonitor._({required this._samples})
+    : windowDuration = const .new(seconds: 1);
 
   /// The duration of the sliding window used for speed calculation.
   final Duration windowDuration;

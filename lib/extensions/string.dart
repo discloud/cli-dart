@@ -4,8 +4,6 @@ extension StringExtension on String {
   String capitalize([String? locale]) =>
       toBeginningOfSentenceCase(this, locale);
 
-  int sumCodeUnits() => codeUnits.reduce((a, b) => a + b);
-
   String intl({
     String? desc,
     Map<String, Object>? examples,

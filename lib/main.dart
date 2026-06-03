@@ -11,9 +11,9 @@ import "package:discloud/version.dart";
 import "package:tint/tint.dart";
 
 void main(Iterable<String> arguments) async {
-  final context = CliContext(arguments);
+  final CliContext context = .new(arguments);
 
-  final runner = CliCommandRunner();
+  final CliCommandRunner runner = .new();
 
   late final ArgResults argResults;
   try {
@@ -31,7 +31,7 @@ void main(Iterable<String> arguments) async {
 
   ProcessSignal? firstReceivedSignal;
 
-  final signal = SignalWrapper(
+  final SignalWrapper signal = .new(
     .sigint,
     onSignal: (signal) {
       firstReceivedSignal ??= signal;
@@ -49,7 +49,7 @@ void main(Iterable<String> arguments) async {
   );
 
   try {
-    await signal.run(() => runner.runCommand(argResults));
+    await signal(() => runner.runCommand(argResults));
   } catch (e, s) {
     context.printer
       ..error(resolveResponseMessage(e))
@@ -69,7 +69,7 @@ Discloud CLI v$packageVersion
 """;
 
 void _printCliHeader(ArgResults argResults) {
-  final buffer = StringBuffer()
+  final StringBuffer buffer = .new()
     ..writeAll(["discloud", ?argResults.commandName, "v$packageVersion"], " ");
 
   stderr.writeln(buffer.toString().bold());

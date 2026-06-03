@@ -20,7 +20,7 @@
       "import \"package:discloud/cli/disposable.dart\";",
       "import \"package:discloud/extensions/command.dart\";",
       "",
-      "class ${1:${TM_FILENAME_BASE/(^\\w+)/${1:/pascalcase}/}}Command extends Command<void> with Disposable {",
+      "final class ${1:${TM_FILENAME_BASE/(^\\w+)/${1:/pascalcase}/}}Command extends Command<void> with Disposable {",
       "\t${1:${TM_FILENAME_BASE/(^\\w+)/${1:/pascalcase}/}}Command() {$4}",
       "",
       "\t@override",

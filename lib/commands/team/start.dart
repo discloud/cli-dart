@@ -4,7 +4,7 @@ import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
-class TeamStartCommand extends Command<void> {
+final class TeamStartCommand extends Command<void> {
   TeamStartCommand() {
     argParser.addOption("app", valueHelp: "all");
   }

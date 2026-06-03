@@ -7,7 +7,7 @@ import "package:discloud/extensions/string.dart";
 import "package:discloud/services/discloud/constants.dart";
 import "package:discloud_config/discloud_config.dart";
 
-class InitCommand extends Command<void> {
+final class InitCommand extends Command<void> {
   InitCommand() {
     argParser
       ..addFlag(
@@ -53,7 +53,7 @@ class InitCommand extends Command<void> {
       throw Exception("${DiscloudConfig.filename} already exists!");
     }
 
-    final buffer = StringBuffer()
+    final StringBuffer buffer = .new()
       ..writeAll([
         "# https://docs.discloud.com/en/discloud.config",
         if (args.apt case final v when v.isNotEmpty) "APT=${v.join(",")}",

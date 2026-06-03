@@ -1,6 +1,6 @@
+import "dart:async";
 import "dart:convert";
 import "dart:io";
-import "dart:math";
 
 import "package:discloud/cli/context.dart";
 import "package:discloud/cli/disposable.dart";
@@ -13,7 +13,7 @@ import "package:discloud/services/discloud/utils.dart";
 import "package:path/path.dart";
 
 typedef VoidUploadProgressCallback = void Function(int processed);
-typedef VoidUploadDoneCallback = void Function();
+typedef VoidUploadDoneCallback = FutureOr<void> Function();
 
 class DiscloudApiClient implements Disposable {
   static const _apiScheme = "https";
@@ -63,7 +63,7 @@ class DiscloudApiClient implements Disposable {
   factory DiscloudApiClient({HttpClient? client}) =>
       DiscloudApiClient._(client: client ?? .new());
 
-  const DiscloudApiClient._({required HttpClient client}) : _client = client;
+  const DiscloudApiClient._({required this._client});
 
   final HttpClient _client;
 
@@ -311,7 +311,7 @@ class DiscloudApiClient implements Disposable {
 
     await file.safeDelete();
 
-    onUploadDone?.call();
+    await onUploadDone?.call();
   }
 
   Future<void> _prepareRequest(

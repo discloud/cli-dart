@@ -10,7 +10,7 @@ import "package:discloud/utils/bytes.dart";
 import "package:discloud/utils/zip.dart";
 import "package:path/path.dart" hide context;
 
-class ZipCommand extends Command<void> with Disposable {
+final class ZipCommand extends Command<void> with Disposable {
   ZipCommand() {
     argParser
       ..addOption("encoding", abbr: "e", allowed: const ["buffer"], hide: true)

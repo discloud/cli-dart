@@ -1,24 +1,22 @@
 part of "cli_spin.dart";
 
-class _TimerCliSpin extends CLISpin {
+class _TimerCLISpin extends CLISpin {
   static String? _resolveSuffixText(Stopwatch stopwatch) {
     if (stopwatch.isRunning) return stopwatch.elapsed.pretty().dim();
     return null;
   }
 
-  _TimerCliSpin._({String? text})
+  _TimerCLISpin._({String? text})
     : _stopwatch = .new()..start(),
       _timer = .new(.zero, _noop),
       super._(.new(text: text)) {
-    _interval = _spin.spinner?.interval ?? _defaultTimerInterval;
-    _timerInterval = .new(milliseconds: _interval);
+    _timerDuration = .new(milliseconds: _spin.interval);
   }
 
   final Stopwatch _stopwatch;
 
   Timer _timer;
-  late final int _interval;
-  late final Duration _timerInterval;
+  late final Duration _timerDuration;
 
   void _setSuffixTextAndStopTimers() {
     _timer.cancel();
@@ -40,14 +38,13 @@ class _TimerCliSpin extends CLISpin {
   void info([String? text]) {
     _setSuffixTextAndStopTimers();
     super.info(text);
-    _stopwatch.stop();
   }
 
   @override
   void start([String? text]) {
     _stopwatch.resetAndStart();
     _timer.cancel();
-    _timer = .periodic(_timerInterval, _timerCallback);
+    _timer = .periodic(_timerDuration, _timerCallback);
     super.start(text);
   }
 
@@ -69,13 +66,11 @@ class _TimerCliSpin extends CLISpin {
   void success([String? text]) {
     _setSuffixTextAndStopTimers();
     super.success(text);
-    _stopwatch.stop();
   }
 
   @override
   void warn([String? text]) {
     _setSuffixTextAndStopTimers();
     super.warn(text);
-    _stopwatch.stop();
   }
 }
