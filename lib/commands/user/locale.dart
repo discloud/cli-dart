@@ -1,22 +1,16 @@
-import "dart:io";
-
 import "package:args/command_runner.dart";
+import "package:discloud/cli/context.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
 final class UserLocaleCommand extends Command<void> {
-  static const _localePattern = r"^\w{2}[-_]\w{2}$";
-  static final _localeRegexp = RegExp(_localePattern);
-  static final _localeName =
-      _localeRegexp.firstMatch(Platform.localeName)?.input ?? "en-US";
-
   UserLocaleCommand() {
     argParser
-      ..addOption("locale", abbr: "l", valueHelp: _localeName)
+      ..addOption("locale", abbr: "l", valueHelp: localeName)
       ..addFlag(
         "system",
         abbr: "s",
-        help: "Use current system language ($_localeName)",
+        help: "Use current system language ($localeName)",
         negatable: false,
       );
   }
@@ -31,9 +25,11 @@ final class UserLocaleCommand extends Command<void> {
   Future<void> run() async {
     final system = argResults!.flag("system");
 
-    final locale = system ? Platform.localeName : argResults!.option("locale");
+    final locale = system ? context.locale : argResults!.option("locale");
 
-    final spinner = context.printer.spin(text: "Defining locale...");
+    final spinner = context.printer.spin(
+      text: "Defining the user's locale to $locale...",
+    );
 
     final response = await context.api.put("/locale/$locale");
 

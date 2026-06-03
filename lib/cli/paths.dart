@@ -2,9 +2,9 @@ part of "context.dart";
 
 final Directory _workspaceFolder = .current;
 
-final _rootFilePath = Platform.resolvedExecutable;
+final String _rootFilePath = Platform.resolvedExecutable;
 
-final _rootPath = dirname(_rootFilePath);
+final String _rootPath = dirname(_rootFilePath);
 
 final String _userHomePath =
     Platform.environment[const ["HOME", "USERPROFILE"].firstWhere(
@@ -14,6 +14,6 @@ final String _userHomePath =
       },
     )]!;
 
-final _cliConfigDir = joinAll([_userHomePath, ".discloud"]);
+final String _cliConfigDir = joinAll([_userHomePath, ".discloud"]);
 
-final _cliConfigFilePath = joinAll([_cliConfigDir, ".cli"]);
+final String _cliConfigFilePath = joinAll([_cliConfigDir, ".cli"]);
