@@ -561,9 +561,9 @@ Usage: discloud user info [arguments]
 Set your locale
 
 Usage: discloud user locale [arguments]
--h, --help              Print this usage information.
--l, --locale=<en_US>    
--s, --system            Use current system language (en_US)
+-h, --help                          Print this usage information.
+-l, --locale=<en_US> (mandatory)    
+-s, --system                        Use current system language (en_US)
 ```
 
 ### zip
