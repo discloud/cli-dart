@@ -1,15 +1,16 @@
 import "package:args/command_runner.dart";
+import "package:discloud/cli/context.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
 final class UserLocaleCommand extends Command<void> {
   UserLocaleCommand() {
     argParser
-      ..addOption("locale", abbr: "l", valueHelp: context.locale)
+      ..addOption("locale", abbr: "l", valueHelp: localeName)
       ..addFlag(
         "system",
         abbr: "s",
-        help: "Use current system language (${context.locale})",
+        help: "Use current system language ($localeName)",
         negatable: false,
       );
   }

@@ -66,7 +66,7 @@ class CliContext implements Disposable {
   final LocalStore store;
   final IPrinter<CLISpin> printer;
 
-  String get locale => _localeName;
+  String get locale => localeName;
 
   Directory get workspaceFolder => _workspaceFolder;
 
