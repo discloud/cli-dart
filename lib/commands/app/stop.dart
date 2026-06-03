@@ -4,7 +4,7 @@ import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
-class AppStopCommand extends Command<void> {
+final class AppStopCommand extends Command<void> {
   AppStopCommand() {
     argParser.addOption("app", valueHelp: "all");
   }

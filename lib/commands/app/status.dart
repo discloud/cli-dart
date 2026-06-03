@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 
 const _keysToIgnore = {"netIO"};
 
-class AppStatusCommand extends Command<void> {
+final class AppStatusCommand extends Command<void> {
   AppStatusCommand() {
     argParser.addOption("app", mandatory: true);
   }

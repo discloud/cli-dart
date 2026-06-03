@@ -8,13 +8,11 @@ import "package:tint/tint.dart";
 
 part "timer_cli_spin.dart";
 
-const _defaultTimerInterval = 100;
-
 void _noop() {}
 
 class CLISpin implements ISpin {
   factory CLISpin({String? text, bool showDuration = false}) =>
-      showDuration ? _TimerCliSpin._(text: text) : ._(.new(text: text));
+      showDuration ? _TimerCLISpin._(text: text) : ._(.new(text: text));
 
   const CLISpin._(this._spin);
 

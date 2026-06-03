@@ -4,7 +4,7 @@ import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
-class AppProfileCommand extends Command<void> {
+final class AppProfileCommand extends Command<void> {
   AppProfileCommand() {
     argParser
       ..addOption("app", mandatory: true)

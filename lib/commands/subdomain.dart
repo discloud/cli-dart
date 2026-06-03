@@ -3,7 +3,7 @@ import "package:discloud/commands/subdomain/create.dart";
 import "package:discloud/commands/subdomain/delete.dart";
 import "package:discloud/commands/subdomain/info.dart";
 
-class SubdomainCommand extends Command<void> {
+final class SubdomainCommand extends Command<void> {
   SubdomainCommand() {
     addSubcommand(SubdomainCreateCommand());
     addSubcommand(SubdomainDeleteCommand());

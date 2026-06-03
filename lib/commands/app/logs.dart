@@ -8,7 +8,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 import "package:path/path.dart" hide context;
 
-class AppLogsCommand extends Command<void> {
+final class AppLogsCommand extends Command<void> {
   AppLogsCommand() {
     argParser
       ..addOption(

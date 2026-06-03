@@ -6,7 +6,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/ascii_table.dart";
 import "package:discloud/utils/messages.dart";
 
-class AppModInfoCommand extends Command<void> {
+final class AppModInfoCommand extends Command<void> {
   AppModInfoCommand() {
     argParser.addOption("app", mandatory: true);
   }

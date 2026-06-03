@@ -19,7 +19,7 @@ const _keysIgnore = {
   "type",
 };
 
-class TeamInfoCommand extends Command<void> {
+final class TeamInfoCommand extends Command<void> {
   TeamInfoCommand() {
     argParser.addOption("app");
   }

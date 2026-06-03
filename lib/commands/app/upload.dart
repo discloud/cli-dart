@@ -12,7 +12,7 @@ import "package:discloud/utils/zip.dart";
 import "package:discloud_config/discloud_config.dart";
 import "package:path/path.dart" hide context;
 
-class AppUploadCommand extends Command<void> with Disposable {
+final class AppUploadCommand extends Command<void> with Disposable {
   AppUploadCommand() {
     argParser.addMultiOption("glob", abbr: "g", defaultsTo: const ["**"]);
   }
@@ -77,6 +77,7 @@ class AppUploadCommand extends Command<void> with Disposable {
         );
       },
       onUploadDone: () {
+        _file = null;
         spinner.start("Processing...");
       },
     );

@@ -5,7 +5,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/services/discloud/constants.dart";
 import "package:discloud/utils/messages.dart";
 
-class AppAptUninstallCommand extends Command<void> {
+final class AppAptUninstallCommand extends Command<void> {
   AppAptUninstallCommand() {
     argParser
       ..addOption("app", mandatory: true)

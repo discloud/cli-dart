@@ -2,9 +2,10 @@ import "dart:async";
 
 import "package:args/command_runner.dart";
 import "package:discloud/cli/disposable.dart";
+import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/num.dart";
 
-class WaitCommand extends Command<void> with Disposable {
+final class WaitCommand extends Command<void> with Disposable {
   WaitCommand();
 
   @override
@@ -31,6 +32,6 @@ class WaitCommand extends Command<void> with Disposable {
   @override
   FutureOr<void> dispose() {
     // ignore: no_runtimetype_tostring
-    print("$hashCode $runtimeType disposed");
+    context.printer.info("$hashCode $runtimeType disposed");
   }
 }

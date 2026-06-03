@@ -4,7 +4,7 @@ import "package:discloud/services/discloud/utils.dart";
 import "package:discloud/utils/messages.dart";
 import "package:interact/interact.dart";
 
-class LoginCommand extends Command<void> {
+final class LoginCommand extends Command<void> {
   @override
   final name = "login";
 

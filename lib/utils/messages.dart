@@ -4,7 +4,7 @@ import "package:discloud/services/discloud/exception.dart";
 String resolveResponseMessage<T>(T response) {
   switch (response) {
     case final Map r:
-      final buffer = StringBuffer();
+      final StringBuffer buffer = .new();
 
       buffer.writeAllCapitalized([?r["status"], ?r["message"]], ": ");
 
@@ -15,7 +15,7 @@ String resolveResponseMessage<T>(T response) {
 
       return buffer.toString();
     case final DiscloudApiException e:
-      final buffer = StringBuffer("[Error ${e.code}]: ${e.message}");
+      final StringBuffer buffer = .new("[Error ${e.code}]: ${e.message}");
 
       if (e.localeList case final localeList? when localeList.isNotEmpty) {
         buffer.write(" (${localeList.join(", ")})");

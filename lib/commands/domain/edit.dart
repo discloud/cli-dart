@@ -5,7 +5,7 @@ import "package:discloud/cli/disposable.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
-class CustomdomainEditCommand extends Command<void> with Disposable {
+final class CustomdomainEditCommand extends Command<void> with Disposable {
   CustomdomainEditCommand() {
     argParser
       ..addOption("id", aliases: const ["domain"], mandatory: true)

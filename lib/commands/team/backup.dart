@@ -13,7 +13,7 @@ import "package:discloud/utils/speed_monitor.dart";
 
 const _pSep = "/";
 
-class TeamBackupCommand extends Command<void> with Disposable {
+final class TeamBackupCommand extends Command<void> with Disposable {
   TeamBackupCommand() {
     argParser
       ..addOption("app", mandatory: true, valueHelp: "all")

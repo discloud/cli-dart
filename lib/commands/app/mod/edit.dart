@@ -5,7 +5,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/services/discloud/constants.dart";
 import "package:discloud/utils/messages.dart";
 
-class AppModEditCommand extends Command<void> {
+final class AppModEditCommand extends Command<void> {
   AppModEditCommand() {
     argParser
       ..addOption("app", mandatory: true)

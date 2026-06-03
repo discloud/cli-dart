@@ -16,7 +16,6 @@ abstract class SignalWrapper {
     onDispose: onDispose,
     onSignal: onSignal,
     completer: .new(),
-    subscriptions: [],
   );
 
   factory SignalWrapper(
@@ -35,21 +34,18 @@ abstract class SignalWrapper {
 
   bool get signed;
 
-  Future<T?> run<T>(Future<T> Function() fn);
+  Future<T?> call<T>(Future<T> Function() fn);
 }
 
 class _MultiSignalWrapper implements SignalWrapper {
   const _MultiSignalWrapper(
     this._signals, {
-    required Completer<ProcessSignal> completer,
-    required List<StreamSubscription<ProcessSignal>> subscriptions,
+    required this._completer,
     this.onSignal,
     this.onDispose,
-  }) : _completer = completer,
-       _subscriptions = subscriptions;
+  });
 
   final Iterable<ProcessSignal> _signals;
-  final List<StreamSubscription<ProcessSignal>> _subscriptions;
   final Completer<ProcessSignal> _completer;
 
   @override
@@ -62,37 +58,37 @@ class _MultiSignalWrapper implements SignalWrapper {
   bool get signed => _completer.isCompleted;
 
   @override
-  // ignore: body_might_complete_normally_nullable
-  Future<T?> run<T>(Future<T> Function() fn) async {
-    for (final signal in _signals) {
-      _subscriptions.add(signal.watch().listen(_onData));
-    }
+  Future<T?> call<T>(Future<T> Function() fn) async {
+    final futures = <Future>[];
+    final subscriptions = [
+      for (final signal in _signals)
+        signal.watch().listen((signal) {
+          if (onSignal?.call(signal) case final Future f) futures.add(f);
+          if (!_completer.isCompleted) _completer.complete(signal);
+        }),
+    ];
 
     try {
       final result = await Future.any([_completer.future, fn()]);
-      if (result is! ProcessSignal) return result as T;
+      if (result is T) return result;
+      return null;
     } catch (_) {
       rethrow;
     } finally {
       await onDispose?.call();
-      await _subscriptions.cancel();
+      await futures.wait;
+      await subscriptions.cancel();
     }
-  }
-
-  void _onData(ProcessSignal signal) {
-    onSignal?.call(signal);
-    if (signed) return;
-    _completer.complete(signal);
   }
 }
 
 class _SingleSignalWrapper implements SignalWrapper {
   const _SingleSignalWrapper(
     this._signal, {
-    required Completer<Null> completer,
+    required this._completer,
     this.onDispose,
     this.onSignal,
-  }) : _completer = completer;
+  });
 
   final ProcessSignal _signal;
   final Completer<Null> _completer;
@@ -107,8 +103,12 @@ class _SingleSignalWrapper implements SignalWrapper {
   bool get signed => _completer.isCompleted;
 
   @override
-  Future<T?> run<T>(Future<T> Function() fn) async {
-    final subscription = _signal.watch().listen(_onData);
+  Future<T?> call<T>(Future<T> Function() fn) async {
+    final futures = <Future>[];
+    final subscription = _signal.watch().listen((signal) {
+      if (onSignal?.call(signal) case final Future future) futures.add(future);
+      if (!_completer.isCompleted) _completer.complete(null);
+    });
 
     try {
       return await Future.any([_completer.future, fn()]);
@@ -116,13 +116,8 @@ class _SingleSignalWrapper implements SignalWrapper {
       rethrow;
     } finally {
       await onDispose?.call();
+      await futures.wait;
       await subscription.cancel();
     }
-  }
-
-  void _onData(ProcessSignal signal) {
-    onSignal?.call(signal);
-    if (signed) return;
-    _completer.complete(null);
   }
 }

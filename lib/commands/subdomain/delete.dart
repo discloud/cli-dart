@@ -4,7 +4,7 @@ import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
-class SubdomainDeleteCommand extends Command<void> {
+final class SubdomainDeleteCommand extends Command<void> {
   SubdomainDeleteCommand() {
     argParser.addOption("id", aliases: const ["subdomain"], mandatory: true);
   }
