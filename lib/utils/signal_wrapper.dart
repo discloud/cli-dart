@@ -46,7 +46,7 @@ class _MultiSignalWrapper implements SignalWrapper {
   });
 
   final Iterable<ProcessSignal> _signals;
-  final Completer<ProcessSignal> _completer;
+  final Completer<Null> _completer;
 
   @override
   final OnDisposeCallback? onDispose;
@@ -63,15 +63,13 @@ class _MultiSignalWrapper implements SignalWrapper {
     final subscriptions = [
       for (final signal in _signals)
         signal.watch().listen((signal) {
+          if (!_completer.isCompleted) _completer.complete(null);
           if (onSignal?.call(signal) case final Future f) futures.add(f);
-          if (!_completer.isCompleted) _completer.complete(signal);
         }),
     ];
 
     try {
-      final result = await Future.any([_completer.future, fn()]);
-      if (result is T) return result;
-      return null;
+      return await Future.any([_completer.future, fn()]);
     } catch (_) {
       rethrow;
     } finally {
@@ -106,8 +104,8 @@ class _SingleSignalWrapper implements SignalWrapper {
   Future<T?> call<T>(Future<T> Function() fn) async {
     final futures = <Future>[];
     final subscription = _signal.watch().listen((signal) {
-      if (onSignal?.call(signal) case final Future future) futures.add(future);
       if (!_completer.isCompleted) _completer.complete(null);
+      if (onSignal?.call(signal) case final Future future) futures.add(future);
     });
 
     try {
