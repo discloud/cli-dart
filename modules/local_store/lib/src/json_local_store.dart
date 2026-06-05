@@ -1,21 +1,22 @@
 part of "local_store.dart";
 
 class _JSONLocalStore implements LocalStore {
-  static final _jsonBase64Decoder = utf8.decoder
+  static final Converter<List<int>, Object?> _jsonBase64Decoder = utf8.decoder
       .fuse(base64.decoder)
       .fuse(utf8.decoder)
       .fuse(json.decoder);
 
-  static final _jsonBase64Encoder = json.encoder
+  static final Converter<Object?, List<int>> _jsonBase64Encoder = json.encoder
       .fuse(utf8.encoder)
-      .fuse(base64.encoder);
+      .fuse(base64.encoder)
+      .fuse(utf8.encoder);
 
-  _JSONLocalStore(this.path);
+  _JSONLocalStore(this.path) : _cache = .new(), _file = .new(path);
 
   final String path;
-  late final File _file = .new(path);
 
-  final _cache = <String, dynamic>{};
+  final Map<String, dynamic> _cache;
+  final File _file;
 
   Completer<void>? _loadCompleter;
 
@@ -30,13 +31,12 @@ class _JSONLocalStore implements LocalStore {
     } catch (_) {
     } finally {
       completer.complete();
-      if (completer != _loadCompleter) _loadCompleter?.complete();
     }
   }
 
   Future<void> _save() async {
     if (!await _file.exists()) await _file.create(recursive: true);
-    await _file.writeAsString(_jsonBase64Encoder.convert(_cache), flush: true);
+    await _file.writeAsBytes(_jsonBase64Encoder.convert(_cache), flush: true);
   }
 
   @override

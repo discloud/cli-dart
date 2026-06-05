@@ -10,20 +10,19 @@ final class _SpeedSample with LinkedListEntry<_SpeedSample> {
 }
 
 /// A utility class for monitoring processing speed over a sliding time window.
-///
-/// It tracks the number of units processed over a specified [windowDuration]
-/// (defaulting to 1 second) and calculates the current speed.
 class SpeedMonitor implements Disposable {
   static const double _zero = 0;
 
-  /// Creates a [SpeedMonitor] with a given [windowDuration].
+  /// Creates a [SpeedMonitor]
   factory SpeedMonitor() => ._(samples: .new());
 
-  const SpeedMonitor._({required this._samples})
-    : windowDuration = const .new(seconds: 1);
+  const SpeedMonitor._({
+    required this._samples,
+    this._windowDuration = const .new(seconds: 1),
+  });
 
   /// The duration of the sliding window used for speed calculation.
-  final Duration windowDuration;
+  final Duration _windowDuration;
 
   /// A linked list of samples currently within the time window.
   final LinkedList<_SpeedSample> _samples;
@@ -34,9 +33,6 @@ class SpeedMonitor implements Disposable {
   }
 
   /// Adds a sample of the [totalProcessedUnits] and returns the current speed.
-  ///
-  /// The speed is calculated as units per [windowDuration].
-  /// It automatically removes samples that are older than the [windowDuration].
   double add(int totalProcessedUnits) {
     final _SpeedSample last = .new(totalProcessedUnits);
 
@@ -48,13 +44,13 @@ class SpeedMonitor implements Disposable {
 
     int baseDeltaTime = last.time - first.time;
 
-    while (baseDeltaTime > windowDuration.inMicroseconds) {
+    while (baseDeltaTime > _windowDuration.inMicroseconds) {
       first.unlink();
       first = _samples.first;
       baseDeltaTime = last.time - first.time;
     }
 
-    final deltaTime = baseDeltaTime / windowDuration.inMicroseconds;
+    final deltaTime = baseDeltaTime / _windowDuration.inMicroseconds;
 
     final deltaUnits = last.units - first.units;
 

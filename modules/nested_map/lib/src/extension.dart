@@ -6,6 +6,7 @@ extension MapExtension<K extends String> on Map<K, dynamic> {
   dynamic _nestedGet(List<K> keys) {
     return switch (this[keys.removeAt(0)]) {
       final Map<K, dynamic> map => map._nestedGet(keys),
+      final List list => list._nestedGet(keys),
       final value => value,
     };
   }
@@ -30,5 +31,17 @@ extension MapExtension<K extends String> on Map<K, dynamic> {
     final keys = key.split(_dot) as List<K>;
     final lastKey = keys.removeLast();
     _nestedSet(keys, lastKey, value);
+  }
+}
+
+extension ListExtension on List {
+  dynamic _nestedGet(List<String> keys) {
+    if (int.tryParse(keys.removeAt(0)) case final index?) {
+      return switch (this[index]) {
+        final List list => list._nestedGet(keys),
+        final Map<String, dynamic> map => map._nestedGet(keys),
+        final value => value,
+      };
+    }
   }
 }
