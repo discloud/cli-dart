@@ -3,7 +3,7 @@ part of "console_printer.dart";
 class _DebugConsolePrinter extends ConsolePrinter {
   _DebugConsolePrinter() : super._();
 
-  void _debugSpin(CLISpin spin, Object? object) {
+  void _debugSpin(ISpin spin, Object? object) {
     spin.stop();
     stderr.writeln(object);
     spin.start();

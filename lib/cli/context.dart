@@ -4,7 +4,7 @@ import "dart:io";
 import "package:discloud/cli/disposable.dart";
 import "package:discloud/cli/printer/console_printer.dart";
 import "package:discloud/cli/printer/iprinter.dart";
-import "package:discloud/cli/spin/cli_spin.dart";
+import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/duration.dart";
 import "package:discloud/extensions/list.dart";
 import "package:discloud/services/discloud/api_client.dart";
@@ -64,7 +64,7 @@ class CliContext implements Disposable {
   final bool debug;
   final DiscloudApiClient api;
   final LocalStore store;
-  final IPrinter<CLISpin> printer;
+  final IPrinter<ISpin> printer;
 
   String get locale => localeName;
 

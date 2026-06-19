@@ -55,6 +55,7 @@ class Bytes<N extends num> {
 
   Bytes operator +(Object? other) {
     return switch (other) {
+      final _Bits other => .new(other.n / 8 + n),
       final Bytes other => .new(other.n + n),
       final num other => .new(other + n),
       _ => this,
@@ -63,6 +64,7 @@ class Bytes<N extends num> {
 
   Bytes operator -(Object? other) {
     return switch (other) {
+      final _Bits other => .new(other.n / 8 - n),
       final Bytes other => .new(other.n - n),
       final num other => .new(other - n),
       _ => this,
@@ -71,6 +73,7 @@ class Bytes<N extends num> {
 
   Bytes operator *(Object? other) {
     return switch (other) {
+      final _Bits other => .new(other.n / 8 * n),
       final Bytes other => .new(other.n * n),
       final num other => .new(other * n),
       _ => this,
@@ -79,6 +82,7 @@ class Bytes<N extends num> {
 
   Bytes operator /(Object? other) {
     return switch (other) {
+      final _Bits other => .new(other.n / 8 / n),
       final Bytes other => .new(other.n / n),
       final num other => .new(other / n),
       _ => this,
@@ -87,6 +91,7 @@ class Bytes<N extends num> {
 
   Bytes operator ~/(Object? other) {
     return switch (other) {
+      final _Bits other => .new(other.n / 8 ~/ n),
       final Bytes other => .new(other.n ~/ n),
       final num other => .new(other ~/ n),
       _ => this,
@@ -95,6 +100,7 @@ class Bytes<N extends num> {
 
   Bytes operator %(Object? other) {
     return switch (other) {
+      final _Bits other => .new(other.n / 8 % n),
       final Bytes other => .new(other.n % n),
       final num other => .new(other % n),
       _ => this,
@@ -103,6 +109,7 @@ class Bytes<N extends num> {
 
   bool operator >(Object? other) {
     return switch (other) {
+      final _Bits other => other.n / 8 > n,
       final Bytes other => other.n > n,
       final num other => other > n,
       _ => false,
@@ -111,6 +118,7 @@ class Bytes<N extends num> {
 
   bool operator >=(Object? other) {
     return switch (other) {
+      final _Bits other => other.n / 8 >= n,
       final Bytes other => other.n >= n,
       final num other => other >= n,
       _ => false,
@@ -119,6 +127,7 @@ class Bytes<N extends num> {
 
   bool operator <(Object? other) {
     return switch (other) {
+      final _Bits other => other.n / 8 < n,
       final Bytes other => other.n < n,
       final num other => other < n,
       _ => false,
@@ -127,6 +136,7 @@ class Bytes<N extends num> {
 
   bool operator <=(Object? other) {
     return switch (other) {
+      final _Bits other => other.n / 8 <= n,
       final Bytes other => other.n <= n,
       final num other => other <= n,
       _ => false,
@@ -136,6 +146,7 @@ class Bytes<N extends num> {
   @override
   bool operator ==(other) {
     return switch (other) {
+      final _Bits other => other.n / 8 == n,
       final Bytes other => other.n == n,
       final num other => other == n,
       _ => false,

@@ -99,8 +99,9 @@ class GlobZipper {
     Stream<File> Function() fileStreamFactory, [
     OnErrorCallback? onError,
   ]) async {
-    onError ??= _noop;
-    await for (final file in fileStreamFactory().handleError(onError)) {
+    await for (final file in fileStreamFactory().handleError(
+      onError ?? _noop,
+    )) {
       final aFile = await _toArchiveFile(file, root: directory);
 
       encoder.addArchiveFile(aFile);
@@ -113,16 +114,17 @@ class GlobZipper {
     ZipCallback onData, [
     OnErrorCallback? onError,
   ]) async {
-    onError ??= _noop;
-    int processed = 0, i = 1;
-    await for (final file in fileStreamFactory().handleError(onError)) {
+    int processed = 0, i = 0;
+    await for (final file in fileStreamFactory().handleError(
+      onError ?? _noop,
+    )) {
       final stat = await file.stat();
 
       onData(
         .new(
           file: file,
           stat: stat,
-          current: i++,
+          current: ++i,
           processed: processed,
           compressed: await zipfile.length(),
         ),
@@ -145,7 +147,7 @@ class GlobZipper {
 
     final filename = relative(file.path, from: root.path);
 
-    final fileStream = InputFileStream(file.path);
+    final InputFileStream fileStream = .new(file.path);
 
     return .stream(filename, fileStream)
       ..compressionLevel = level
