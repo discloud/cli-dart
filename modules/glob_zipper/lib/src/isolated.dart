@@ -13,7 +13,7 @@ Future<void> _zipInIsolate({
   ZipCallback? onData,
   OnErrorCallback? onError,
 }) async {
-  final mainPort = ReceivePort();
+  final ReceivePort mainPort = .new();
 
   final mainPortBroadcast = mainPort.asBroadcastStream();
 
@@ -58,7 +58,7 @@ Future<void> _zipInIsolate({
 }
 
 Future<void> _isolatedZip(SendPort mainSendPort) async {
-  final isolatedPort = ReceivePort();
+  final ReceivePort isolatedPort = .new();
 
   final isolatePortBroadcast = isolatedPort.asBroadcastStream();
 

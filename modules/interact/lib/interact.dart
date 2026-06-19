@@ -16,4 +16,4 @@ export "src/spinner.dart";
 export "src/theme/theme.dart";
 
 /// Resets the Terminal to default values.
-void Function() reset = Context.reset;
+const void Function() reset = Context.reset;

@@ -11,9 +11,7 @@ class _JSONLocalStore implements LocalStore {
       .fuse(base64.encoder)
       .fuse(utf8.encoder);
 
-  _JSONLocalStore(this.path) : _cache = .new(), _file = .new(path);
-
-  final String path;
+  _JSONLocalStore(String path) : _cache = .new(), _file = .new(path);
 
   final Map<String, dynamic> _cache;
   final File _file;

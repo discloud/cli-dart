@@ -1,3 +1,5 @@
 part of "glob_zipper.dart";
 
-class ZipException implements Exception {}
+class ZipException implements Exception {
+  const ZipException();
+}

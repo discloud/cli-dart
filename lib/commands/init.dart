@@ -45,9 +45,9 @@ final class InitCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final file = File(DiscloudConfig.filename);
+    final File file = .new(DiscloudConfig.filename);
 
-    final args = _InitArgs(argResults);
+    final _InitArgs args = .new(argResults);
 
     if (!args.force && await file.exists()) {
       throw Exception("${DiscloudConfig.filename} already exists!");

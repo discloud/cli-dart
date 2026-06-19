@@ -1,3 +1,5 @@
+// dart scripts/upgrade_pubspec_sdk.dart
+
 import "dart:io";
 
 import "package:path/path.dart";
