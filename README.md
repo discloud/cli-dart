@@ -118,13 +118,13 @@ For details see [CONTRIBUTING.md](CONTRIBUTING.md).
 - You can perform the test manually by running the command below.
 
     ```sh
-    dart run lib/main.dart
+    dart lib/main.dart
     ```
 
 - Try adding arguments.
 
     ```sh
-    dart run lib/main.dart --version
+    dart lib/main.dart --version
     ```
 
 ## LICENSE

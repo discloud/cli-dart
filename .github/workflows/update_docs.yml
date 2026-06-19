@@ -35,7 +35,7 @@ jobs:
         run: dart run build_runner build -r -v --low-resources-mode
 
       - name: Generate docs
-        run: dart run scripts/docs/generate.dart
+        run: dart scripts/docs/generate.dart
 
       - name: Git config
         run: |
