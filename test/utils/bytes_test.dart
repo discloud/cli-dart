@@ -34,5 +34,10 @@ void main() {
       const Bytes bytes = .bits(1024 * 1024 * 10 * 8);
       expect(bytes.toString(), "80.0Mb");
     });
+
+    test("${4.996949731576378e-7 * 8}", () {
+      const Bytes bytes = .bits(4.996949731576378e-7 * 8);
+      expect(bytes.toString(), "0.0b");
+    });
   });
 }
