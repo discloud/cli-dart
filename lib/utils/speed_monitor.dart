@@ -5,8 +5,8 @@ import "package:discloud/cli/disposable.dart";
 final class _SpeedSample {
   _SpeedSample(this.units) : time = DateTime.now().microsecondsSinceEpoch;
 
-  final int units;
   final int time;
+  final int units;
 }
 
 /// A utility class for monitoring processing speed over a sliding time window.
