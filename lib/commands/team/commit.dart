@@ -100,7 +100,7 @@ final class TeamCommitCommand extends Command<void> with Disposable {
 
   @override
   FutureOr<void> dispose() async {
-    await _file?.safeDelete();
     _monitor?.dispose();
+    await _file?.safeDelete();
   }
 }

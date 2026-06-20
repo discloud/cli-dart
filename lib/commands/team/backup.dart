@@ -135,7 +135,7 @@ final class TeamBackupCommand extends Command<void> with Disposable {
   @override
   Future<void> dispose() async {
     _client?.close();
-    await _file?.safeDelete();
     _monitor?.dispose();
+    await _file?.safeDelete();
   }
 }
