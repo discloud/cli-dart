@@ -43,7 +43,7 @@ class Bytes<N extends num> {
     return n / pow(dimension.value, index);
   }
 
-  int get unitIndex => min(index, type.units.length);
+  int get unitIndex => index.clamp(0, type.units.length);
 
   bool get _isInvalid => n.isNaN || n.isInfinite || n.isZero || n.isNegative;
 
@@ -165,7 +165,7 @@ class _Bits<N extends num> extends Bytes<N> {
   UnitType get type => .bit;
 
   @override
-  int get unitIndex => min(index, type.units.length);
+  int get unitIndex => index.clamp(0, type.units.length);
 
   @override
   String toString([String separator = ""]) {
