@@ -44,7 +44,6 @@ class SpeedMonitor implements Disposable {
     if (first == last) return _zero;
 
     return (last.units - first.units) /
-        ((last.time - first.time) /
-        _windowDuration.inMicroseconds);
+        ((last.time - first.time) / _windowDuration.inMicroseconds);
   }
 }
