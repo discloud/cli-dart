@@ -5,8 +5,8 @@ import "package:discloud/cli/disposable.dart";
 final class _SpeedSample {
   _SpeedSample(this.units) : time = DateTime.now().microsecondsSinceEpoch;
 
-  final int units;
   final int time;
+  final int units;
 }
 
 /// A utility class for monitoring processing speed over a sliding time window.
@@ -37,7 +37,9 @@ class SpeedMonitor implements Disposable {
       ..removeWhere((s) => last.time - s.time > _windowDuration.inMicroseconds)
       ..add(last);
 
-    final first = _queue.first;
+    final queueIterator = _queue.iterator..moveNext();
+
+    final first = queueIterator.current;
 
     if (first == last) return _zero;
 
