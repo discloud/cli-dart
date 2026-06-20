@@ -37,7 +37,9 @@ class SpeedMonitor implements Disposable {
       ..removeWhere((s) => last.time - s.time > _windowDuration.inMicroseconds)
       ..add(last);
 
-    final first = _queue.first;
+    final queueIterator = _queue.iterator..moveNext();
+
+    final first = queueIterator.current;
 
     if (first == last) return _zero;
 
