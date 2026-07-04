@@ -43,11 +43,12 @@ final class UserLocaleCommand extends Command<void> {
       (true, _) => context.locale,
       (_, final String value) => value,
       _ => apiLocales.elementAt(
-        Select(prompt: "Choose your locale", options: apiLocales.toList())
-            .interact(),
+        Select(
+          prompt: "Choose your locale",
+          options: apiLocales.toList(),
+        ).interact(),
       ),
-    }
-        .replaceAll("_", "-");
+    }.replaceAll("_", "-");
 
     if (!apiLocales.contains(locale)) {
       usageException("Unsupported locale: $locale (${apiLocales.join(", ")})");

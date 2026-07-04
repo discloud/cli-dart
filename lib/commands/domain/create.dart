@@ -33,7 +33,7 @@ final class CustomdomainCreateCommand extends Command<void> {
 
     spinner.success(resolveResponseMessage(response));
 
-    if ((response["domain"] ?? response["customdomain"]) case final Map data) {
+    if (response["domain"] ?? response["customdomain"] case final Map data) {
       stdout.writeln(mapToVerticalAsciiTable(data));
     }
   }

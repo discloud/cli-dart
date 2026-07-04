@@ -28,8 +28,9 @@ String formatProgressMessage({
   }
 
   if (total <= 0) {
-    buffer.write(" ");
-    buffer.write(Bytes(processed).toString(" "));
+    buffer
+      ..write(" ")
+      ..write(Bytes(processed).toString(" "));
     return buffer.toString();
   }
 

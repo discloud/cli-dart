@@ -31,7 +31,6 @@ extension CommandExtension<T> on Command<T> {
     if (value != null) return value;
 
     usageException("Missing required option or argument: $name");
-    throw StateError("unreachable");
   }
 
   int requiredIntOptionOrRest(String name, int index) {
@@ -40,7 +39,6 @@ extension CommandExtension<T> on Command<T> {
     if (value != null) return value;
 
     usageException("Invalid integer for $name: $raw");
-    throw StateError("unreachable");
   }
 
   List<String> multiOptionOrRest(

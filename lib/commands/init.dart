@@ -31,12 +31,7 @@ final class InitCommand extends Command<void> {
         help: "Overwrite config file",
         negatable: false,
       )
-      ..addFlag(
-        "yes",
-        abbr: "y",
-        help: "Skip config prompts",
-        negatable: false,
-      )
+      ..addFlag("yes", abbr: "y", help: "Skip config prompts", negatable: false)
       ..addFlag("vlan", help: "Enables private networking", negatable: false)
       ..addMultiOption("apt", abbr: "a", help: appApts.join(","))
       ..addOption("avatar", help: "Image URL (.gif, .jpeg, .jpg, .png)")
@@ -78,8 +73,7 @@ final class InitCommand extends Command<void> {
         "# https://docs.discloud.com/en/discloud.config",
         if (args.apt case final v when v.isNotEmpty)
           _configLine("APT", v.join(",")),
-        if (args.autorestart case final v when v)
-          _configLine("AUTORESTART", v),
+        if (args.autorestart case final v when v) _configLine("AUTORESTART", v),
         if (args.avatar case final v?) _configLine("AVATAR", v),
         if (args.hostname case final v?) _configLine("HOSTNAME", v),
         if (args.id case final v?) _configLine("ID", v),
