@@ -14,7 +14,7 @@ final class AppDeleteCommand extends Command<void> {
         help: "Skip confirmation prompt",
         negatable: false,
       )
-      ..addOption("app", mandatory: true);
+      ..addOption("app");
   }
 
   @override
@@ -25,7 +25,7 @@ final class AppDeleteCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
+    final appId = requiredOptionOrRest("app", 0);
 
     final result =
         argResults!.flag("yes") ||

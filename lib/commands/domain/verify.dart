@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 
 final class CustomdomainVerifyCommand extends Command<void> {
   CustomdomainVerifyCommand() {
-    argParser.addOption("id", aliases: const ["domain"], mandatory: true);
+    argParser.addOption("id", aliases: const ["domain"], defaultsTo: "all");
   }
 
   @override
@@ -19,14 +19,16 @@ final class CustomdomainVerifyCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final String domain = argResults!.option("id")!;
+    final domain = optionOrRest("id", 0) ?? "all";
 
-    final spinner = context.printer.spin(text: "Verifying a domain...");
+    final spinner = context.printer.spin(text: "Verifying $domain...");
 
     final response = await context.api.get("/customdomain/$domain/verify");
 
     spinner.success(resolveResponseMessage(response));
 
-    stdout.writeln(mapToVerticalAsciiTable(response["domain"]));
+    if ((response["domain"] ?? response["customdomain"]) case final Map data) {
+      stdout.writeln(mapToVerticalAsciiTable(data));
+    }
   }
 }

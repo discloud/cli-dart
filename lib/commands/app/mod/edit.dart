@@ -8,8 +8,8 @@ import "package:discloud/utils/messages.dart";
 final class AppModEditCommand extends Command<void> {
   AppModEditCommand() {
     argParser
-      ..addOption("app", mandatory: true)
-      ..addOption("mod", mandatory: true)
+      ..addOption("app")
+      ..addOption("mod")
       ..addMultiOption("perms", allowed: appModPerms);
   }
 
@@ -21,9 +21,10 @@ final class AppModEditCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
-    final modId = argResults!.option("mod");
-    final perms = argResults!.multiOption("perms");
+    final appId = requiredOptionOrRest("app", 0);
+    final modId = requiredOptionOrRest("mod", 1);
+    final perms = multiOptionOrRest("perms", 2);
+    _validatePerms(perms);
 
     final spinner = context.printer.spin(text: "Editing app MOD...");
 
@@ -33,5 +34,12 @@ final class AppModEditCommand extends Command<void> {
     );
 
     spinner.success(resolveResponseMessage(response));
+  }
+
+  void _validatePerms(List<String> perms) {
+    final invalid = perms.where((perm) => !appModPerms.contains(perm)).toList();
+    if (invalid.isEmpty) return;
+
+    usageException("Invalid MOD permission: ${invalid.join(", ")}");
   }
 }

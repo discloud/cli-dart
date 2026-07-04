@@ -10,7 +10,7 @@ const _keysToIgnore = {"netIO"};
 
 final class AppStatusCommand extends Command<void> {
   AppStatusCommand() {
-    argParser.addOption("app", mandatory: true);
+    argParser.addOption("app");
   }
 
   @override
@@ -21,7 +21,7 @@ final class AppStatusCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
+    final appId = requiredOptionOrRest("app", 0);
 
     final spinner = context.printer.spin(text: "Fetching app status...");
 

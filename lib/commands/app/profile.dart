@@ -7,7 +7,7 @@ import "package:discloud/utils/messages.dart";
 final class AppProfileCommand extends Command<void> {
   AppProfileCommand() {
     argParser
-      ..addOption("app", mandatory: true)
+      ..addOption("app")
       ..addOption("name")
       ..addOption("avatar");
   }
@@ -21,7 +21,7 @@ final class AppProfileCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app")!;
+    final appId = requiredOptionOrRest("app", 0);
     final name = argResults?.option("name");
     final avatar = argResults?.option("avatar");
 

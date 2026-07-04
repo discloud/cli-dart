@@ -6,7 +6,7 @@ import "package:discloud/utils/messages.dart";
 
 final class CustomdomainDeleteCommand extends Command<void> {
   CustomdomainDeleteCommand() {
-    argParser.addOption("id", aliases: const ["domain"], mandatory: true);
+    argParser.addOption("id", aliases: const ["domain"]);
   }
 
   @override
@@ -17,9 +17,9 @@ final class CustomdomainDeleteCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final String domain = argResults!.option("id")!;
+    final domain = requiredOptionOrRest("id", 0);
 
-    final spinner = context.printer.spin(text: "Deleting domain...");
+    final spinner = context.printer.spin(text: "Deleting $domain...");
 
     final response = await context.api.delete("/customdomain/$domain");
 

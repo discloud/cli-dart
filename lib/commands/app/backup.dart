@@ -6,23 +6,31 @@ import "package:discloud/cli/disposable.dart";
 import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
+import "package:discloud/utils/ascii_table.dart";
 import "package:discloud/utils/download.dart";
 import "package:discloud/utils/messages.dart";
 import "package:discloud/utils/progress.dart";
 import "package:discloud/utils/speed_monitor.dart";
+import "package:path/path.dart" hide context;
 
-const _pSep = "/";
+const _defaultBackupDir = "discloud/backups";
 
 final class AppBackupCommand extends Command<void> with Disposable {
   AppBackupCommand() {
     argParser
-      ..addOption("app", mandatory: true, valueHelp: "all")
+      ..addOption("app", valueHelp: "all")
       ..addOption(
         "dir",
         abbr: "d",
-        aliases: const ["out"],
+        aliases: const ["out", "path"],
         help:
             "Specifies the destination path for downloading backups. The destination path will be considered a directory.",
+      )
+      ..addFlag(
+        "save",
+        abbr: "s",
+        help: "Save your app backup",
+        negatable: false,
       );
   }
 
@@ -41,7 +49,9 @@ final class AppBackupCommand extends Command<void> with Disposable {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
+    final appId = optionOrRest("app", 0) ?? "all";
+    final dir = optionOrRest("dir", 1);
+    final shouldDownload = argResults!.flag("save") || dir != null;
 
     final spinner = context.printer.spin(text: "Fetching backup...");
 
@@ -51,29 +61,49 @@ final class AppBackupCommand extends Command<void> with Disposable {
 
     switch (response["backups"]) {
       case final Map data:
-        await _handleSingle(data, spinner);
+        await _handleSingle(
+          data,
+          dir: shouldDownload ? (dir ?? _defaultBackupDir) : null,
+          spinner: spinner,
+        );
         break;
       case final List list:
-        await _handleMulti(list, spinner);
+        await _handleMulti(
+          list,
+          dir: shouldDownload ? (dir ?? _defaultBackupDir) : null,
+          spinner: spinner,
+        );
         break;
     }
   }
 
-  Future<void> _handleSingle(Map<dynamic, dynamic> data, ISpin spinner) async {
+  Future<void> _handleSingle(
+    Map<dynamic, dynamic> data, {
+    required ISpin spinner,
+    String? dir,
+  }) async {
     if (data["url"] case final String url) {
-      if (argResults?.option("dir") case final dir?) {
+      if (dir != null) {
         final Uri uri = .parse(url);
 
         return _download(dir: dir, spinner: spinner, uri: uri);
       }
 
-      context.printer.writeln(url);
+      context.printer.writeln(mapToVerticalAsciiTable(data));
     }
   }
 
-  Future<void> _handleMulti(List list, ISpin spinner) async {
+  Future<void> _handleMulti(
+    List list, {
+    required ISpin spinner,
+    String? dir,
+  }) async {
+    if (dir == null) {
+      context.printer.writeln(listToAsciiTable(list));
+      return;
+    }
+
     final client = _client = .new();
-    final dir = argResults?.option("dir") ?? ".";
 
     for (final data in list) {
       final String appId = data["id"];
@@ -99,7 +129,7 @@ final class AppBackupCommand extends Command<void> with Disposable {
     HttpClient? client,
   }) async {
     final filename = uri.pathSegments.last;
-    final filepath = "$dir$_pSep$filename";
+    final filepath = joinAll([dir, filename]);
     final file = _file = .new(filepath);
 
     final monitor = _monitor = .new();

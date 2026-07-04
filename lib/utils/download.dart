@@ -1,5 +1,7 @@
 import "dart:io";
 
+import "package:discloud/extensions/io_http_client.dart";
+
 typedef VoidProgressCallback = void Function(int processed, int total);
 
 Future<void> download(
@@ -9,41 +11,47 @@ Future<void> download(
   VoidProgressCallback? onProgress,
 }) async {
   file ??= .new(url.pathSegments.last);
-  await file.create(recursive: true);
-  final sink = file.openWrite();
+  await file.parent.create(recursive: true);
 
   final client0 = client ?? .new();
+  IOSink? sink;
 
   try {
     final request = await client0.getUrl(url);
+    final response = await request.close();
+    if (!response.ok) {
+      throw HttpException(
+        "Download failed: ${response.statusCode} ${response.reasonPhrase}",
+        uri: url,
+      );
+    }
 
+    sink = file.openWrite();
     if (onProgress case final onProgress?) {
       await _downloadWithProgress(
         onProgress: onProgress,
-        responseFactory: request.close,
+        response: response,
         sink: sink,
       );
     } else {
-      final response = await request.close();
       await sink.addStream(response);
     }
   } catch (_) {
-    await sink.close();
-    await file.delete();
+    await sink?.close();
+    sink = null;
+    if (await file.exists()) await file.delete();
     rethrow;
   } finally {
-    await sink.close();
+    await sink?.close();
     if (client == null) client0.close();
   }
 }
 
 Future<void> _downloadWithProgress({
   required VoidProgressCallback onProgress,
-  required Future<HttpClientResponse> Function() responseFactory,
+  required HttpClientResponse response,
   required IOSink sink,
 }) async {
-  final response = await responseFactory();
-
   final total = response.contentLength;
 
   int processed = 0;

@@ -19,15 +19,18 @@ final class CustomdomainInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final String domain = argResults!.option("id")!;
+    final domain = optionOrRest("id", 0) ?? "all";
 
-    final spinner = context.printer.spin(text: "Fetching domain info...");
+    final spinner = context.printer.spin(text: "Fetching $domain...");
 
     final response = await context.api.get("/customdomain/$domain");
 
     spinner.success(resolveResponseMessage(response));
 
-    switch (response["customdomain"] ?? response["customdomains"]) {
+    switch (response["domain"] ??
+        response["domains"] ??
+        response["customdomain"] ??
+        response["customdomains"]) {
       case final List list:
         stdout.writeln(listToAsciiTable(list));
         break;

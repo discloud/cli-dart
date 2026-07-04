@@ -6,7 +6,7 @@ import "package:discloud/utils/messages.dart";
 
 final class SubdomainDeleteCommand extends Command<void> {
   SubdomainDeleteCommand() {
-    argParser.addOption("id", aliases: const ["subdomain"], mandatory: true);
+    argParser.addOption("id", aliases: const ["subdomain"]);
   }
 
   @override
@@ -17,9 +17,9 @@ final class SubdomainDeleteCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final String id = argResults!.option("id")!;
+    final id = requiredOptionOrRest("id", 0);
 
-    final spinner = context.printer.spin(text: "Deleting subdomain...");
+    final spinner = context.printer.spin(text: "Deleting $id...");
 
     final response = await context.api.delete("/subdomain/$id");
 

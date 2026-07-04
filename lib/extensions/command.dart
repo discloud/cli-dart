@@ -9,4 +9,51 @@ extension CommandExtension<T> on Command<T> {
       addSubcommand(command);
     }
   }
+
+  String? optionOrRest(String name, int index) {
+    final parsed = argResults?.wasParsed(name) ?? false;
+    if (parsed) {
+      final value = argResults?.option(name);
+      if (value != null && value.isNotEmpty) return value;
+    }
+
+    final rest = argResults?.rest ?? const <String>[];
+    if (rest.length > index) return rest[index];
+
+    final value = argResults?.option(name);
+    if (value != null && value.isNotEmpty) return value;
+
+    return null;
+  }
+
+  String requiredOptionOrRest(String name, int index) {
+    final value = optionOrRest(name, index);
+    if (value != null) return value;
+
+    usageException("Missing required option or argument: $name");
+    throw StateError("unreachable");
+  }
+
+  int requiredIntOptionOrRest(String name, int index) {
+    final raw = requiredOptionOrRest(name, index);
+    final value = int.tryParse(raw);
+    if (value != null) return value;
+
+    usageException("Invalid integer for $name: $raw");
+    throw StateError("unreachable");
+  }
+
+  List<String> multiOptionOrRest(
+    String name,
+    int index, {
+    List<String> defaults = const [],
+  }) {
+    final rest = argResults?.rest ?? const <String>[];
+    if (rest.length > index) return rest.skip(index).toList();
+
+    final values = argResults?.multiOption(name) ?? const <String>[];
+    if (values.isNotEmpty) return values;
+
+    return defaults;
+  }
 }

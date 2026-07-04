@@ -11,7 +11,7 @@ import "package:tint/tint.dart";
 final class AppConsoleCommand extends Command<void> {
   AppConsoleCommand() {
     argParser
-      ..addOption("app", mandatory: true)
+      ..addOption("app")
       ..addOption("command");
   }
 
@@ -26,7 +26,7 @@ final class AppConsoleCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app")!;
+    final appId = requiredOptionOrRest("app", 0);
     String? command = argResults!.option("command");
 
     final spinner = context.printer.spin(start: false);

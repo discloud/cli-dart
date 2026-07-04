@@ -19,9 +19,9 @@ final class SubdomainInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final String id = argResults!.option("id")!;
+    final id = optionOrRest("id", 0) ?? "all";
 
-    final spinner = context.printer.spin(text: "Fetching subdomain info...");
+    final spinner = context.printer.spin(text: "Fetching $id...");
 
     final response = await context.api.get("/subdomain/$id");
 

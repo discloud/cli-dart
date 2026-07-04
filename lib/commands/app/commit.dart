@@ -39,12 +39,17 @@ final class AppCommitCommand extends Command<void> with Disposable {
   Future<void> run() async {
     final directory = context.workspaceFolder;
 
+    final optionAppId = argResults!.option("app");
     final appId =
-        argResults!.option("app") ?? await _getDiscloudConfigAppId(directory);
+        optionAppId ??
+        optionOrRest("app", 0) ??
+        await _getDiscloudConfigAppId(directory);
 
     if (appId == null) throw Exception("Missing app id");
 
-    final glob = argResults!.multiOption("glob");
+    final glob = optionAppId == null
+        ? multiOptionOrRest("glob", 1, defaults: const ["**"])
+        : multiOptionOrRest("glob", 0, defaults: const ["**"]);
 
     final spinner = context.printer.spin(text: "Zipping...");
 
@@ -82,7 +87,6 @@ final class AppCommitCommand extends Command<void> with Disposable {
         );
       },
       onUploadDone: () {
-        _file = null;
         spinner.start("Processing...");
       },
     );

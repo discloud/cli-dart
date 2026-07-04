@@ -27,6 +27,12 @@ String formatProgressMessage({
     buffer.writeAll([" ", ?direction, Bytes.bits(speed * 8), "/s "]);
   }
 
+  if (total <= 0) {
+    buffer.write(" ");
+    buffer.write(Bytes(processed).toString(" "));
+    return buffer.toString();
+  }
+
   buffer.write(percentFormatter.format(processed / total));
 
   return buffer.toString();

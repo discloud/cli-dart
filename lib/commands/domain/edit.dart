@@ -8,8 +8,8 @@ import "package:discloud/utils/messages.dart";
 final class CustomdomainEditCommand extends Command<void> with Disposable {
   CustomdomainEditCommand() {
     argParser
-      ..addOption("id", aliases: const ["domain"], mandatory: true)
-      ..addOption("app", aliases: const ["subdomain"], mandatory: true);
+      ..addOption("id", aliases: const ["domain"])
+      ..addOption("app", aliases: const ["subdomain"], defaultsTo: "all");
   }
 
   @override
@@ -20,10 +20,10 @@ final class CustomdomainEditCommand extends Command<void> with Disposable {
 
   @override
   Future<void> run() async {
-    final String domain = argResults!.option("id")!;
-    final String subdomain = argResults!.option("app")!;
+    final domain = requiredOptionOrRest("id", 0);
+    final subdomain = optionOrRest("app", 1) ?? "all";
 
-    final spinner = context.printer.spin(text: "Editting a domain...");
+    final spinner = context.printer.spin(text: "Editting $domain...");
 
     final response = await context.api.put(
       "/customdomain/$domain/edit",

@@ -7,11 +7,14 @@ import "package:discloud/extensions/string.dart";
 import "package:discloud/services/discloud/constants.dart";
 import "package:discloud_config/discloud_config.dart";
 
+final _configLineBreakPattern = RegExp(r"[\r\n]");
+
 final class InitCommand extends Command<void> {
   InitCommand() {
     argParser
       ..addFlag(
         "autorestart",
+        aliases: const ["ar"],
         help:
             "Determines whether the app should automatically restart if it crashes.",
         negatable: false,
@@ -22,19 +25,36 @@ final class InitCommand extends Command<void> {
         help: "Overwrite config file",
         negatable: false,
       )
+      ..addFlag(
+        "overwrite",
+        abbr: "o",
+        help: "Overwrite config file",
+        negatable: false,
+      )
+      ..addFlag(
+        "yes",
+        abbr: "y",
+        help: "Skip config prompts",
+        negatable: false,
+      )
       ..addFlag("vlan", help: "Enables private networking", negatable: false)
-      ..addMultiOption("apt", help: appApts.join(","))
+      ..addMultiOption("apt", abbr: "a", help: appApts.join(","))
       ..addOption("avatar", help: "Image URL (.gif, .jpeg, .jpg, .png)")
+      ..addOption(
+        "engine-version",
+        aliases: const ["ev", "version"],
+        help: "current|latest|legacy|suja|x.x.x",
+      )
       ..addOption(
         "hostname",
         help: "Custom hostname alias for other apps to reach this one",
       )
       ..addOption("id", help: "User-defined subdomains")
-      ..addOption("main", help: "Relative file path")
-      ..addOption("name", help: "1 - 30 characters")
-      ..addOption("ram", help: "Amount in MB; min 100")
-      ..addOption("type", allowed: const ["bot", "site"])
-      ..addOption("version", help: "current|latest|legacy|suja|x.x.x");
+      ..addOption("main", abbr: "m", help: "Relative file path")
+      ..addOption("name", abbr: "n", help: "1 - 30 characters")
+      ..addOption("ram", abbr: "r", help: "Amount in MB; min 100")
+      ..addOption("start", abbr: "s", help: "App start")
+      ..addOption("type", abbr: "t", allowed: const ["bot", "site"]);
   }
 
   @override
@@ -56,17 +76,20 @@ final class InitCommand extends Command<void> {
     final StringBuffer buffer = .new()
       ..writeAll([
         "# https://docs.discloud.com/en/discloud.config",
-        if (args.apt case final v when v.isNotEmpty) "APT=${v.join(",")}",
-        if (args.autorestart case final v when v) "AUTORESTART=$v",
-        if (args.avatar case final v?) "AVATAR=$v",
-        if (args.hostname case final v?) "HOSTNAME=$v",
-        if (args.id case final v?) "ID=$v",
-        "MAIN=${args.main.orEmpty}",
-        if (args.name case final v?) "NAME=$v",
-        if (args.ram case final v?) "RAM=$v",
-        if (args.type case final v?) "TYPE=$v",
-        if (args.version case final v?) "VERSION=$v",
-        if (args.vlan case final v when v) "VLAN=$v",
+        if (args.apt case final v when v.isNotEmpty)
+          _configLine("APT", v.join(",")),
+        if (args.autorestart case final v when v)
+          _configLine("AUTORESTART", v),
+        if (args.avatar case final v?) _configLine("AVATAR", v),
+        if (args.hostname case final v?) _configLine("HOSTNAME", v),
+        if (args.id case final v?) _configLine("ID", v),
+        _configLine("MAIN", args.main.orEmpty),
+        if (args.name case final v?) _configLine("NAME", v),
+        if (args.ram case final v?) _configLine("RAM", v),
+        if (args.start case final v?) _configLine("START", v),
+        if (args.type case final v?) _configLine("TYPE", v),
+        if (args.version case final v?) _configLine("VERSION", v),
+        if (args.vlan case final v when v) _configLine("VLAN", v),
       ], "\n");
 
     final sink = file.openWrite()..write(buffer);
@@ -84,7 +107,7 @@ class _InitArgs {
   List<String> _multiOption(String n) => _argResults?.multiOption(n) ?? [];
   String? _option(String name) => _argResults?.option(name);
 
-  bool get force => _flag("force");
+  bool get force => _flag("force") || _flag("overwrite");
 
   List<String> get apt => _multiOption("apt");
   bool get autorestart => _flag("autorestart");
@@ -94,7 +117,12 @@ class _InitArgs {
   String? get main => _option("main");
   String? get name => _option("name");
   String? get ram => _option("ram");
+  String? get start => _option("start");
   String? get type => _option("type");
-  String? get version => _option("version");
+  String? get version => _option("engine-version");
   bool get vlan => _flag("vlan");
+}
+
+String _configLine(String key, Object value) {
+  return "$key=${value.toString().replaceAll(_configLineBreakPattern, "")}";
 }

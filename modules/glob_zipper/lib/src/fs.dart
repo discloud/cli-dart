@@ -81,7 +81,7 @@ class FS {
   }
 
   Future<bool> _resolveIgnoreFile(String folder, String filename) async {
-    final File file = .new("$folder$_pSep$filename");
+    final File file = .new(joinAll([folder, filename]));
 
     if (!await file.exists()) return false;
 

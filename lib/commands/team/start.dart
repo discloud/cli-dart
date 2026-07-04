@@ -17,7 +17,7 @@ final class TeamStartCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
+    final appId = optionOrRest("app", 0) ?? "all";
 
     final spinner = context.printer.spin(text: "Starting app...");
 

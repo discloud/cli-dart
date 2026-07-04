@@ -40,10 +40,10 @@ class Bytes<N extends num> {
 
   double get bytes {
     if (_isInvalid) return 0;
-    return n / pow(dimension.value, index);
+    return n / pow(dimension.value, unitIndex);
   }
 
-  int get unitIndex => index.clamp(0, type.units.length);
+  int get unitIndex => index.clamp(0, type.units.length - 1).toInt();
 
   bool get _isInvalid => n.isNaN || n.isInfinite || n.isZero || n.isNegative;
 
@@ -165,7 +165,7 @@ class _Bits<N extends num> extends Bytes<N> {
   UnitType get type => .bit;
 
   @override
-  int get unitIndex => index.clamp(0, type.units.length);
+  int get unitIndex => index.clamp(0, type.units.length - 1).toInt();
 
   @override
   String toString([String separator = ""]) {

@@ -8,22 +8,26 @@ import "package:discloud/utils/messages.dart";
 final class AppAptInstallCommand extends Command<void> {
   AppAptInstallCommand() {
     argParser
-      ..addOption("app", mandatory: true)
-      ..addMultiOption("apt", help: appApts.join(","));
+      ..addOption("app")
+      ..addMultiOption("apt", allowed: appApts, help: appApts.join(","));
   }
 
   @override
   final name = "install";
 
   @override
+  final aliases = const ["i"];
+
+  @override
   final description = "Install APT on your app";
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
-    final apts = argResults!.multiOption("apt");
+    final appId = requiredOptionOrRest("app", 0);
+    final apts = multiOptionOrRest("apt", 1);
 
     if (apts.isEmpty) usageException("Apt option cannot be empty");
+    _validateApts(apts);
 
     final spinner = context.printer.spin(text: "Installing app apt...");
 
@@ -33,5 +37,12 @@ final class AppAptInstallCommand extends Command<void> {
     );
 
     spinner.success(resolveResponseMessage(response));
+  }
+
+  void _validateApts(List<String> apts) {
+    final invalid = apts.where((apt) => !appApts.contains(apt)).toList();
+    if (invalid.isEmpty) return;
+
+    usageException("Invalid APT: ${invalid.join(", ")}");
   }
 }

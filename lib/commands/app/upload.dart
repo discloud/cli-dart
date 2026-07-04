@@ -12,6 +12,8 @@ import "package:discloud/utils/zip.dart";
 import "package:discloud_config/discloud_config.dart";
 import "package:path/path.dart" hide context;
 
+final _configLineBreakPattern = RegExp(r"[\r\n]");
+
 final class AppUploadCommand extends Command<void> with Disposable {
   AppUploadCommand() {
     argParser.addMultiOption("glob", abbr: "g", defaultsTo: const ["**"]);
@@ -39,7 +41,7 @@ final class AppUploadCommand extends Command<void> with Disposable {
 
     await config.validate();
 
-    final glob = argResults!.multiOption("glob");
+    final glob = multiOptionOrRest("glob", 0, defaults: const ["**"]);
 
     final spinner = context.printer.spin(text: "Zipping...");
 
@@ -77,12 +79,57 @@ final class AppUploadCommand extends Command<void> with Disposable {
         );
       },
       onUploadDone: () {
-        _file = null;
         spinner.start("Processing...");
       },
     );
 
     spinner.success(resolveResponseMessage(response));
+
+    if (response["status"] == "ok") {
+      if (response["app"] case final Map app) {
+        final updates = <String, String>{};
+
+        if (app["avatarURL"] case final String avatarURL) {
+          updates["AVATAR"] = avatarURL;
+        }
+
+        if (app["id"] case final String id) updates["ID"] = id;
+
+        await _updateConfigFile(File(configFilePath), updates);
+      }
+    }
+  }
+
+  Future<void> _updateConfigFile(File file, Map<String, String> updates) async {
+    if (updates.isEmpty) return;
+
+    final seen = <String>{};
+    final lines = await file.readAsLines();
+
+    for (int i = 0; i < lines.length; i++) {
+      final line = lines[i];
+      final index = line.indexOf("=");
+      if (index < 1) continue;
+
+      final key = line.substring(0, index).trim();
+      final value = updates[key];
+      if (value == null) continue;
+
+      lines[i] = "$key=${_configValue(value)}";
+      seen.add(key);
+    }
+
+    for (final entry in updates.entries) {
+      if (!seen.contains(entry.key)) {
+        lines.add("${entry.key}=${_configValue(entry.value)}");
+      }
+    }
+
+    await file.writeAsString("${lines.join("\n")}\n");
+  }
+
+  String _configValue(String value) {
+    return value.replaceAll(_configLineBreakPattern, "");
   }
 
   @override

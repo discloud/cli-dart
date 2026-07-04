@@ -7,8 +7,8 @@ import "package:discloud/utils/messages.dart";
 final class AppModDeleteCommand extends Command<void> {
   AppModDeleteCommand() {
     argParser
-      ..addOption("app", mandatory: true)
-      ..addOption("mod", mandatory: true);
+      ..addOption("app")
+      ..addOption("mod");
   }
 
   @override
@@ -19,12 +19,12 @@ final class AppModDeleteCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
-    final modId = argResults!.option("mod");
+    final appId = requiredOptionOrRest("app", 0);
+    final modId = requiredOptionOrRest("mod", 1);
 
     final spinner = context.printer.spin(text: "Deleting app MOD...");
 
-    final response = await context.api.delete("/app/$appId/team$modId");
+    final response = await context.api.delete("/app/$appId/team/$modId");
 
     spinner.success(resolveResponseMessage(response));
   }
