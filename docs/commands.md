@@ -375,6 +375,70 @@ Usage: discloud login [arguments]
 -h, --help    Print this usage information.
 ```
 
+### snapshot
+
+```sh
+Manage your versioned backups
+
+Usage: discloud snapshot <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  create     Create a versioned snapshot of your app
+  download   Download a versioned snapshot of your app
+  list       List your versioned snapshots
+```
+
+#### snapshot create
+
+```sh
+Create a versioned snapshot of your app
+
+Usage: discloud snapshot create [arguments]
+-h, --help               Print this usage information.
+    --app (mandatory)    
+```
+
+#### snapshot download
+
+```sh
+Download a versioned snapshot of your app
+
+Usage: discloud snapshot download [arguments]
+-h, --help                   Print this usage information.
+    --app (mandatory)        
+    --version (mandatory)    Snapshot version in YYYYMMDD-HHMMSS format
+-d, --dir                    Specifies the destination path for downloading the snapshot. The destination path will be considered a directory.
+                             (defaults to ".")
+```
+
+#### snapshot list
+
+```sh
+List your versioned snapshots
+
+Usage: discloud snapshot list [arguments]
+-h, --help         Print this usage information.
+    --app=<all>    (defaults to "all")
+    --page         (defaults to "1")
+    --limit        (defaults to "50")
+    --summary      
+```
+
+### snapshot
+
+```sh
+Manage your versioned backups
+
+Usage: discloud snapshot <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  create     Create a versioned snapshot of your app
+  download   Download a versioned snapshot of your app
+  list       List your versioned snapshots
+```
+
 ### subdomain
 
 ```sh
@@ -577,53 +641,4 @@ Usage: discloud zip [arguments]
 -o, --out            Zip output
 -l, --level=<0-9>    Compression level
 -p, --password       Zip password
-```
-
-### snapshot
-
-```sh
-Manage your versioned backups
-
-Usage: discloud snapshot <subcommand> [arguments]
--h, --help    Print this usage information.
-
-Available subcommands:
-  create     Create a versioned snapshot of your app
-  download   Download a versioned snapshot of your app
-  list       List your versioned snapshots
-```
-
-#### snapshot create
-
-```sh
-Create a versioned snapshot of your app
-
-Usage: discloud snapshot create [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    Your app id
-```
-
-#### snapshot download
-
-```sh
-Download a versioned snapshot of your app
-
-Usage: discloud snapshot download [arguments]
--h, --help                    Print this usage information.
-    --app (mandatory)         Your app id
-    --version (mandatory)     Snapshot version in YYYYMMDD-HHMMSS format
--d, --dir, --out               Specifies the destination path for downloading the snapshot. The destination path will be considered a directory.
-```
-
-#### snapshot list
-
-```sh
-List your versioned snapshots
-
-Usage: discloud snapshot list [arguments]
--h, --help          Print this usage information.
-    --app=<all>     App id, or 'all' to list every snapshot
-    --page          (defaults to "1") Page number (must be >= 1)
-    --limit         (defaults to "50") Items per page (1-200)
-    --summary       Return a summarized view of each backup
 ```
