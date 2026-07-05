@@ -64,15 +64,19 @@ final class SnapshotDownloadCommand extends Command<void> with Disposable {
     spinner.text = "Retrieving snapshot...";
 
     if (await context.api.get("/snapshot/$appId") case final Map r) {
-      if (r["versions"] case final List l when l.isNotEmpty) {
-        if (l.first case final Map v) return v["version"];
+      if (r["versions"] case final List versions when versions.isNotEmpty) {
+        if (versions.first case final Map version) {
+          if (version["version"] case final String value) return value;
+        }
       }
     }
 
     spinner.text = "Creating snapshot...";
 
     if (await context.api.post("/snapshot/$appId") case final Map r) {
-      if (r["snapshot"] case final Map s) return s["version"];
+      if (r["snapshot"] case final Map snapshot) {
+        if (snapshot["version"] case final String value) return value;
+      }
     }
 
     throw Exception("Failed to retrieve an app snapshot version");
