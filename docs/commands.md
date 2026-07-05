@@ -408,6 +408,7 @@ Usage: discloud snapshot download [arguments]
 -h, --help               Print this usage information.
     --app (mandatory)    
     --version            Snapshot version in YYYYMMDD-HHMMSS format
+-d, --dir                Specifies the destination path for downloading backups. The destination path will be considered a directory.
 ```
 
 #### snapshot info
