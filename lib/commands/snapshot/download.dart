@@ -3,6 +3,7 @@ import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/cli/disposable.dart";
+import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
 import "package:discloud/utils/download.dart";
@@ -10,24 +11,13 @@ import "package:discloud/utils/messages.dart";
 import "package:discloud/utils/progress.dart";
 import "package:discloud/utils/speed_monitor.dart";
 
-const _pSep = "/";
-
 final class SnapshotDownloadCommand extends Command<void> with Disposable {
   SnapshotDownloadCommand() {
     argParser
       ..addOption("app", mandatory: true)
       ..addOption(
         "version",
-        mandatory: true,
         help: "Snapshot version in YYYYMMDD-HHMMSS format",
-      )
-      ..addOption(
-        "dir",
-        abbr: "d",
-        aliases: const ["out"],
-        help:
-            "Specifies the destination path for downloading the snapshot. The destination path will be considered a directory.",
-        defaultsTo: ".",
       );
   }
 
@@ -40,17 +30,19 @@ final class SnapshotDownloadCommand extends Command<void> with Disposable {
   @override
   final aliases = const ["dl"];
 
-  HttpClient? _client;
   File? _file;
+  HttpClient? _client;
   SpeedMonitor? _monitor;
 
   @override
   Future<void> run() async {
     final String appId = argResults!.option("app")!;
-    final String version = argResults!.option("version")!;
-    final String dir = argResults!.option("dir")!;
 
-    final spinner = context.printer.spin(text: "Fetching download url...");
+    final spinner = context.printer.spin();
+
+    final version = await _retrieveSnapshotVersion(appId, spinner: spinner);
+
+    spinner.text = "Fetching snapshot download url...";
 
     final response = await context.api.get(
       "/snapshot/$appId/versions/$version",
@@ -58,16 +50,40 @@ final class SnapshotDownloadCommand extends Command<void> with Disposable {
 
     spinner.success(resolveResponseMessage(response));
 
-    final String url = response["download"]["url"];
+    if (response["download"]?["url"] case final String url) {
+      await _download(spinner: spinner, uri: .parse(url));
+    }
+  }
 
-    final Uri uri = Uri.parse(url);
+  Future<String> _retrieveSnapshotVersion(
+    String appId, {
+    required ISpin spinner,
+  }) async {
+    if (argResults?.option("version") case final String v) return v;
 
+    spinner.text = "Retrieving snapshot...";
+
+    if (await context.api.get("/snapshot/$appId") case final Map r) {
+      if (r["versions"] case final List l when l.isNotEmpty) {
+        if (l.first case final Map v) return v["version"];
+      }
+    }
+
+    spinner.text = "Creating snapshot...";
+
+    if (await context.api.post("/snapshot/$appId") case final Map r) {
+      if (r["snapshot"] case final Map s) return s["version"];
+    }
+
+    throw Exception("Failed to retrieve an app snapshot version");
+  }
+
+  Future<void> _download({required ISpin spinner, required Uri uri}) async {
     final filename = uri.pathSegments.last;
-    final filepath = "$dir$_pSep$filename";
-    final file = _file = File(filepath);
+    final filepath = filename;
+    final file = _file = .new(filepath);
 
-    final client = _client = HttpClient();
-    final monitor = _monitor = SpeedMonitor();
+    final monitor = _monitor = .new();
 
     try {
       spinner.start("Downloading...");
@@ -75,18 +91,19 @@ final class SnapshotDownloadCommand extends Command<void> with Disposable {
       await download(
         uri,
         file: file,
-        client: client,
+        client: _client,
         onProgress: (processed, total) {
           spinner.text = formatProgressMessage(
             prefixText: "Downloading:",
             speed: monitor.add(processed),
-            direction: UnitDirection.down,
+            direction: .down,
             processed: processed,
             total: total,
           );
         },
       );
 
+      // no delete on dispose
       _file = null;
 
       spinner.success(filepath);
