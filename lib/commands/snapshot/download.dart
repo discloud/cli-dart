@@ -10,14 +10,19 @@ import "package:discloud/utils/download.dart";
 import "package:discloud/utils/messages.dart";
 import "package:discloud/utils/progress.dart";
 import "package:discloud/utils/speed_monitor.dart";
+import "package:path/path.dart" hide context;
 
 final class SnapshotDownloadCommand extends Command<void> with Disposable {
   SnapshotDownloadCommand() {
     argParser
       ..addOption("app", mandatory: true)
+      ..addOption("version", help: "Snapshot version in YYYYMMDD-HHMMSS format")
       ..addOption(
-        "version",
-        help: "Snapshot version in YYYYMMDD-HHMMSS format",
+        "dir",
+        abbr: "d",
+        aliases: const ["out"],
+        help:
+            "Specifies the destination path for downloading backups. The destination path will be considered a directory.",
       );
   }
 
@@ -84,7 +89,7 @@ final class SnapshotDownloadCommand extends Command<void> with Disposable {
 
   Future<void> _download({required ISpin spinner, required Uri uri}) async {
     final filename = uri.pathSegments.last;
-    final filepath = filename;
+    final filepath = joinAll([?argResults?.option("dir"), filename]);
     final file = _file = .new(filepath);
 
     final monitor = _monitor = .new();
