@@ -1,13 +1,13 @@
 import "package:args/command_runner.dart";
 import "package:discloud/commands/snapshot/create.dart";
 import "package:discloud/commands/snapshot/download.dart";
-import "package:discloud/commands/snapshot/list.dart";
+import "package:discloud/commands/snapshot/info.dart";
 
 final class SnapshotCommand extends Command<void> {
   SnapshotCommand() {
     addSubcommand(SnapshotCreateCommand());
     addSubcommand(SnapshotDownloadCommand());
-    addSubcommand(SnapshotListCommand());
+    addSubcommand(SnapshotInfoCommand());
   }
 
   @override

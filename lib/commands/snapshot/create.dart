@@ -27,6 +27,12 @@ final class SnapshotCreateCommand extends Command<void> {
 
     spinner.success(resolveResponseMessage(response));
 
-    stdout.writeln(mapToVerticalAsciiTable(response["snapshot"]));
+    if (response["snapshot"] case final Map snapshot) {
+      stdout.writeln(mapToVerticalAsciiTable(_flattenSnapshot(snapshot)));
+    }
+  }
+
+  Map _flattenSnapshot(Map snapshot) {
+    return {"Version": snapshot["version"], "Size": snapshot["version"]};
   }
 }
