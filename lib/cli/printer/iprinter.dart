@@ -1,8 +1,8 @@
 import "package:discloud/cli/disposable.dart";
 import "package:discloud/cli/spin/ispin.dart";
 
-abstract interface class IPrinter<Spin extends ISpin> implements Disposable {
-  Spin spin({String? text, bool start = true});
+abstract interface class IPrinter implements Disposable {
+  ISpin spin({String? text, bool start = true});
 
   /// [info] alias
   void call(Object? object);
