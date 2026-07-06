@@ -4,8 +4,6 @@ const discloudApikeyURL = "$discloudDashboardURL/apikey";
 const discloudLegalURL = "$discloudURL/legal";
 const discloudPlansURL = "$discloudURL/plans";
 
-const apiLocales = {"en-US", "pt-BR"};
-
 const Map<String, Set<String>> blockedFiles = {
   "common": {".git", ".vscode", ".cache", "temp"},
   "go": {},

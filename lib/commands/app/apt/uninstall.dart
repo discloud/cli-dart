@@ -9,7 +9,7 @@ final class AppAptUninstallCommand extends Command<void> {
   AppAptUninstallCommand() {
     argParser
       ..addOption("app")
-      ..addMultiOption("apt", allowed: appApts, help: appApts.join(","));
+      ..addMultiOption("apt", help: appApts.join(","));
   }
 
   @override
@@ -24,10 +24,9 @@ final class AppAptUninstallCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = requiredOptionOrRest("app", 0);
-    final apts = multiOptionOrRest("apt", 1);
+    final apts = multiOptionOrRest("apt", argResults!.restIndexAfter(["app"]));
 
     if (apts.isEmpty) usageException("Apt option cannot be empty");
-    _validateApts(apts);
 
     final spinner = context.printer.spin(text: "Uninstalling app apt...");
 
@@ -37,12 +36,5 @@ final class AppAptUninstallCommand extends Command<void> {
     );
 
     spinner.success(resolveResponseMessage(response));
-  }
-
-  void _validateApts(List<String> apts) {
-    final invalid = apts.where((apt) => !appApts.contains(apt)).toList();
-    if (invalid.isEmpty) return;
-
-    usageException("Invalid APT: ${invalid.join(", ")}");
   }
 }

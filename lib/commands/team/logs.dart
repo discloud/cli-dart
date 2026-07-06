@@ -42,7 +42,7 @@ final class TeamLogsCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = optionOrRest("app", 0) ?? "all";
-    final out = optionOrRest("out", 1);
+    final out = optionOrRest("out", argResults!.restIndexAfter(["app"]));
     final overwrite = argResults!.flag("overwrite");
 
     final spinner = context.printer.spin();

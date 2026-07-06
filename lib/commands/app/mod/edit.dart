@@ -22,9 +22,11 @@ final class AppModEditCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = requiredOptionOrRest("app", 0);
-    final modId = requiredOptionOrRest("mod", 1);
-    final perms = multiOptionOrRest("perms", 2);
-    _validatePerms(perms);
+    final modId = requiredOptionOrRest(
+      "mod",
+      argResults!.restIndexAfter(["app"]),
+    );
+    final perms = argResults!.multiOption("perms");
 
     final spinner = context.printer.spin(text: "Editing app MOD...");
 
@@ -34,12 +36,5 @@ final class AppModEditCommand extends Command<void> {
     );
 
     spinner.success(resolveResponseMessage(response));
-  }
-
-  void _validatePerms(List<String> perms) {
-    final invalid = perms.where((perm) => !appModPerms.contains(perm)).toList();
-    if (invalid.isEmpty) return;
-
-    usageException("Invalid MOD permission: ${invalid.join(", ")}");
   }
 }

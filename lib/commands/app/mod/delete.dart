@@ -20,7 +20,10 @@ final class AppModDeleteCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = requiredOptionOrRest("app", 0);
-    final modId = requiredOptionOrRest("mod", 1);
+    final modId = requiredOptionOrRest(
+      "mod",
+      argResults!.restIndexAfter(["app"]),
+    );
 
     final spinner = context.printer.spin(text: "Deleting app MOD...");
 

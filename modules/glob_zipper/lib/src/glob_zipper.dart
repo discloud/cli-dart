@@ -74,6 +74,7 @@ class GlobZipper {
 
     bool success = false;
     try {
+      // Resolve the real root once so symlinked files cannot escape it.
       final rootPath = await directory.resolveSymbolicLinks();
       final encoder = ZipFileEncoder(password: password)
         ..create(zipfile.path, level: level);

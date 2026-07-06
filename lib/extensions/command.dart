@@ -1,5 +1,43 @@
+import "package:args/args.dart";
 import "package:args/command_runner.dart";
 import "package:discloud/cli/context.dart";
+
+extension ArgResultsExtension on ArgResults {
+  String? optionOrRest(String name, int index) {
+    if (wasParsed(name)) {
+      final value = option(name);
+      if (value != null && value.isNotEmpty) return value;
+    }
+
+    if (rest.length > index) return rest[index];
+
+    final value = option(name);
+    if (value != null && value.isNotEmpty) return value;
+
+    return null;
+  }
+
+  List<String> multiOptionOrRest(
+    String name,
+    int index, {
+    List<String> defaults = const [],
+  }) {
+    if (wasParsed(name)) {
+      final values = multiOption(name);
+      if (values.isNotEmpty) return values;
+    }
+
+    if (rest.length > index) return rest.skip(index).toList();
+
+    final values = multiOption(name);
+    if (values.isNotEmpty) return values;
+
+    return defaults;
+  }
+
+  int restIndexAfter(Iterable<String> previousOptions) =>
+      previousOptions.where((name) => !wasParsed(name)).length;
+}
 
 extension CommandExtension<T> on Command<T> {
   CliContext get context => .I;
@@ -11,19 +49,7 @@ extension CommandExtension<T> on Command<T> {
   }
 
   String? optionOrRest(String name, int index) {
-    final parsed = argResults?.wasParsed(name) ?? false;
-    if (parsed) {
-      final value = argResults?.option(name);
-      if (value != null && value.isNotEmpty) return value;
-    }
-
-    final rest = argResults?.rest ?? const <String>[];
-    if (rest.length > index) return rest[index];
-
-    final value = argResults?.option(name);
-    if (value != null && value.isNotEmpty) return value;
-
-    return null;
+    return argResults?.optionOrRest(name, index);
   }
 
   String requiredOptionOrRest(String name, int index) {
@@ -46,12 +72,7 @@ extension CommandExtension<T> on Command<T> {
     int index, {
     List<String> defaults = const [],
   }) {
-    final rest = argResults?.rest ?? const <String>[];
-    if (rest.length > index) return rest.skip(index).toList();
-
-    final values = argResults?.multiOption(name) ?? const <String>[];
-    if (values.isNotEmpty) return values;
-
-    return defaults;
+    return argResults?.multiOptionOrRest(name, index, defaults: defaults) ??
+        defaults;
   }
 }

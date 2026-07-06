@@ -6,14 +6,11 @@ import "package:discloud/cli/disposable.dart";
 import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/file.dart";
-import "package:discloud/utils/ascii_table.dart";
 import "package:discloud/utils/download.dart";
 import "package:discloud/utils/messages.dart";
 import "package:discloud/utils/progress.dart";
 import "package:discloud/utils/speed_monitor.dart";
 import "package:path/path.dart" hide context;
-
-const _defaultBackupDir = "discloud/backups";
 
 final class AppBackupCommand extends Command<void> with Disposable {
   AppBackupCommand() {
@@ -25,12 +22,6 @@ final class AppBackupCommand extends Command<void> with Disposable {
         aliases: const ["out", "path"],
         help:
             "Specifies the destination path for downloading backups. The destination path will be considered a directory.",
-      )
-      ..addFlag(
-        "save",
-        abbr: "s",
-        help: "Save your app backup",
-        negatable: false,
       );
   }
 
@@ -50,8 +41,7 @@ final class AppBackupCommand extends Command<void> with Disposable {
   @override
   Future<void> run() async {
     final appId = optionOrRest("app", 0) ?? "all";
-    final dir = optionOrRest("dir", 1);
-    final shouldDownload = argResults!.flag("save") || dir != null;
+    final dir = optionOrRest("dir", argResults!.restIndexAfter(["app"]));
 
     final spinner = context.printer.spin(text: "Fetching backup...");
 
@@ -61,18 +51,10 @@ final class AppBackupCommand extends Command<void> with Disposable {
 
     switch (response["backups"]) {
       case final Map data:
-        await _handleSingle(
-          data,
-          dir: shouldDownload ? (dir ?? _defaultBackupDir) : null,
-          spinner: spinner,
-        );
+        await _handleSingle(data, dir: dir, spinner: spinner);
         break;
       case final List list:
-        await _handleMulti(
-          list,
-          dir: shouldDownload ? (dir ?? _defaultBackupDir) : null,
-          spinner: spinner,
-        );
+        await _handleMulti(list, dir: dir, spinner: spinner);
         break;
     }
   }
@@ -89,7 +71,7 @@ final class AppBackupCommand extends Command<void> with Disposable {
         return _download(dir: dir, spinner: spinner, uri: uri);
       }
 
-      context.printer.writeln(mapToVerticalAsciiTable(data));
+      context.printer.writeln(url);
     }
   }
 
@@ -99,7 +81,11 @@ final class AppBackupCommand extends Command<void> with Disposable {
     String? dir,
   }) async {
     if (dir == null) {
-      context.printer.writeln(listToAsciiTable(list));
+      for (final data in list) {
+        if (data["url"] case final String url) {
+          context.printer.writeln(url);
+        }
+      }
       return;
     }
 
