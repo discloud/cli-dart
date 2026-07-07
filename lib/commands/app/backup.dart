@@ -40,8 +40,7 @@ final class AppBackupCommand extends Command<void> with Disposable {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.optionOrRest("app") ?? "all";
-    final dir = argResults!.optionOrRest("dir", ["app"]);
+    final appId = argResults!.requiredOptionOrRest("app");
 
     final spinner = context.printer.spin(text: "Fetching backup...");
 
@@ -51,21 +50,17 @@ final class AppBackupCommand extends Command<void> with Disposable {
 
     switch (response["backups"]) {
       case final Map data:
-        await _handleSingle(data, dir: dir, spinner: spinner);
+        await _handleSingle(data, spinner: spinner);
         break;
       case final List list:
-        await _handleMulti(list, dir: dir, spinner: spinner);
+        await _handleMulti(list, spinner: spinner);
         break;
     }
   }
 
-  Future<void> _handleSingle(
-    Map<dynamic, dynamic> data, {
-    required ISpin spinner,
-    String? dir,
-  }) async {
+  Future<void> _handleSingle(Map<dynamic, dynamic> data, {required ISpin spinner}) async {
     if (data["url"] case final String url) {
-      if (dir != null) {
+      if (argResults!.optionOrRest("dir", ["app"]) case final dir) {
         final Uri uri = .parse(url);
 
         return _download(dir: dir, spinner: spinner, uri: uri);
@@ -75,21 +70,9 @@ final class AppBackupCommand extends Command<void> with Disposable {
     }
   }
 
-  Future<void> _handleMulti(
-    List list, {
-    required ISpin spinner,
-    String? dir,
-  }) async {
-    if (dir == null) {
-      for (final data in list) {
-        if (data["url"] case final String url) {
-          context.printer.writeln(url);
-        }
-      }
-      return;
-    }
-
+  Future<void> _handleMulti(List list, {required ISpin spinner}) async {
     final client = _client = .new();
+    final dir = argResults?.optionOrRest("dir") ?? ".";
 
     for (final data in list) {
       final String appId = data["id"];
