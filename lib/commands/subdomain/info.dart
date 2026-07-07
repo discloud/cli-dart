@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 
 final class SubdomainInfoCommand extends Command<void> {
   SubdomainInfoCommand() {
-    argParser.addOption("id", aliases: const ["subdomain"], defaultsTo: "all");
+    argParser.addOption("id", aliases: const ["subdomain"], valueHelp: "all");
   }
 
   @override
