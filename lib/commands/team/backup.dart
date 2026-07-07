@@ -41,7 +41,6 @@ final class TeamBackupCommand extends Command<void> with Disposable {
   @override
   Future<void> run() async {
     final appId = argResults!.optionOrRest("app") ?? "all";
-    final dir = argResults!.optionOrRest("dir", ["app"]);
 
     final spinner = context.printer.spin(text: "Fetching backup...");
 
@@ -61,7 +60,7 @@ final class TeamBackupCommand extends Command<void> with Disposable {
 
   Future<void> _handleSingle(Map<dynamic, dynamic> data, ISpin spinner) async {
     if (data["url"] case final String url) {
-      if (argResults!.optionOrRest("dir", ["app"]) case final dir) {
+      if (argResults!.optionOrRest("dir", ["app"]) case final dir?) {
         final Uri uri = .parse(url);
 
         return _download(dir: dir, spinner: spinner, uri: uri);
