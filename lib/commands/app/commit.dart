@@ -47,7 +47,7 @@ final class AppCommitCommand extends Command<void> with Disposable {
 
     if (appId == null) throw Exception("Missing app id");
 
-    final glob = argResults!.multiOptionOrRest("glob", [if (optionAppId != null) "app"]) ?? const ["**"];
+    final glob = argResults?.multiOptionOrRest("glob", [if (optionAppId != null) "app"]) ?? const ["**"];
 
     final spinner = context.printer.spin(text: "Zipping...");
 
