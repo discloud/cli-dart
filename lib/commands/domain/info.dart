@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 
 final class CustomdomainInfoCommand extends Command<void> {
   CustomdomainInfoCommand() {
-    argParser.addOption("id", aliases: const ["domain"], defaultsTo: "all");
+    argParser.addOption("id", aliases: const ["domain"], valueHelp: "all");
   }
 
   @override
