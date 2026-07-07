@@ -31,7 +31,7 @@ String listToAsciiTable(
   final first = list.first;
   if (first is! Map) {
     return tabular([
-      ["#", "value"],
+      const ["#", "value"],
       for (int i = 0; i < list.length; i++) [i + 1, list[i]],
     ]);
   }

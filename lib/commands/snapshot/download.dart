@@ -15,7 +15,7 @@ import "package:path/path.dart" hide context;
 final class SnapshotDownloadCommand extends Command<void> with Disposable {
   SnapshotDownloadCommand() {
     argParser
-      ..addOption("app", mandatory: true)
+      ..addOption("app")
       ..addOption("version", help: "Snapshot version in YYYYMMDD-HHMMSS format")
       ..addOption(
         "dir",
@@ -41,7 +41,7 @@ final class SnapshotDownloadCommand extends Command<void> with Disposable {
 
   @override
   Future<void> run() async {
-    final String appId = argResults!.option("app")!;
+    final String appId = argResults!.requiredOptionOrRest("app");
 
     final spinner = context.printer.spin();
 
@@ -64,7 +64,10 @@ final class SnapshotDownloadCommand extends Command<void> with Disposable {
     String appId, {
     required ISpin spinner,
   }) async {
-    if (argResults?.option("version") case final String v) return v;
+    if (argResults?.optionOrRest("version", const ["app"])
+        case final String version) {
+      return version;
+    }
 
     spinner.text = "Retrieving snapshot...";
 

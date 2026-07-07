@@ -81,7 +81,8 @@ class _InitArgs {
   final ArgResults? _argResults;
 
   bool _flag(String name) => _argResults?.flag(name) ?? false;
-  List<String> _multiOption(String n) => _argResults?.multiOption(n) ?? [];
+  List<String> _multiOption(String n) =>
+      _argResults?.multiOption(n) ?? const [];
   String? _option(String name) => _argResults?.option(name);
 
   bool get force => _flag("force");

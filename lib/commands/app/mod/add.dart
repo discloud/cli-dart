@@ -22,7 +22,7 @@ final class AppModAddCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = argResults!.requiredOptionOrRest("app");
-    final modId = argResults!.requiredOptionOrRest("mod", ["app"]);
+    final modId = argResults!.requiredOptionOrRest("mod", const ["app"]);
     final perms = argResults!.multiOption("perms");
 
     final spinner = context.printer.spin(text: "Adding app MOD...");

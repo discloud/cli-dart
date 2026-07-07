@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 
 final class SnapshotCreateCommand extends Command<void> {
   SnapshotCreateCommand() {
-    argParser.addOption("app", mandatory: true);
+    argParser.addOption("app");
   }
 
   @override
@@ -19,7 +19,7 @@ final class SnapshotCreateCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final String appId = argResults!.option("app")!;
+    final String appId = argResults!.requiredOptionOrRest("app");
 
     final spinner = context.printer.spin(text: "Creating snapshot...");
 
