@@ -50,15 +50,15 @@ final class AppBackupCommand extends Command<void> with Disposable {
 
     switch (response["backups"]) {
       case final Map data:
-        await _handleSingle(data, spinner: spinner);
+        await _handleSingle(data, spinner);
         break;
       case final List list:
-        await _handleMulti(list, spinner: spinner);
+        await _handleMulti(list, spinner);
         break;
     }
   }
 
-  Future<void> _handleSingle(Map<dynamic, dynamic> data, {required ISpin spinner}) async {
+  Future<void> _handleSingle(Map<dynamic, dynamic> data, ISpin spinner) async {
     if (data["url"] case final String url) {
       if (argResults!.optionOrRest("dir", ["app"]) case final dir) {
         final Uri uri = .parse(url);
@@ -70,7 +70,7 @@ final class AppBackupCommand extends Command<void> with Disposable {
     }
   }
 
-  Future<void> _handleMulti(List list, {required ISpin spinner}) async {
+  Future<void> _handleMulti(List list, ISpin spinner) async {
     final client = _client = .new();
     final dir = argResults?.optionOrRest("dir") ?? ".";
 
