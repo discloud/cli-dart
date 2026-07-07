@@ -11,22 +11,30 @@ Future<void> download(
   VoidProgressCallback? onProgress,
 }) async {
   final client0 = client ?? .new();
-  IOSink? sink;
 
+  final request = await client0.getUrl(url);
+
+  HttpClientResponse? response;
   try {
-    final request = await client0.getUrl(url);
-    final response = await request.close();
+    response = await request.close();
+
     if (!response.ok) {
       throw HttpException(
         "Download failed: ${response.statusCode} ${response.reasonPhrase}",
         uri: url,
       );
     }
+  } catch (e) {
+    rethrow;
+  } finally {
+    if (client == null) client0.close();
+  }
 
-    file ??= .new(url.pathSegments.last);
-    await file.parent.create(recursive: true);
+  file ??= .new(url.pathSegments.last);
+  await file.parent.create(recursive: true);
+  final sink = file.openWrite();
 
-    sink = file.openWrite();
+  try {
     if (onProgress case final onProgress?) {
       await _downloadWithProgress(
         onProgress: onProgress,
@@ -37,12 +45,11 @@ Future<void> download(
       await sink.addStream(response);
     }
   } catch (_) {
-    await sink?.close();
-    sink = null;
-    if (file != null && await file.exists()) await file.delete();
+    await sink.close();
+    await file.delete();
     rethrow;
   } finally {
-    await sink?.close();
+    await sink.close();
     if (client == null) client0.close();
   }
 }
