@@ -47,9 +47,9 @@ Available subcommands:
 Install APT on your app
 
 Usage: discloud app apt install [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
-    --apt                canvas,ffmpeg,java,libgl,mysql,openssl,puppeteer,selenium,tesseract,tools,unixodbc
+-h, --help    Print this usage information.
+    --app     
+    --apt     canvas,ffmpeg,java,libgl,mysql,openssl,puppeteer,selenium,tesseract,tools,unixodbc
 ```
 
 ##### app apt uninstall
@@ -58,9 +58,9 @@ Usage: discloud app apt install [arguments]
 Uninstall APT from your app
 
 Usage: discloud app apt uninstall [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
-    --apt                canvas,ffmpeg,java,libgl,mysql,openssl,puppeteer,selenium,tesseract,tools,unixodbc
+-h, --help    Print this usage information.
+    --app     
+    --apt     canvas,ffmpeg,java,libgl,mysql,openssl,puppeteer,selenium,tesseract,tools,unixodbc
 ```
 
 #### app backup
@@ -69,9 +69,9 @@ Usage: discloud app apt uninstall [arguments]
 Get backup of your app code from Discloud
 
 Usage: discloud app backup [arguments]
--h, --help                     Print this usage information.
-    --app=<all> (mandatory)    
--d, --dir                      Specifies the destination path for downloading backups. The destination path will be considered a directory.
+-h, --help         Print this usage information.
+    --app=<all>    
+-d, --dir          Specifies the destination path for downloading backups. The destination path will be considered a directory.
 ```
 
 #### app commit
@@ -91,9 +91,9 @@ Usage: discloud app commit [arguments]
 Use the app terminal
 
 Usage: discloud app console [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
-    --command            
+-h, --help       Print this usage information.
+    --app        
+    --command    
 ```
 
 #### app delete
@@ -102,9 +102,9 @@ Usage: discloud app console [arguments]
 Delete one of your apps on Discloud
 
 Usage: discloud app delete [arguments]
--h, --help               Print this usage information.
--y, --yes                Skip confirmation prompt
-    --app (mandatory)    
+-h, --help    Print this usage information.
+-y, --yes     Skip confirmation prompt
+    --app     
 ```
 
 #### app info
@@ -113,8 +113,8 @@ Usage: discloud app delete [arguments]
 Get information of your apps
 
 Usage: discloud app info [arguments]
--h, --help    Print this usage information.
-    --app     (defaults to "all")
+-h, --help         Print this usage information.
+    --app=<all>    
 ```
 
 #### app logs
@@ -123,9 +123,9 @@ Usage: discloud app info [arguments]
 View the logs from application in Discloud
 
 Usage: discloud app logs [arguments]
--h, --help                     Print this usage information.
-    --app=<all> (mandatory)    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
-    --out                      Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
+-h, --help         Print this usage information.
+    --app=<all>    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
+    --out          Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
 ```
 
 #### app mod
@@ -149,10 +149,10 @@ Available subcommands:
 Add MOD to your app
 
 Usage: discloud app mod add [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
-    --mod (mandatory)    
-    --perms              [backup_app, commit_app, edit_ram, logs_app, restart_app, start_app, status_app, stop_app]
+-h, --help     Print this usage information.
+    --app      
+    --mod      
+    --perms    [backup_app, commit_app, edit_ram, logs_app, restart_app, start_app, status_app, stop_app]
 ```
 
 ##### app mod delete
@@ -161,9 +161,9 @@ Usage: discloud app mod add [arguments]
 Delete MOD of your app
 
 Usage: discloud app mod delete [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
-    --mod (mandatory)    
+-h, --help    Print this usage information.
+    --app     
+    --mod     
 ```
 
 ##### app mod edit
@@ -172,10 +172,10 @@ Usage: discloud app mod delete [arguments]
 Edit MOD perms of your app
 
 Usage: discloud app mod edit [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
-    --mod (mandatory)    
-    --perms              [backup_app, commit_app, edit_ram, logs_app, restart_app, start_app, status_app, stop_app]
+-h, --help     Print this usage information.
+    --app      
+    --mod      
+    --perms    [backup_app, commit_app, edit_ram, logs_app, restart_app, start_app, status_app, stop_app]
 ```
 
 ##### app mod info
@@ -184,8 +184,8 @@ Usage: discloud app mod edit [arguments]
 Get MOD info of your app
 
 Usage: discloud app mod info [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
+-h, --help    Print this usage information.
+    --app     
 ```
 
 #### app profile
@@ -194,10 +194,10 @@ Usage: discloud app mod info [arguments]
 Updates the profile information (avatar and name) for a specific app
 
 Usage: discloud app profile [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
-    --name               
-    --avatar             
+-h, --help      Print this usage information.
+    --app       
+    --name      
+    --avatar    
 ```
 
 #### app ram
@@ -206,9 +206,9 @@ Usage: discloud app profile [arguments]
 Set amount of ram for your app
 
 Usage: discloud app ram [arguments]
--h, --help                        Print this usage information.
-    --app (mandatory)             
-    --amount=<100> (mandatory)    
+-h, --help            Print this usage information.
+    --app             
+    --amount=<100>    
 ```
 
 #### app restart
@@ -237,8 +237,8 @@ Usage: discloud app start [arguments]
 Get status of your app
 
 Usage: discloud app status [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
+-h, --help    Print this usage information.
+    --app     
 ```
 
 #### app stop
@@ -257,8 +257,8 @@ Usage: discloud app stop [arguments]
 Upload one app or site to Discloud
 
 Usage: discloud app upload [arguments]
--h, --help    Print this usage information.
--g, --glob    (defaults to "**")
+-h, --help         Print this usage information.
+-g, --glob=<**>    
 ```
 
 ### domain
@@ -283,9 +283,9 @@ Available subcommands:
 Create a domain
 
 Usage: discloud domain create [arguments]
--h, --help               Print this usage information.
-    --id (mandatory)     
-    --app (mandatory)    
+-h, --help    Print this usage information.
+    --id      
+    --app     
 ```
 
 #### domain delete
@@ -294,8 +294,8 @@ Usage: discloud domain create [arguments]
 Delete a domain
 
 Usage: discloud domain delete [arguments]
--h, --help              Print this usage information.
-    --id (mandatory)    
+-h, --help    Print this usage information.
+    --id      
 ```
 
 #### domain edit
@@ -304,9 +304,9 @@ Usage: discloud domain delete [arguments]
 Edit a domain
 
 Usage: discloud domain edit [arguments]
--h, --help               Print this usage information.
-    --id (mandatory)     
-    --app (mandatory)    
+-h, --help    Print this usage information.
+    --id      
+    --app     
 ```
 
 #### domain info
@@ -315,8 +315,8 @@ Usage: discloud domain edit [arguments]
 Get information of your domains
 
 Usage: discloud domain info [arguments]
--h, --help    Print this usage information.
-    --id      (defaults to "all")
+-h, --help        Print this usage information.
+    --id=<all>    
 ```
 
 #### domain verify
@@ -325,8 +325,8 @@ Usage: discloud domain info [arguments]
 Verify a domain
 
 Usage: discloud domain verify [arguments]
--h, --help              Print this usage information.
-    --id (mandatory)    
+-h, --help    Print this usage information.
+    --id      
 ```
 
 ### domain
@@ -458,8 +458,8 @@ Available subcommands:
 Create a subdomain
 
 Usage: discloud subdomain create [arguments]
--h, --help              Print this usage information.
-    --id (mandatory)    
+-h, --help    Print this usage information.
+    --id      
 ```
 
 #### subdomain delete
@@ -468,8 +468,8 @@ Usage: discloud subdomain create [arguments]
 Delete a subdomain
 
 Usage: discloud subdomain delete [arguments]
--h, --help              Print this usage information.
-    --id (mandatory)    
+-h, --help    Print this usage information.
+    --id      
 ```
 
 #### subdomain info
@@ -478,8 +478,8 @@ Usage: discloud subdomain delete [arguments]
 Get information of your subdomains
 
 Usage: discloud subdomain info [arguments]
--h, --help    Print this usage information.
-    --id      (defaults to "all")
+-h, --help        Print this usage information.
+    --id=<all>    
 ```
 
 ### team
@@ -508,9 +508,9 @@ Available subcommands:
 Get backup of your team app code from Discloud
 
 Usage: discloud team backup [arguments]
--h, --help                     Print this usage information.
-    --app=<all> (mandatory)    
--d, --dir                      Specifies the destination path for downloading backups. The destination path will be considered a directory.
+-h, --help         Print this usage information.
+    --app=<all>    
+-d, --dir          Specifies the destination path for downloading backups. The destination path will be considered a directory.
 ```
 
 #### team commit
@@ -540,9 +540,9 @@ Usage: discloud team info [arguments]
 View the logs from application in Discloud
 
 Usage: discloud team logs [arguments]
--h, --help                     Print this usage information.
-    --app=<all> (mandatory)    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
-    --out                      Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
+-h, --help         Print this usage information.
+    --app=<all>    When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.
+    --out          Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.
 ```
 
 #### team ram
@@ -551,9 +551,9 @@ Usage: discloud team logs [arguments]
 Set amount of ram for your app
 
 Usage: discloud team ram [arguments]
--h, --help                        Print this usage information.
-    --app (mandatory)             
-    --amount=<100> (mandatory)    
+-h, --help            Print this usage information.
+    --app             
+    --amount=<100>    
 ```
 
 #### team restart
@@ -582,8 +582,8 @@ Usage: discloud team start [arguments]
 Get status of your app
 
 Usage: discloud team status [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
+-h, --help    Print this usage information.
+    --app     
 ```
 
 #### team stop
@@ -636,7 +636,7 @@ Make zip
 
 Usage: discloud zip [arguments]
 -h, --help           Print this usage information.
--g, --glob           (defaults to "**")
+-g, --glob=<**>      
 -o, --out            Zip output
 -l, --level=<0-9>    Compression level
 -p, --password       Zip password
