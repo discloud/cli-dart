@@ -56,7 +56,10 @@ class FS {
 
     final visitedDirectories = <String>{};
 
-    await for (final entity in _glob.list(root: directory.path)) {
+    await for (final entity in _glob.list(
+      root: directory.path,
+      followLinks: false,
+    )) {
       if (entity is! File || ignore.matches(entity.path)) continue;
 
       final folder = entity.dirname;
@@ -73,7 +76,10 @@ class FS {
   Stream<File> _listWithoutIgnoreFilename() async* {
     final Glob ignore = _ignoreGlob;
 
-    await for (final entity in _glob.list(root: directory.path)) {
+    await for (final entity in _glob.list(
+      root: directory.path,
+      followLinks: false,
+    )) {
       if (entity is! File || ignore.matches(entity.path)) continue;
 
       yield entity as File;
@@ -81,7 +87,7 @@ class FS {
   }
 
   Future<bool> _resolveIgnoreFile(String folder, String filename) async {
-    final File file = .new("$folder$_pSep$filename");
+    final File file = .new(joinAll([folder, filename]));
 
     if (!await file.exists()) return false;
 

@@ -22,7 +22,7 @@ const _keysIgnore = {
 
 final class AppInfoCommand extends Command<void> {
   AppInfoCommand() {
-    argParser.addOption("app", defaultsTo: "all");
+    argParser.addOption("app", valueHelp: "all");
   }
 
   @override
@@ -33,7 +33,7 @@ final class AppInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
+    final appId = argResults?.optionOrRest("app") ?? "all";
 
     final spinner = context.printer.spin(text: "Fetching app info...");
 

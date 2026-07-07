@@ -1,6 +1,8 @@
 import "package:args/command_runner.dart";
 import "package:discloud/cli/context.dart";
 
+export "package:discloud/extensions/arg_results.dart";
+
 extension CommandExtension<T> on Command<T> {
   CliContext get context => .I;
 

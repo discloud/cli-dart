@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 
 final class CustomdomainInfoCommand extends Command<void> {
   CustomdomainInfoCommand() {
-    argParser.addOption("id", aliases: const ["domain"], defaultsTo: "all");
+    argParser.addOption("id", aliases: const ["domain"], valueHelp: "all");
   }
 
   @override
@@ -19,15 +19,15 @@ final class CustomdomainInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final String domain = argResults!.option("id")!;
+    final domain = argResults!.optionOrRest("id") ?? "all";
 
-    final spinner = context.printer.spin(text: "Fetching domain info...");
+    final spinner = context.printer.spin(text: "Fetching $domain...");
 
     final response = await context.api.get("/customdomain/$domain");
 
     spinner.success(resolveResponseMessage(response));
 
-    switch (response["customdomain"] ?? response["customdomains"]) {
+    switch (response["domain"] ?? response["domains"]) {
       case final List list:
         stdout.writeln(listToAsciiTable(list));
         break;

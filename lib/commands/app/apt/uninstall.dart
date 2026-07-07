@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 final class AppAptUninstallCommand extends Command<void> {
   AppAptUninstallCommand() {
     argParser
-      ..addOption("app", mandatory: true)
+      ..addOption("app")
       ..addMultiOption("apt", help: appApts.join(","));
   }
 
@@ -16,12 +16,15 @@ final class AppAptUninstallCommand extends Command<void> {
   final name = "uninstall";
 
   @override
+  final aliases = const ["u"];
+
+  @override
   final description = "Uninstall APT from your app";
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
-    final apts = argResults!.multiOption("apt");
+    final appId = argResults!.requiredOptionOrRest("app");
+    final apts = argResults!.requiredMultiOptionOrRest("apt", ["app"]);
 
     if (apts.isEmpty) usageException("Apt option cannot be empty");
 

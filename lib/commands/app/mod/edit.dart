@@ -8,8 +8,8 @@ import "package:discloud/utils/messages.dart";
 final class AppModEditCommand extends Command<void> {
   AppModEditCommand() {
     argParser
-      ..addOption("app", mandatory: true)
-      ..addOption("mod", mandatory: true)
+      ..addOption("app")
+      ..addOption("mod")
       ..addMultiOption("perms", allowed: appModPerms);
   }
 
@@ -21,8 +21,8 @@ final class AppModEditCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
-    final modId = argResults!.option("mod");
+    final appId = argResults!.requiredOptionOrRest("app");
+    final modId = argResults!.requiredOptionOrRest("mod", ["app"]);
     final perms = argResults!.multiOption("perms");
 
     final spinner = context.printer.spin(text: "Editing app MOD...");

@@ -271,8 +271,8 @@ class DiscloudApiClient implements Disposable {
   }) async {
     final now = DateTime.now();
     final boundary = "formBoundary${now.microsecondsSinceEpoch}";
-    final filename = file.uri.pathSegments.last;
-    final fileExtension = extension(filename);
+    final filename = _escapeMultipartValue(file.uri.pathSegments.last);
+    final contentType = _multipartContentType(file);
 
     await _prepareRequest(request, headers: headers ??= {});
 
@@ -287,7 +287,7 @@ class DiscloudApiClient implements Disposable {
         request.write(
           "--$boundary\r\n"
           "Content-Disposition: form-data; "
-          'name="${e.key}"\r\n\r\n${e.value}\r\n',
+          'name="${_escapeMultipartValue(e.key)}"\r\n\r\n${e.value}\r\n',
         );
       }
     }
@@ -297,7 +297,7 @@ class DiscloudApiClient implements Disposable {
       "Content-Disposition: form-data; "
       'name="file"; '
       'filename="$filename"\r\n'
-      "Content-Type: application/$fileExtension\r\n\r\n",
+      "Content-Type: $contentType\r\n\r\n",
     );
 
     int processed = 0;
@@ -312,6 +312,20 @@ class DiscloudApiClient implements Disposable {
     await file.safeDelete();
 
     await onUploadDone?.call();
+  }
+
+  String _escapeMultipartValue(String value) {
+    return value
+        .replaceAll('"', "%22")
+        .replaceAll("\r", "")
+        .replaceAll("\n", "");
+  }
+
+  String _multipartContentType(File file) {
+    return switch (extension(file.path).toLowerCase()) {
+      ".zip" => "application/zip",
+      _ => "application/octet-stream",
+    };
   }
 
   Future<void> _prepareRequest(

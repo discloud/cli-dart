@@ -12,6 +12,11 @@ void main() {
       const Bytes bytes = .new(1024 * 1024);
       expect(bytes.toString(), "1.0MB");
     });
+
+    test("huge values clamp to the largest unit", () {
+      const Bytes bytes = .new(1e30);
+      expect(bytes.toString().endsWith("YB"), isTrue);
+    });
   });
 
   group("Bits", () {

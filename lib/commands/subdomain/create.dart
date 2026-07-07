@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 
 final class SubdomainCreateCommand extends Command<void> {
   SubdomainCreateCommand() {
-    argParser.addOption("id", aliases: const ["subdomain"], mandatory: true);
+    argParser.addOption("id", aliases: const ["subdomain"]);
   }
 
   @override
@@ -19,9 +19,9 @@ final class SubdomainCreateCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final String id = argResults!.option("id")!;
+    final id = argResults!.requiredOptionOrRest("id");
 
-    final spinner = context.printer.spin(text: "Creating subdomain...");
+    final spinner = context.printer.spin(text: "Creating $id...");
 
     final response = await context.api.post("/subdomain/$id");
 

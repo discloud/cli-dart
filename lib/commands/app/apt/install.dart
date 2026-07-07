@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 final class AppAptInstallCommand extends Command<void> {
   AppAptInstallCommand() {
     argParser
-      ..addOption("app", mandatory: true)
+      ..addOption("app")
       ..addMultiOption("apt", help: appApts.join(","));
   }
 
@@ -16,12 +16,15 @@ final class AppAptInstallCommand extends Command<void> {
   final name = "install";
 
   @override
+  final aliases = const ["i"];
+
+  @override
   final description = "Install APT on your app";
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
-    final apts = argResults!.multiOption("apt");
+    final appId = argResults!.requiredOptionOrRest("app");
+    final apts = argResults!.requiredMultiOptionOrRest("apt", ["app"]);
 
     if (apts.isEmpty) usageException("Apt option cannot be empty");
 

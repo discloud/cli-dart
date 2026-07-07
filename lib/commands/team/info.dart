@@ -32,7 +32,7 @@ final class TeamInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
+    final appId = argResults!.optionOrRest("app");
 
     final spinner = context.printer.spin(text: "Fetching app info...");
 

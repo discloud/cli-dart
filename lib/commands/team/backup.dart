@@ -10,17 +10,16 @@ import "package:discloud/utils/download.dart";
 import "package:discloud/utils/messages.dart";
 import "package:discloud/utils/progress.dart";
 import "package:discloud/utils/speed_monitor.dart";
-
-const _pSep = "/";
+import "package:path/path.dart" hide context;
 
 final class TeamBackupCommand extends Command<void> with Disposable {
   TeamBackupCommand() {
     argParser
-      ..addOption("app", mandatory: true, valueHelp: "all")
+      ..addOption("app", valueHelp: "all")
       ..addOption(
         "dir",
         abbr: "d",
-        aliases: const ["out"],
+        aliases: const ["out", "path"],
         help:
             "Specifies the destination path for downloading backups. The destination path will be considered a directory.",
       );
@@ -41,7 +40,8 @@ final class TeamBackupCommand extends Command<void> with Disposable {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
+    final appId = argResults!.optionOrRest("app") ?? "all";
+    final dir = argResults!.optionOrRest("dir", ["app"]);
 
     final spinner = context.printer.spin(text: "Fetching backup...");
 
@@ -61,7 +61,7 @@ final class TeamBackupCommand extends Command<void> with Disposable {
 
   Future<void> _handleSingle(Map<dynamic, dynamic> data, ISpin spinner) async {
     if (data["url"] case final String url) {
-      if (argResults?.option("dir") case final dir?) {
+      if (argResults!.optionOrRest("dir", ["app"]) case final dir) {
         final Uri uri = .parse(url);
 
         return _download(dir: dir, spinner: spinner, uri: uri);
@@ -73,7 +73,7 @@ final class TeamBackupCommand extends Command<void> with Disposable {
 
   Future<void> _handleMulti(List list, ISpin spinner) async {
     final client = _client = .new();
-    final dir = argResults?.option("dir") ?? ".";
+    final dir = argResults?.optionOrRest("dir") ?? ".";
 
     for (final data in list) {
       final String appId = data["id"];
@@ -99,7 +99,7 @@ final class TeamBackupCommand extends Command<void> with Disposable {
     HttpClient? client,
   }) async {
     final filename = uri.pathSegments.last;
-    final filepath = "$dir$_pSep$filename";
+    final filepath = joinAll([dir, filename]);
 
     final file = _file = .new(filepath);
     final monitor = _monitor = .new();

@@ -9,8 +9,8 @@ import "package:discloud/utils/messages.dart";
 final class CustomdomainCreateCommand extends Command<void> {
   CustomdomainCreateCommand() {
     argParser
-      ..addOption("id", aliases: const ["domain"], mandatory: true)
-      ..addOption("app", aliases: const ["subdomain"], mandatory: true);
+      ..addOption("id", aliases: const ["domain"])
+      ..addOption("app", aliases: const ["subdomain"]);
   }
 
   @override
@@ -21,10 +21,10 @@ final class CustomdomainCreateCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final String domain = argResults!.option("id")!;
-    final String subdomain = argResults!.option("app")!;
+    final domain = argResults!.requiredOptionOrRest("id");
+    final subdomain = argResults!.requiredOptionOrRest("app", ["id"]);
 
-    final spinner = context.printer.spin(text: "Creating domain...");
+    final spinner = context.printer.spin(text: "Creating $domain...");
 
     final response = await context.api.post(
       "/customdomain/create",

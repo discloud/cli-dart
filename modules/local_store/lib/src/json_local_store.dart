@@ -33,8 +33,12 @@ class _JSONLocalStore implements LocalStore {
   }
 
   Future<void> _save() async {
-    if (!await _file.exists()) await _file.create(recursive: true);
-    await _file.writeAsBytes(_jsonBase64Encoder.convert(_cache), flush: true);
+    await _file.parent.create(recursive: true);
+
+    final temp = File("${_file.path}.tmp");
+    await temp.writeAsBytes(_jsonBase64Encoder.convert(_cache), flush: true);
+
+    await temp.rename(_file.path);
   }
 
   @override

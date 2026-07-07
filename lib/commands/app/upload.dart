@@ -14,7 +14,7 @@ import "package:path/path.dart" hide context;
 
 final class AppUploadCommand extends Command<void> with Disposable {
   AppUploadCommand() {
-    argParser.addMultiOption("glob", abbr: "g", defaultsTo: const ["**"]);
+    argParser.addMultiOption("glob", abbr: "g", valueHelp: "**");
   }
 
   @override
@@ -39,7 +39,7 @@ final class AppUploadCommand extends Command<void> with Disposable {
 
     await config.validate();
 
-    final glob = argResults!.multiOption("glob");
+    final glob = argResults!.multiOptionOrRest("glob") ?? const ["**"];
 
     final spinner = context.printer.spin(text: "Zipping...");
 
@@ -77,7 +77,6 @@ final class AppUploadCommand extends Command<void> with Disposable {
         );
       },
       onUploadDone: () {
-        _file = null;
         spinner.start("Processing...");
       },
     );

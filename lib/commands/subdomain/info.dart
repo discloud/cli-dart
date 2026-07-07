@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 
 final class SubdomainInfoCommand extends Command<void> {
   SubdomainInfoCommand() {
-    argParser.addOption("id", aliases: const ["subdomain"], defaultsTo: "all");
+    argParser.addOption("id", aliases: const ["subdomain"], valueHelp: "all");
   }
 
   @override
@@ -19,9 +19,9 @@ final class SubdomainInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final String id = argResults!.option("id")!;
+    final id = argResults!.optionOrRest("id") ?? "all";
 
-    final spinner = context.printer.spin(text: "Fetching subdomain info...");
+    final spinner = context.printer.spin(text: "Fetching $id...");
 
     final response = await context.api.get("/subdomain/$id");
 

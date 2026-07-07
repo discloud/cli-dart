@@ -9,11 +9,10 @@ import "package:discloud_config/discloud_config.dart";
 final class TeamRamCommand extends Command<void> {
   TeamRamCommand() {
     argParser
-      ..addOption("app", mandatory: true)
+      ..addOption("app")
       ..addOption(
         "amount",
         aliases: const ["ram"],
-        mandatory: true,
         valueHelp: DiscloudRamMinByType.lowest.value.toString(),
       );
   }
@@ -26,9 +25,9 @@ final class TeamRamCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = argResults!.option("app");
+    final appId = argResults!.requiredOptionOrRest("app");
     final ramMB = max(
-      int.parse(argResults!.option("amount")!),
+      argResults!.requiredIntOptionOrRest("amount", ["app"]),
       DiscloudRamMinByType.lowest.value,
     );
 
