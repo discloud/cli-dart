@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
@@ -28,11 +27,11 @@ final class SnapshotCreateCommand extends Command<void> {
     spinner.success(resolveResponseMessage(response));
 
     if (response["snapshot"] case final Map snapshot) {
-      stdout.writeln(mapToVerticalAsciiTable(_flattenSnapshot(snapshot)));
+      context.printer.writeln(mapToVerticalAsciiTable(_flatten(snapshot)));
     }
   }
 
-  Map _flattenSnapshot(Map snapshot) {
+  Map _flatten(Map snapshot) {
     return {"Version": snapshot["version"], "Size": snapshot["version"]};
   }
 }

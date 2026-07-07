@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
@@ -27,6 +26,6 @@ final class SubdomainCreateCommand extends Command<void> {
 
     spinner.success(resolveResponseMessage(response));
 
-    stdout.writeln(mapToVerticalAsciiTable(response["subdomain"]));
+    context.printer.writeln(mapToVerticalAsciiTable(response["subdomain"]));
   }
 }

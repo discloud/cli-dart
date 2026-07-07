@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
@@ -43,10 +42,10 @@ final class AppInfoCommand extends Command<void> {
 
     switch (response["apps"]) {
       case final List list:
-        stdout.writeln(listToAsciiTable(list, _keysIgnore));
+        context.printer.writeln(listToAsciiTable(list, _keysIgnore));
         break;
       case final Map data:
-        stdout.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
+        context.printer.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
         break;
     }
   }

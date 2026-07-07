@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
@@ -27,6 +26,6 @@ final class CustomdomainVerifyCommand extends Command<void> {
 
     spinner.success(resolveResponseMessage(response));
 
-    stdout.writeln(mapToVerticalAsciiTable(response["domain"]));
+    context.printer.writeln(mapToVerticalAsciiTable(response["domain"]));
   }
 }
