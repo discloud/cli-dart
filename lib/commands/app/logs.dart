@@ -44,48 +44,48 @@ final class AppLogsCommand extends Command<void> {
 
     switch (response["apps"]) {
       case final Map data:
-        await _handleSingle(data, out, spinner);
+        await _handleSingle(data, spinner, appId, out);
         break;
       case final List list:
-        await _handleMulti(list, out: out ?? ".", spinner: spinner);
+        await _handleMulti(list, spinner, appId, out ?? ".");
         break;
     }
   }
 
   Future<void> _handleSingle(
     Map<dynamic, dynamic> data,
-    String? out,
     ISpin spinner,
+    String appId,
+    String? out,
   ) async {
     if (data["terminal"]?["big"] case final String contents) {
       if (out case final out?) {
-        final appId = data["id"]?.toString() ?? "app";
-        return _saveLog(contents, _resolveLogPath(out, appId), spinner);
+        return _saveLog(contents, _resolvePath(out, appId), spinner);
       }
       context.printer.writeln(contents);
     }
   }
 
   Future<void> _handleMulti(
-    List list, {
-    required String out,
-    required ISpin spinner,
-  }) async {
+    List list,
+    ISpin spinner,
+    String appId,
+    String out,
+  ) async {
     for (final data in list) {
-      await _handleSingle(data, out, spinner);
+      await _handleSingle(data, spinner, appId, out);
     }
   }
 
   Future<void> _saveLog(String data, String out, ISpin spinner) async {
-    final file = File(out);
+    final File file = .new(out);
     await file.parent.create(recursive: true);
     await file.writeAsString(stripAnsi(data));
     spinner.success(out);
   }
 
-  String _resolveLogPath(String out, String appId) {
+  String _resolvePath(String out, String appId) {
     if (extension(out).isNotEmpty) return out;
-
     return joinAll([out, "$appId.log"]);
   }
 }
