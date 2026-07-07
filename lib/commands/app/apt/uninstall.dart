@@ -26,6 +26,8 @@ final class AppAptUninstallCommand extends Command<void> {
     final appId = argResults!.requiredOptionOrRest("app");
     final apts = argResults!.requiredMultiOptionOrRest("apt", ["app"]);
 
+    if (apts.isEmpty) usageException("Apt option cannot be empty");
+
     final spinner = context.printer.spin(text: "Uninstalling app apt...");
 
     final response = await context.api.delete(
