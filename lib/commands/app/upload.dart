@@ -14,7 +14,7 @@ import "package:path/path.dart" hide context;
 
 final class AppUploadCommand extends Command<void> with Disposable {
   AppUploadCommand() {
-    argParser.addMultiOption("glob", abbr: "g", defaultsTo: const ["**"]);
+    argParser.addMultiOption("glob", abbr: "g", valueHelp: "**");
   }
 
   @override
