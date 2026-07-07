@@ -10,9 +10,6 @@ Future<void> download(
   HttpClient? client,
   VoidProgressCallback? onProgress,
 }) async {
-  file ??= .new(url.pathSegments.last);
-  await file.parent.create(recursive: true);
-
   final client0 = client ?? .new();
   IOSink? sink;
 
@@ -25,6 +22,9 @@ Future<void> download(
         uri: url,
       );
     }
+
+    file ??= .new(url.pathSegments.last);
+    await file.parent.create(recursive: true);
 
     sink = file.openWrite();
     if (onProgress case final onProgress?) {
@@ -39,7 +39,7 @@ Future<void> download(
   } catch (_) {
     await sink?.close();
     sink = null;
-    if (await file.exists()) await file.delete();
+    if (file != null && await file.exists()) await file.delete();
     rethrow;
   } finally {
     await sink?.close();

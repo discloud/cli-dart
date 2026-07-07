@@ -15,3 +15,29 @@ extension NullableArgResultsExtension on ArgResults? {
     return list.join(" ");
   }
 }
+
+extension ArgResultsExtension on ArgResults {
+  String? optionOrRest(String name, [Iterable<String> after = const []]) {
+    if (wasParsed(name)) return option(name);
+
+    final index = after.where((name) => !wasParsed(name)).length;
+
+    if (rest.length > index) return rest[index];
+
+    return null;
+  }
+
+  List<String> multiOptionOrRest(
+    String name, {
+    Iterable<String> after = const [],
+    List<String> Function()? defaultFactory,
+  }) {
+    if (wasParsed(name)) return multiOption(name);
+
+    final index = after.where((name) => !wasParsed(name)).length;
+
+    if (rest.length > index) return rest.skip(index).toList();
+
+    return defaultFactory?.call() ?? [];
+  }
+}

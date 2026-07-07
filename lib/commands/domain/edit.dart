@@ -20,9 +20,10 @@ final class CustomdomainEditCommand extends Command<void> with Disposable {
 
   @override
   Future<void> run() async {
-    final domain = requiredOptionOrRest("id", 0);
-    final subdomain =
-        optionOrRest("app", argResults!.restIndexAfter(["id"])) ?? "all";
+    final domain =
+        argResults!.optionOrRest("id") ??
+        usageException("Missing required option or argument: id");
+    final subdomain = argResults!.optionOrRest("app", ["id"]) ?? "all";
 
     final spinner = context.printer.spin(text: "Editting $domain...");
 

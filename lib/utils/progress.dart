@@ -1,3 +1,4 @@
+import "package:discloud/extensions/num.dart";
 import "package:discloud/utils/bytes.dart";
 import "package:discloud/utils/formatters.dart";
 
@@ -24,17 +25,16 @@ String formatProgressMessage({
   final StringBuffer buffer = .new(prefixText);
 
   if (speed case final speed?) {
-    buffer.writeAll([" ", ?direction, Bytes.bits(speed * 8), "/s "]);
+    buffer.writeAll([" ", ?direction, Bytes.bits(speed * 8), "/s"]);
   }
 
-  if (total <= 0) {
-    buffer
-      ..write(" ")
-      ..write(Bytes(processed).toString(" "));
-    return buffer.toString();
-  }
+  buffer.write(" ");
 
-  buffer.write(percentFormatter.format(processed / total));
+  if (total.isNegativeOrZero) {
+    buffer.write(Bytes(processed).toString(" "));
+  } else {
+    buffer.write(percentFormatter.format(processed / total));
+  }
 
   return buffer.toString();
 }

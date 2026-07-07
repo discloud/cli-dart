@@ -30,9 +30,13 @@ const appApts = {
   "ffmpeg",
   "java",
   "libgl",
+  "mysql",
   "openssl",
   "puppeteer",
+  "selenium",
+  "tesseract",
   "tools",
+  "unixodbc",
 };
 
 const appModPerms = {

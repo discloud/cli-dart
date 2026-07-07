@@ -44,7 +44,10 @@ final class ZipCommand extends Command<void> with Disposable {
 
     final encoding = argResults?.option("encoding");
     final out = argResults?.option("out") ?? "${basename(directory.path)}.zip";
-    final glob = multiOptionOrRest("glob", 0, defaults: const ["**"]);
+    final glob = argResults!.multiOptionOrRest(
+      "glob",
+      defaultFactory: () => const ["**"],
+    );
     final level = _compressionLevel;
     final password = argResults?.option("password");
 

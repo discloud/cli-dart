@@ -33,7 +33,7 @@ final class AppInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = optionOrRest("app", 0) ?? "all";
+    final appId = argResults!.optionOrRest("app") ?? "all";
 
     final spinner = context.printer.spin(text: "Fetching app info...");
 

@@ -40,8 +40,8 @@ final class AppBackupCommand extends Command<void> with Disposable {
 
   @override
   Future<void> run() async {
-    final appId = optionOrRest("app", 0) ?? "all";
-    final dir = optionOrRest("dir", argResults!.restIndexAfter(["app"]));
+    final appId = argResults!.optionOrRest("app") ?? "all";
+    final dir = argResults!.optionOrRest("dir", ["app"]);
 
     final spinner = context.printer.spin(text: "Fetching backup...");
 

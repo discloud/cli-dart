@@ -19,7 +19,7 @@ final class SubdomainInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final id = optionOrRest("id", 0) ?? "all";
+    final id = argResults!.optionOrRest("id") ?? "all";
 
     final spinner = context.printer.spin(text: "Fetching $id...");
 

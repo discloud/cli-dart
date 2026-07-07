@@ -17,7 +17,9 @@ final class CustomdomainDeleteCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final domain = requiredOptionOrRest("id", 0);
+    final domain =
+        argResults!.optionOrRest("id") ??
+        usageException("Missing required option or argument: id");
 
     final spinner = context.printer.spin(text: "Deleting $domain...");
 

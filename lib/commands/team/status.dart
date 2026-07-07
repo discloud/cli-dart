@@ -21,7 +21,9 @@ final class TeamStatusCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = requiredOptionOrRest("app", 0);
+    final appId =
+        argResults!.optionOrRest("app") ??
+        usageException("Missing required option or argument: app");
 
     final spinner = context.printer.spin(text: "Fetching app status...");
 

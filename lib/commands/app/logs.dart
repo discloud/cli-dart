@@ -24,12 +24,6 @@ final class AppLogsCommand extends Command<void> {
         aliases: const ["path"],
         help:
             "Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.",
-      )
-      ..addFlag(
-        "overwrite",
-        abbr: "o",
-        help: "Overwrite log files",
-        negatable: false,
       );
   }
 
@@ -41,9 +35,8 @@ final class AppLogsCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = optionOrRest("app", 0) ?? "all";
-    final out = optionOrRest("out", argResults!.restIndexAfter(["app"]));
-    final overwrite = argResults!.flag("overwrite");
+    final appId = argResults!.optionOrRest("app") ?? "all";
+    final out = argResults!.optionOrRest("out", ["app"]);
 
     final spinner = context.printer.spin();
 
@@ -53,15 +46,10 @@ final class AppLogsCommand extends Command<void> {
 
     switch (response["apps"]) {
       case final Map data:
-        await _handleSingle(data, out, spinner, overwrite: overwrite);
+        await _handleSingle(data, out, spinner);
         break;
       case final List list:
-        await _handleMulti(
-          list,
-          out: out ?? _defaultLogsDir,
-          overwrite: overwrite,
-          spinner: spinner,
-        );
+        await _handleMulti(list, out: out ?? _defaultLogsDir, spinner: spinner);
         break;
     }
   }
@@ -69,18 +57,12 @@ final class AppLogsCommand extends Command<void> {
   Future<void> _handleSingle(
     Map<dynamic, dynamic> data,
     String? out,
-    ISpin spinner, {
-    required bool overwrite,
-  }) async {
+    ISpin spinner,
+  ) async {
     if (data["terminal"]?["big"] case final String contents) {
       if (out case final out?) {
         final appId = data["id"]?.toString() ?? "app";
-        return _saveLog(
-          contents,
-          _resolveLogPath(out, appId),
-          spinner,
-          overwrite: overwrite,
-        );
+        return _saveLog(contents, _resolveLogPath(out, appId), spinner);
       }
       context.printer.writeln(contents);
     }
@@ -89,28 +71,17 @@ final class AppLogsCommand extends Command<void> {
   Future<void> _handleMulti(
     List list, {
     required String out,
-    required bool overwrite,
     required ISpin spinner,
   }) async {
     for (final data in list) {
-      await _handleSingle(data, out, spinner, overwrite: overwrite);
+      await _handleSingle(data, out, spinner);
     }
   }
 
-  Future<void> _saveLog(
-    String data,
-    String out,
-    ISpin spinner, {
-    required bool overwrite,
-  }) async {
+  Future<void> _saveLog(String data, String out, ISpin spinner) async {
     final file = File(out);
     await file.parent.create(recursive: true);
-    final contents = _formatLog(data);
-    if (overwrite) {
-      await file.writeAsString(contents);
-    } else {
-      await file.writeAsString("$contents\n", mode: FileMode.append);
-    }
+    await file.writeAsString(stripAnsi(data));
     spinner.success(out);
   }
 
@@ -118,15 +89,5 @@ final class AppLogsCommand extends Command<void> {
     if (extension(out).isNotEmpty) return out;
 
     return joinAll([out, "$appId.log"]);
-  }
-
-  String _formatLog(String data) {
-    return [
-      "",
-      "".padRight(60, "-"),
-      DateTime.now().toString(),
-      "",
-      stripAnsi(data),
-    ].join("\n");
   }
 }

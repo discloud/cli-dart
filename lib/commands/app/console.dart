@@ -26,7 +26,9 @@ final class AppConsoleCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = requiredOptionOrRest("app", 0);
+    final appId =
+        argResults!.optionOrRest("app") ??
+        usageException("Missing required option or argument: app");
     String? command = argResults!.option("command");
 
     final spinner = context.printer.spin(start: false);

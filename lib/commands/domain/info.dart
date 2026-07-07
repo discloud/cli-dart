@@ -19,7 +19,7 @@ final class CustomdomainInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final domain = optionOrRest("id", 0) ?? "all";
+    final domain = argResults!.optionOrRest("id") ?? "all";
 
     final spinner = context.printer.spin(text: "Fetching $domain...");
 
@@ -27,10 +27,7 @@ final class CustomdomainInfoCommand extends Command<void> {
 
     spinner.success(resolveResponseMessage(response));
 
-    switch (response["domain"] ??
-        response["domains"] ??
-        response["customdomain"] ??
-        response["customdomains"]) {
+    switch (response["domain"] ?? response["domains"]) {
       case final List list:
         stdout.writeln(listToAsciiTable(list));
         break;

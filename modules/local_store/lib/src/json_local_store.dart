@@ -38,9 +38,6 @@ class _JSONLocalStore implements LocalStore {
     final temp = File("${_file.path}.tmp");
     await temp.writeAsBytes(_jsonBase64Encoder.convert(_cache), flush: true);
 
-    try {
-      await _file.delete();
-    } catch (_) {}
     await temp.rename(_file.path);
   }
 

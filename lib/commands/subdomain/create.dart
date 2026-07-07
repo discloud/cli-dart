@@ -19,7 +19,9 @@ final class SubdomainCreateCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final id = requiredOptionOrRest("id", 0);
+    final id =
+        argResults!.optionOrRest("id") ??
+        usageException("Missing required option or argument: id");
 
     final spinner = context.printer.spin(text: "Creating $id...");
 

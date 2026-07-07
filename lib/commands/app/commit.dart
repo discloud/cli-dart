@@ -42,14 +42,21 @@ final class AppCommitCommand extends Command<void> with Disposable {
     final optionAppId = argResults!.option("app");
     final appId =
         optionAppId ??
-        optionOrRest("app", 0) ??
+        argResults!.optionOrRest("app") ??
         await _getDiscloudConfigAppId(directory);
 
     if (appId == null) throw Exception("Missing app id");
 
     final glob = optionAppId == null
-        ? multiOptionOrRest("glob", 1, defaults: const ["**"])
-        : multiOptionOrRest("glob", 0, defaults: const ["**"]);
+        ? argResults!.multiOptionOrRest(
+            "glob",
+            after: ["app"],
+            defaultFactory: () => const ["**"],
+          )
+        : argResults!.multiOptionOrRest(
+            "glob",
+            defaultFactory: () => const ["**"],
+          );
 
     final spinner = context.printer.spin(text: "Zipping...");
 

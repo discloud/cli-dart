@@ -8,7 +8,7 @@ import "package:discloud/utils/messages.dart";
 
 final class CustomdomainVerifyCommand extends Command<void> {
   CustomdomainVerifyCommand() {
-    argParser.addOption("id", aliases: const ["domain"], defaultsTo: "all");
+    argParser.addOption("id", aliases: const ["domain"]);
   }
 
   @override
@@ -19,7 +19,9 @@ final class CustomdomainVerifyCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final domain = optionOrRest("id", 0) ?? "all";
+    final domain =
+        argResults!.optionOrRest("id") ??
+        usageException("Missing required option or argument: id");
 
     final spinner = context.printer.spin(text: "Verifying $domain...");
 

@@ -23,8 +23,10 @@ final class AppAptUninstallCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId = requiredOptionOrRest("app", 0);
-    final apts = multiOptionOrRest("apt", argResults!.restIndexAfter(["app"]));
+    final appId =
+        argResults!.optionOrRest("app") ??
+        usageException("Missing required option or argument: app");
+    final apts = argResults!.multiOptionOrRest("apt", after: ["app"]);
 
     if (apts.isEmpty) usageException("Apt option cannot be empty");
 
