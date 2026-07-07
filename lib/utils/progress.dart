@@ -25,13 +25,11 @@ String formatProgressMessage({
   final StringBuffer buffer = .new(prefixText);
 
   if (speed case final speed?) {
-    buffer.writeAll([" ", ?direction, Bytes.bits(speed * 8), "/s"]);
+    buffer.writeAll([" ", ?direction, Bytes.bits(speed * 8), "/s "]);
   }
 
-  buffer.write(" ");
-
   if (total.isNegativeOrZero) {
-    buffer.write(Bytes(processed).toString(" "));
+    buffer.write(Bytes(processed));
   } else {
     buffer.write(percentFormatter.format(processed / total));
   }
