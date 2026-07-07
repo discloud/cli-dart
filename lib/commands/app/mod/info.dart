@@ -23,11 +23,10 @@ final class AppModInfoCommand extends Command<void> {
 
     final response = await context.api.get("/app/$appId/team");
 
+    spinner.success(resolveResponseMessage(response));
+
     if (response["team"] case final List list when list.isNotEmpty) {
-      spinner.success(resolveResponseMessage(response));
       context.printer.writeln(listToAsciiTable(list));
-    } else {
-      spinner.success(resolveResponseMessage(response));
     }
   }
 }
