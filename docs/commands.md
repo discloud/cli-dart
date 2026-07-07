@@ -395,8 +395,8 @@ Available subcommands:
 Create a versioned snapshot of your app
 
 Usage: discloud snapshot create [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
+-h, --help    Print this usage information.
+    --app     
 ```
 
 #### snapshot download
@@ -405,10 +405,10 @@ Usage: discloud snapshot create [arguments]
 Download a versioned snapshot of your app
 
 Usage: discloud snapshot download [arguments]
--h, --help               Print this usage information.
-    --app (mandatory)    
-    --version            Snapshot version in YYYYMMDD-HHMMSS format
--d, --dir                Specifies the destination path for downloading backups. The destination path will be considered a directory.
+-h, --help       Print this usage information.
+    --app        
+    --version    Snapshot version in YYYYMMDD-HHMMSS format
+-d, --dir        Specifies the destination path for downloading backups. The destination path will be considered a directory.
 ```
 
 #### snapshot info
