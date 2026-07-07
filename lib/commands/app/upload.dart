@@ -39,10 +39,7 @@ final class AppUploadCommand extends Command<void> with Disposable {
 
     await config.validate();
 
-    final glob = argResults!.multiOptionOrRest(
-      "glob",
-      defaultFactory: () => const ["**"],
-    );
+    final glob = argResults!.multiOptionOrRest("glob") ?? const ["**"];
 
     final spinner = context.printer.spin(text: "Zipping...");
 

@@ -4,6 +4,7 @@ import "dart:io";
 
 import "package:discloud/cli/context.dart";
 import "package:discloud/cli/disposable.dart";
+import "package:discloud/extensions/file.dart";
 import "package:discloud/extensions/io_http_client.dart";
 import "package:discloud/extensions/string.dart";
 import "package:discloud/services/discloud/exception.dart";
@@ -307,6 +308,8 @@ class DiscloudApiClient implements Disposable {
     }
 
     request.write("\r\n--$boundary--\r\n");
+
+    await file.safeDelete();
 
     await onUploadDone?.call();
   }

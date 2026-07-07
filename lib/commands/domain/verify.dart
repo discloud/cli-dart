@@ -19,9 +19,7 @@ final class CustomdomainVerifyCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final domain =
-        argResults!.optionOrRest("id") ??
-        usageException("Missing required option or argument: id");
+    final domain = argResults!.requiredOptionOrRest("id");
 
     final spinner = context.printer.spin(text: "Verifying $domain...");
 
@@ -29,8 +27,6 @@ final class CustomdomainVerifyCommand extends Command<void> {
 
     spinner.success(resolveResponseMessage(response));
 
-    if (response["domain"] ?? response["customdomain"] case final Map data) {
-      stdout.writeln(mapToVerticalAsciiTable(data));
-    }
+    stdout.writeln(mapToVerticalAsciiTable(response["domain"]));
   }
 }

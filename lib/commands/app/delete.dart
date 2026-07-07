@@ -25,9 +25,7 @@ final class AppDeleteCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId =
-        argResults!.optionOrRest("app") ??
-        usageException("Missing required option or argument: app");
+    final appId = argResults!.requiredOptionOrRest("app");
 
     final result =
         argResults!.flag("yes") ||

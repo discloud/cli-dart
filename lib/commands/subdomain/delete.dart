@@ -17,9 +17,7 @@ final class SubdomainDeleteCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final id =
-        argResults!.optionOrRest("id") ??
-        usageException("Missing required option or argument: id");
+    final id = argResults!.requiredOptionOrRest("id");
 
     final spinner = context.printer.spin(text: "Deleting $id...");
 

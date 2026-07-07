@@ -23,12 +23,8 @@ final class AppAptInstallCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId =
-        argResults!.optionOrRest("app") ??
-        usageException("Missing required option or argument: app");
-    final apts = argResults!.multiOptionOrRest("apt", after: ["app"]);
-
-    if (apts.isEmpty) usageException("Apt option cannot be empty");
+    final appId = argResults!.requiredOptionOrRest("app");
+    final apts = argResults!.requiredMultiOptionOrRest("apt", ["app"]);
 
     final spinner = context.printer.spin(text: "Installing app apt...");
 

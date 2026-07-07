@@ -25,15 +25,9 @@ final class AppRamCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId =
-        argResults!.optionOrRest("app") ??
-        usageException("Missing required option or argument: app");
-    final amount =
-        argResults!.optionOrRest("amount", ["app"]) ??
-        usageException("Missing required option or argument: amount");
+    final appId = argResults!.requiredOptionOrRest("app");
     final ramMB = max(
-      int.tryParse(amount) ??
-          usageException("Invalid integer for amount: $amount"),
+      argResults!.requiredIntOptionOrRest("amount", ["app"]),
       DiscloudRamMinByType.lowest.value,
     );
 

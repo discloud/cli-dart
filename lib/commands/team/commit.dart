@@ -48,15 +48,8 @@ final class TeamCommitCommand extends Command<void> with Disposable {
     if (appId == null) throw Exception("Missing app id");
 
     final glob = optionAppId == null
-        ? argResults!.multiOptionOrRest(
-            "glob",
-            after: ["app"],
-            defaultFactory: () => const ["**"],
-          )
-        : argResults!.multiOptionOrRest(
-            "glob",
-            defaultFactory: () => const ["**"],
-          );
+        ? argResults!.multiOptionOrRest("glob", ["app"]) ?? const ["**"]
+        : argResults!.multiOptionOrRest("glob") ?? const ["**"];
 
     final spinner = context.printer.spin(text: "Zipping...");
 

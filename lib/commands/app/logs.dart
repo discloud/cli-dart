@@ -8,8 +8,6 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 import "package:path/path.dart" hide context;
 
-const _defaultLogsDir = "discloud/logs";
-
 final class AppLogsCommand extends Command<void> {
   AppLogsCommand() {
     argParser
@@ -49,7 +47,7 @@ final class AppLogsCommand extends Command<void> {
         await _handleSingle(data, out, spinner);
         break;
       case final List list:
-        await _handleMulti(list, out: out ?? _defaultLogsDir, spinner: spinner);
+        await _handleMulti(list, out: out ?? ".", spinner: spinner);
         break;
     }
   }

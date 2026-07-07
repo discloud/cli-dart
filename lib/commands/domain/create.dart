@@ -10,7 +10,7 @@ final class CustomdomainCreateCommand extends Command<void> {
   CustomdomainCreateCommand() {
     argParser
       ..addOption("id", aliases: const ["domain"])
-      ..addOption("app", aliases: const ["subdomain"], defaultsTo: "all");
+      ..addOption("app", aliases: const ["subdomain"]);
   }
 
   @override
@@ -21,10 +21,8 @@ final class CustomdomainCreateCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final domain =
-        argResults!.optionOrRest("id") ??
-        usageException("Missing required option or argument: id");
-    final subdomain = argResults!.optionOrRest("app", ["id"]) ?? "all";
+    final domain = argResults!.requiredOptionOrRest("id");
+    final subdomain = argResults!.requiredOptionOrRest("app", ["id"]);
 
     final spinner = context.printer.spin(text: "Creating $domain...");
 
@@ -35,8 +33,6 @@ final class CustomdomainCreateCommand extends Command<void> {
 
     spinner.success(resolveResponseMessage(response));
 
-    if (response["domain"] ?? response["customdomain"] case final Map data) {
-      stdout.writeln(mapToVerticalAsciiTable(data));
-    }
+    stdout.writeln(mapToVerticalAsciiTable(response["domain"]));
   }
 }

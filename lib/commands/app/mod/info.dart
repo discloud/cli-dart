@@ -17,9 +17,7 @@ final class AppModInfoCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId =
-        argResults!.optionOrRest("app") ??
-        usageException("Missing required option or argument: app");
+    final appId = argResults!.requiredOptionOrRest("app");
 
     final spinner = context.printer.spin(text: "Fetching app MODs...");
 

@@ -19,9 +19,7 @@ final class SubdomainCreateCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final id =
-        argResults!.optionOrRest("id") ??
-        usageException("Missing required option or argument: id");
+    final id = argResults!.requiredOptionOrRest("id");
 
     final spinner = context.printer.spin(text: "Creating $id...");
 
@@ -29,8 +27,6 @@ final class SubdomainCreateCommand extends Command<void> {
 
     spinner.success(resolveResponseMessage(response));
 
-    if (response["subdomain"] case final Map data) {
-      stdout.writeln(mapToVerticalAsciiTable(data));
-    }
+    stdout.writeln(mapToVerticalAsciiTable(response["subdomain"]));
   }
 }

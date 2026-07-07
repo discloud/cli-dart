@@ -19,12 +19,8 @@ final class AppModDeleteCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final appId =
-        argResults!.optionOrRest("app") ??
-        usageException("Missing required option or argument: app");
-    final modId =
-        argResults!.optionOrRest("mod", ["app"]) ??
-        usageException("Missing required option or argument: mod");
+    final appId = argResults!.requiredOptionOrRest("app");
+    final modId = argResults!.requiredOptionOrRest("mod", ["app"]);
 
     final spinner = context.printer.spin(text: "Deleting app MOD...");
 
