@@ -74,15 +74,13 @@ class GlobZipper {
 
     bool success = false;
     try {
-      // Resolve the real root once so symlinked files cannot escape it.
-      final rootPath = await directory.resolveSymbolicLinks();
       final encoder = ZipFileEncoder(password: password)
         ..create(zipfile.path, level: level);
 
       if (onData case final onData?) {
-        await _zipWithCallback(encoder, fs.list, onData, rootPath, onError);
+        await _zipWithCallback(encoder, fs.list, onData, onError);
       } else {
-        await _zipWithoutCallback(encoder, fs.list, rootPath, onError);
+        await _zipWithoutCallback(encoder, fs.list, onError);
       }
 
       await encoder.close();
@@ -99,17 +97,12 @@ class GlobZipper {
   Future<void> _zipWithoutCallback(
     ZipFileEncoder encoder,
     Stream<File> Function() fileStreamFactory, [
-    String? rootPath,
     OnErrorCallback? onError,
   ]) async {
     await for (final file in fileStreamFactory().handleError(
       onError ?? _noop,
     )) {
-      final aFile = await _toArchiveFile(
-        file,
-        root: directory,
-        rootPath: rootPath,
-      );
+      final aFile = await _toArchiveFile(file, root: directory);
 
       encoder.addArchiveFile(aFile);
     }
@@ -119,14 +112,12 @@ class GlobZipper {
     ZipFileEncoder encoder,
     Stream<File> Function() fileStreamFactory,
     ZipCallback onData, [
-    String? rootPath,
     OnErrorCallback? onError,
   ]) async {
     int processed = 0, i = 0;
     await for (final file in fileStreamFactory().handleError(
       onError ?? _noop,
     )) {
-      await _ensureInsideRoot(file, directory, rootPath);
       final stat = await file.stat();
 
       onData(
@@ -139,13 +130,7 @@ class GlobZipper {
         ),
       );
 
-      final aFile = await _toArchiveFile(
-        file,
-        root: directory,
-        rootPath: rootPath,
-        stat: stat,
-        trusted: true,
-      );
+      final aFile = await _toArchiveFile(file, root: directory, stat: stat);
 
       encoder.addArchiveFile(aFile);
 
@@ -156,12 +141,8 @@ class GlobZipper {
   Future<ArchiveFile> _toArchiveFile(
     File file, {
     required Directory root,
-    String? rootPath,
     FileStat? stat,
-    bool trusted = false,
   }) async {
-    if (!trusted) await _ensureInsideRoot(file, root, rootPath);
-
     stat ??= await file.stat();
 
     final filename = relative(file.path, from: root.path);
@@ -172,21 +153,5 @@ class GlobZipper {
       ..compressionLevel = level
       ..lastModTime = stat.modified.secondsSinceEpoch
       ..mode = stat.mode;
-  }
-
-  Future<void> _ensureInsideRoot(
-    File file,
-    Directory root,
-    String? rootPath,
-  ) async {
-    rootPath ??= await root.resolveSymbolicLinks();
-    final filePath = await file.resolveSymbolicLinks();
-
-    if (equals(rootPath, filePath) || isWithin(rootPath, filePath)) return;
-
-    throw FileSystemException(
-      "Refusing to zip a file outside the root directory",
-      file.path,
-    );
   }
 }
