@@ -6,7 +6,7 @@ void main() {
     test("handles unknown totals", () {
       expect(
         formatProgressMessage(processed: 1024, total: -1),
-        contains("1.0 KB"),
+        contains("1.0KB"),
       );
     });
   });
