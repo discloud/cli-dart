@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
@@ -23,7 +22,7 @@ final class UserInfoCommand extends Command<void> {
     spinner.success(resolveResponseMessage(response));
 
     if (response["user"] case final Map data) {
-      stdout.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
+      context.printer.writeln(mapToVerticalAsciiTable(data, _keysIgnore));
     }
   }
 }

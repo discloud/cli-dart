@@ -18,11 +18,8 @@ final class WaitCommand extends Command<void> with Disposable {
   final hidden = true;
 
   @override
-  final takesArguments = true;
-
-  @override
   Future<void> run() async {
-    if (argResults?.arguments.firstOrNull case final seconds?) {
+    if (argResults?.rest.firstOrNull case final seconds?) {
       if (int.tryParse(seconds) case final seconds? when seconds.isPositive) {
         await Future.delayed(.new(seconds: seconds));
       }

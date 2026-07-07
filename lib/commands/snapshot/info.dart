@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
@@ -55,7 +54,7 @@ final class SnapshotInfoCommand extends Command<void> {
     spinner.success(resolveResponseMessage(response));
 
     if (response["versions"] case final List list) {
-      stdout.writeln(listToAsciiTable(_flattenSnapshotVersion(list)));
+      context.printer.writeln(listToAsciiTable(_flattenSnapshotVersion(list)));
     }
   }
 
@@ -74,9 +73,9 @@ final class SnapshotInfoCommand extends Command<void> {
     spinner.success(resolveResponseMessage(response));
 
     if (response["apps"] case final List list) {
-      stdout.writeln(listToAsciiTable(_flattenSnapshotApp(list)));
+      context.printer.writeln(listToAsciiTable(_flattenSnapshotApp(list)));
       if (response["pagination"] case final Map pagination) {
-        stdout.writeln(_showSnapshotPagination(pagination));
+        context.printer.writeln(_showSnapshotPagination(pagination));
       }
     }
   }

@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
@@ -29,10 +28,10 @@ final class CustomdomainInfoCommand extends Command<void> {
 
     switch (response["domain"] ?? response["domains"]) {
       case final List list:
-        stdout.writeln(listToAsciiTable(list));
+        context.printer.writeln(listToAsciiTable(list));
         break;
       case final Map data:
-        stdout.writeln(mapToVerticalAsciiTable(data));
+        context.printer.writeln(mapToVerticalAsciiTable(data));
         break;
     }
   }

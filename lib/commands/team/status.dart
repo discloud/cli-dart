@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:io";
 
 import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
@@ -30,7 +29,7 @@ final class TeamStatusCommand extends Command<void> {
     spinner.success(resolveResponseMessage(response));
 
     if (response["apps"] case final data?) {
-      stdout.writeln(mapToVerticalAsciiTable(data, _keysToIgnore));
+      context.printer.writeln(mapToVerticalAsciiTable(data, _keysToIgnore));
     }
   }
 }
