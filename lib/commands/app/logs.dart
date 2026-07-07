@@ -47,7 +47,7 @@ final class AppLogsCommand extends Command<void> {
         await _handleSingle(data, spinner, appId, out);
         break;
       case final List list:
-        await _handleMulti(list, spinner, appId, out ?? ".");
+        await _handleMulti(list, spinner, out ?? ".");
         break;
     }
   }
@@ -66,13 +66,9 @@ final class AppLogsCommand extends Command<void> {
     }
   }
 
-  Future<void> _handleMulti(
-    List list,
-    ISpin spinner,
-    String appId,
-    String out,
-  ) async {
+  Future<void> _handleMulti(List list, ISpin spinner, String out) async {
     for (final data in list) {
+      final String appId = data["id"];
       await _handleSingle(data, spinner, appId, out);
     }
   }
