@@ -34,7 +34,7 @@ final class AppLogsCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = argResults!.optionOrRest("app") ?? "all";
-    final out = argResults!.optionOrRest("out", ["app"]);
+    final out = argResults!.optionOrRest("out", const ["app"]);
 
     final spinner = context.printer.spin();
 

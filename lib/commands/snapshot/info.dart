@@ -41,7 +41,7 @@ final class SnapshotInfoCommand extends Command<void> {
 
   @override
   Future<void> run() {
-    return switch (argResults?.option("app")) {
+    return switch (argResults?.optionOrRest("app")) {
       final String appId => _runSingle(appId),
       _ => _runMulti(),
     };

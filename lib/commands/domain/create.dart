@@ -22,7 +22,7 @@ final class CustomdomainCreateCommand extends Command<void> {
   @override
   Future<void> run() async {
     final domain = argResults!.requiredOptionOrRest("id");
-    final subdomain = argResults!.requiredOptionOrRest("app", ["id"]);
+    final subdomain = argResults!.requiredOptionOrRest("app", const ["id"]);
 
     final spinner = context.printer.spin(text: "Creating $domain...");
 

@@ -60,7 +60,7 @@ final class AppBackupCommand extends Command<void> with Disposable {
 
   Future<void> _handleSingle(Map<dynamic, dynamic> data, ISpin spinner) async {
     if (data["url"] case final String url) {
-      if (argResults!.optionOrRest("dir", ["app"]) case final dir?) {
+      if (argResults!.optionOrRest("dir", const ["app"]) case final dir?) {
         final Uri uri = .parse(url);
 
         return _download(dir: dir, spinner: spinner, uri: uri);

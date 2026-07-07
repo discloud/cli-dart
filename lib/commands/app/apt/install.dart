@@ -24,7 +24,7 @@ final class AppAptInstallCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = argResults!.requiredOptionOrRest("app");
-    final apts = argResults!.requiredMultiOptionOrRest("apt", ["app"]);
+    final apts = argResults!.requiredMultiOptionOrRest("apt", const ["app"]);
 
     if (apts.isEmpty) usageException("Apt option cannot be empty");
 
