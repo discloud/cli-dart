@@ -29,6 +29,6 @@ final class WaitCommand extends Command<void> with Disposable {
   @override
   FutureOr<void> dispose() {
     // ignore: no_runtimetype_tostring
-    context.printer.info("$hashCode $runtimeType disposed");
+    context.printer("$hashCode $runtimeType disposed");
   }
 }

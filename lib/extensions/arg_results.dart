@@ -1,35 +1,8 @@
 import "package:args/args.dart";
-import "package:args/command_runner.dart";
 
 const _whiteSpace = " ";
 
 extension ArgResultsExtension on ArgResults {
-  String? optionOrRest(String name, [Iterable<String> after = const []]) {
-    if (wasParsed(name)) return option(name);
-    final index = after.where(wasNotParsed).length;
-    if (rest.length > index) return rest[index];
-    return null;
-  }
-
-  String requiredOptionOrRest(
-    String name, [
-    Iterable<String> after = const [],
-  ]) {
-    if (optionOrRest(name, after) case final value?) return value;
-
-    throw UsageException("Missing required option or argument: $name", "");
-  }
-
-  int requiredIntOptionOrRest(
-    String name, [
-    Iterable<String> after = const [],
-  ]) {
-    final raw = requiredOptionOrRest(name, after);
-    if (int.tryParse(raw) case final value?) return value;
-
-    throw UsageException("Invalid integer for $name: $raw", "");
-  }
-
   List<String>? multiOptionOrRest(
     String name, [
     Iterable<String> after = const [],
@@ -37,6 +10,13 @@ extension ArgResultsExtension on ArgResults {
     if (wasParsed(name)) return multiOption(name);
     final index = after.where(wasNotParsed).length;
     if (rest.length > index) return rest.skip(index).toList();
+    return null;
+  }
+
+  String? optionOrRest(String name, [Iterable<String> after = const []]) {
+    if (wasParsed(name)) return option(name);
+    final index = after.where(wasNotParsed).length;
+    if (rest.length > index) return rest[index];
     return null;
   }
 
@@ -49,7 +29,26 @@ extension ArgResultsExtension on ArgResults {
       return values;
     }
 
-    throw UsageException("Missing required option or argument: $name", "");
+    throw Exception("Missing required option or argument: $name");
+  }
+
+  String requiredOptionOrRest(
+    String name, [
+    Iterable<String> after = const [],
+  ]) {
+    if (optionOrRest(name, after) case final value?) return value;
+
+    throw Exception("Missing required option or argument: $name");
+  }
+
+  int requiredIntOptionOrRest(
+    String name, [
+    Iterable<String> after = const [],
+  ]) {
+    final raw = requiredOptionOrRest(name, after);
+    if (int.tryParse(raw) case final value?) return value;
+
+    throw Exception("Invalid integer for $name: $raw");
   }
 
   bool wasNotParsed(String name) {

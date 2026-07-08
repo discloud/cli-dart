@@ -6,13 +6,15 @@ import "package:discloud/cli/spin/ispin.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/services/discloud/exception.dart";
 import "package:discloud/utils/messages.dart";
-import "package:tint/tint.dart";
+
+const _commandPrefix = "\x1B[2m?> \x1B[22m";
+const _exitCommand = "exit";
 
 final class AppConsoleCommand extends Command<void> {
   AppConsoleCommand() {
     argParser
       ..addOption("app")
-      ..addOption("command");
+      ..addMultiOption("command", abbr: "c");
   }
 
   @override
@@ -27,33 +29,30 @@ final class AppConsoleCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = argResults!.requiredOptionOrRest("app");
-    String? command = argResults!.option("command");
 
     final spinner = context.printer.spin(start: false);
 
-    if (command case final command?) {
-      await _send(appId: appId, command: command, spinner: spinner);
+    if (argResults?.multiOptionOrRest("command", const ["app"])?.join(" ")
+        case final command?) {
+      await _send(appId, command, spinner);
       return;
     }
 
     context.printer("Enter 'exit' to stop.");
 
-    while (true) {
-      context.printer.write("?> ".dim());
+    await Future.doWhile(() {
+      context.printer.write(_commandPrefix);
 
-      command = stdin.readLineSync();
-      if (command == null || command == "exit") break;
-      if (command.isEmpty) continue;
+      if (stdin.readLineSync() case final command?
+          when command.isNotEmpty && command != _exitCommand) {
+        return _send(appId, command, spinner);
+      }
 
-      if (!await _send(appId: appId, command: command, spinner: spinner)) break;
-    }
+      return false;
+    });
   }
 
-  Future<bool> _send({
-    required String appId,
-    required String command,
-    required ISpin spinner,
-  }) async {
+  Future<bool> _send(String appId, String command, ISpin spinner) async {
     spinner.start("Sending command...");
 
     try {
@@ -62,23 +61,22 @@ final class AppConsoleCommand extends Command<void> {
         body: {"command": command},
       );
 
-      if (response["status"] == "ok") {
+      if (response["apps"]?["shell"] case final Map shell) {
         spinner.stop();
 
-        if (response["apps"]?["shell"] case final Map shell) {
-          if (shell["stdout"] case final String content
-              when content.isNotEmpty) {
-            stdout.writeln(content);
-          }
-
-          if (shell["stderr"] case final String content
-              when content.isNotEmpty) {
-            stderr.writeln(content);
-          }
+        if (shell["stdout"] case final String content when content.isNotEmpty) {
+          stdout.writeln(content);
         }
-      } else {
-        spinner.fail(resolveResponseMessage(response));
+
+        if (shell["stderr"] case final String content when content.isNotEmpty) {
+          stderr.writeln(content);
+        }
+
+        return true;
       }
+
+      spinner.fail(resolveResponseMessage(response));
+
       return true;
     } on DiscloudApiException catch (e, s) {
       final text = switch (e.code) {
