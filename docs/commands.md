@@ -93,7 +93,7 @@ Use the app terminal
 Usage: discloud app console [arguments]
 -h, --help       Print this usage information.
     --app        
-    --command    
+-c, --command    
 ```
 
 #### app delete
