@@ -8,8 +8,8 @@ final class AppProfileCommand extends Command<void> {
   AppProfileCommand() {
     argParser
       ..addOption("app")
-      ..addOption("name")
-      ..addOption("avatar");
+      ..addOption("name", abbr: "n")
+      ..addOption("avatar", abbr: "a");
   }
 
   @override
@@ -22,14 +22,14 @@ final class AppProfileCommand extends Command<void> {
   @override
   Future<void> run() async {
     final appId = argResults!.requiredOptionOrRest("app");
-    final name = argResults?.option("name");
-    final avatar = argResults?.option("avatar");
+    final name = argResults!.option("name");
+    final avatar = argResults!.option("avatar");
 
     final spinner = context.printer.spin(text: "Changing app profile...");
 
     final response = await context.api.put(
       "/app/$appId/profile",
-      body: {"name": name, "avatarURL": avatar},
+      body: {"name": ?name, "avatarURL": ?avatar},
     );
 
     spinner.success(resolveResponseMessage(response));

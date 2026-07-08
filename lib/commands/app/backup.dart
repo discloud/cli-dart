@@ -72,7 +72,7 @@ final class AppBackupCommand extends Command<void> with Disposable {
 
   Future<void> _handleMulti(List list, ISpin spinner) async {
     final client = _client = .new();
-    final dir = argResults?.optionOrRest("dir") ?? ".";
+    final dir = argResults!.optionOrRest("dir") ?? ".";
 
     for (final data in list) {
       final String appId = data["id"];

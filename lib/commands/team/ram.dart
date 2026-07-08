@@ -27,7 +27,7 @@ final class TeamRamCommand extends Command<void> {
   Future<void> run() async {
     final appId = argResults!.requiredOptionOrRest("app");
     final ramMB = max(
-      argResults!.requiredIntOptionOrRest("amount", const ["app"]),
+      argResults!.requiredIntOptionOrRest("amount", after: const ["app"]),
       DiscloudRamMinByType.lowest.value,
     );
 

@@ -32,7 +32,7 @@ final class AppConsoleCommand extends Command<void> {
 
     final spinner = context.printer.spin(start: false);
 
-    if (argResults?.multiOptionOrRest("command", const ["app"])?.join(" ")
+    if (argResults!.multiOptionOrRest("command", const ["app"])?.join(" ")
         case final command?) {
       await _send(appId, command, spinner);
       return;
