@@ -64,7 +64,7 @@ final class SnapshotDownloadCommand extends Command<void> with Disposable {
     String appId, {
     required ISpin spinner,
   }) async {
-    if (argResults?.optionOrRest("version", const ["app"])
+    if (argResults!.optionOrRest("version", const ["app"])
         case final String version) {
       return version;
     }
@@ -92,7 +92,7 @@ final class SnapshotDownloadCommand extends Command<void> with Disposable {
 
   Future<void> _download({required ISpin spinner, required Uri uri}) async {
     final filename = uri.pathSegments.last;
-    final filepath = joinAll([?argResults?.option("dir"), filename]);
+    final filepath = joinAll([?argResults!.option("dir"), filename]);
     final file = _file = .new(filepath);
 
     final monitor = _monitor = .new();

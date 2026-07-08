@@ -32,7 +32,7 @@ final class ZipCommand extends Command<void> with Disposable {
   final description = "Make zip";
 
   int? get _compressionLevel {
-    if (argResults?.option("level") case final l?) return .parse(l);
+    if (argResults!.option("level") case final l?) return .parse(l);
     return null;
   }
 
@@ -42,11 +42,11 @@ final class ZipCommand extends Command<void> with Disposable {
   Future<void> run() async {
     final directory = context.workspaceFolder;
 
-    final encoding = argResults?.option("encoding");
-    final out = argResults?.option("out") ?? "${basename(directory.path)}.zip";
+    final encoding = argResults!.option("encoding");
+    final out = argResults!.option("out") ?? "${basename(directory.path)}.zip";
     final glob = argResults!.multiOptionOrRest("glob") ?? const ["**"];
     final level = _compressionLevel;
-    final password = argResults?.option("password");
+    final password = argResults!.option("password");
 
     final spinner = context.printer.spin(text: "Zipping...");
 

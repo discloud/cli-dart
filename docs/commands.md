@@ -93,7 +93,7 @@ Use the app terminal
 Usage: discloud app console [arguments]
 -h, --help       Print this usage information.
     --app        
-    --command    
+-c, --command    
 ```
 
 #### app delete
@@ -196,8 +196,8 @@ Updates the profile information (avatar and name) for a specific app
 Usage: discloud app profile [arguments]
 -h, --help      Print this usage information.
     --app       
-    --name      
-    --avatar    
+-n, --name      
+-a, --avatar    
 ```
 
 #### app ram

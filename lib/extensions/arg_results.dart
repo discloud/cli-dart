@@ -1,9 +1,34 @@
 import "package:args/args.dart";
-import "package:args/command_runner.dart";
 
 const _whiteSpace = " ";
 
 extension ArgResultsExtension on ArgResults {
+  int? intOption(String name, {int? radix}) {
+    if (option(name) case final s?) return .tryParse(s, radix: radix);
+    return null;
+  }
+
+  int? intOptionOrRest(
+    String name, {
+    Iterable<String> after = const [],
+    int? radix,
+  }) {
+    if (optionOrRest(name, after) case final value?) {
+      return .tryParse(value, radix: radix);
+    }
+    return null;
+  }
+
+  Iterable<String>? multiOptionOrRest(
+    String name, [
+    Iterable<String> after = const [],
+  ]) {
+    if (wasParsed(name)) return multiOption(name);
+    final index = after.where(wasNotParsed).length;
+    if (rest.length > index) return rest.skip(index);
+    return null;
+  }
+
   String? optionOrRest(String name, [Iterable<String> after = const []]) {
     if (wasParsed(name)) return option(name);
     final index = after.where(wasNotParsed).length;
@@ -11,36 +36,17 @@ extension ArgResultsExtension on ArgResults {
     return null;
   }
 
-  String requiredOptionOrRest(
-    String name, [
-    Iterable<String> after = const [],
-  ]) {
-    if (optionOrRest(name, after) case final value?) return value;
-
-    throw UsageException("Missing required option or argument: $name", "");
-  }
-
   int requiredIntOptionOrRest(
-    String name, [
+    String name, {
     Iterable<String> after = const [],
-  ]) {
+    int? radix,
+  }) {
     final raw = requiredOptionOrRest(name, after);
-    if (int.tryParse(raw) case final value?) return value;
-
-    throw UsageException("Invalid integer for $name: $raw", "");
+    if (int.tryParse(raw, radix: radix) case final value?) return value;
+    throw Exception("Invalid integer for $name: $raw");
   }
 
-  List<String>? multiOptionOrRest(
-    String name, [
-    Iterable<String> after = const [],
-  ]) {
-    if (wasParsed(name)) return multiOption(name);
-    final index = after.where(wasNotParsed).length;
-    if (rest.length > index) return rest.skip(index).toList();
-    return null;
-  }
-
-  List<String> requiredMultiOptionOrRest(
+  Iterable<String> requiredMultiOptionOrRest(
     String name, [
     Iterable<String> after = const [],
   ]) {
@@ -48,8 +54,15 @@ extension ArgResultsExtension on ArgResults {
         when values.isNotEmpty) {
       return values;
     }
+    throw Exception("Missing required option or argument: $name");
+  }
 
-    throw UsageException("Missing required option or argument: $name", "");
+  String requiredOptionOrRest(
+    String name, [
+    Iterable<String> after = const [],
+  ]) {
+    if (optionOrRest(name, after) case final value?) return value;
+    throw Exception("Missing required option or argument: $name");
   }
 
   bool wasNotParsed(String name) {

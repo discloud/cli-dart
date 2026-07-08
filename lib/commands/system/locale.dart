@@ -26,6 +26,6 @@ final class SystemLocaleCommand extends Command<void> {
         "Short locale: ${Intl.shortLocale(Platform.localeName)}",
       ], "\n");
 
-    context.printer.info(sb);
+    context.printer(sb);
   }
 }
