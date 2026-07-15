@@ -6,6 +6,8 @@ import "package:discloud/extensions/list.dart";
 typedef OnDisposeCallback = FutureOr<void> Function();
 typedef OnSignalCallback = FutureOr<void> Function(ProcessSignal signal);
 
+final class _Cancelled implements Exception {}
+
 abstract class SignalWrapper {
   factory SignalWrapper.multi(
     Iterable<ProcessSignal> signals, {
@@ -63,13 +65,15 @@ class _MultiSignalWrapper implements SignalWrapper {
     final subscriptions = [
       for (final signal in _signals)
         signal.watch().listen((signal) {
-          if (!_completer.isCompleted) _completer.complete(null);
+          if (!_completer.isCompleted) _completer.completeError(_Cancelled());
           if (onSignal?.call(signal) case final Future f) futures.add(f);
         }),
     ];
 
     try {
       return await Future.any([_completer.future, fn()]);
+    } on _Cancelled catch (_) {
+      return null;
     } catch (_) {
       rethrow;
     } finally {
@@ -104,12 +108,14 @@ class _SingleSignalWrapper implements SignalWrapper {
   Future<T?> call<T>(Future<T> Function() fn) async {
     final futures = <Future>[];
     final subscription = _signal.watch().listen((signal) {
-      if (!_completer.isCompleted) _completer.complete(null);
+      if (!_completer.isCompleted) _completer.completeError(_Cancelled());
       if (onSignal?.call(signal) case final Future future) futures.add(future);
     });
 
     try {
       return await Future.any([_completer.future, fn()]);
+    } on _Cancelled catch (_) {
+      return null;
     } catch (_) {
       rethrow;
     } finally {

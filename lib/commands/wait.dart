@@ -21,13 +21,15 @@ final class WaitCommand extends Command<void> with Disposable {
   Future<void> run() async {
     if (argResults!.rest.firstOrNull case final seconds?) {
       if (int.tryParse(seconds) case final seconds? when seconds.isPositive) {
+        context.printer("Waiting ${seconds}s...");
         await Future.delayed(.new(seconds: seconds));
+        context.printer("Completed.");
       }
     }
   }
 
   @override
-  FutureOr<void> dispose() {
+  void dispose() {
     // ignore: no_runtimetype_tostring
     context.printer("$hashCode $runtimeType disposed");
   }
