@@ -20,7 +20,7 @@ Future<void> commands({
   for (final command in runner.commands.values) {
     if (command.hidden || !visited.add(command)) continue;
 
-    buffer.writeln("- [${command.name}](${command.name}.md)");
+    buffer.writeln("- [${command.name}](commands_${command.name}.md)");
 
     await _recursiveDocsGenerate(
       command: command,
@@ -51,22 +51,22 @@ Future<void> _recursiveDocsGenerate({
   if (parentCommandName case final String name) {
     buffer
       ..writeAll([
-        "### [$name](${name.replaceAll(" ", "_")}.md)",
-        "[${command.name}](${command.name.replaceAll(" ", "_")}.md)",
+        "### [$name](commands_${name.replaceAll(" ", "_")}.md)",
+        "[${command.name}](commands_${command.name.replaceAll(" ", "_")}.md)",
       ], " / ")
       ..writeln()
       ..writeln();
   } else {
     buffer
       ..writeln(
-        "### [${command.name}](${command.name.replaceAll(" ", "_")}.md)",
+        "### [${command.name}](commands_${command.name.replaceAll(" ", "_")}.md)",
       )
       ..writeln();
   }
 
   final commandName = [?parentCommandName, command.name].join(" ");
 
-  final fileCommandName = commandName.replaceAll(" ", "_");
+  final fileCommandName = "commands_${commandName.replaceAll(" ", "_")}";
 
   final File file = .new("docs/$fileCommandName.md");
 
@@ -75,7 +75,8 @@ Future<void> _recursiveDocsGenerate({
 
     final subcommandName = [commandName, subcommand.name].join(" ");
 
-    final fileSubcommandName = subcommandName.replaceAll(" ", "_");
+    final fileSubcommandName =
+        "commands_${subcommandName.replaceAll(" ", "_")}";
 
     buffer.writeln("- [${subcommand.name}]($fileSubcommandName.md)");
 
