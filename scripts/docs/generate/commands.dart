@@ -18,7 +18,7 @@ Future<void> commands({
   header = buffer.toString();
 
   for (final command in runner.commands.values) {
-    if (command.hidden) continue;
+    if (command.hidden || !visited.add(command)) continue;
 
     buffer.writeln("- [${command.name}](${command.name}.md)");
 
