@@ -10,7 +10,12 @@ Future<void> commands({
 }) async {
   final visited = <Command<void>>{};
 
-  final StringBuffer buffer = .new(header)..writeln();
+  final StringBuffer buffer = .new(header)
+    ..writeln()
+    ..writeln("## [Commands](commands.md)")
+    ..writeln();
+
+  header = buffer.toString();
 
   for (final command in runner.commands.values) {
     if (command.hidden) continue;
@@ -34,7 +39,7 @@ Future<void> _recursiveDocsGenerate({
   required Set<Command<void>> visited,
   String? parentCommandName,
 }) async {
-  final StringBuffer buffer = .new(header)..writeln();
+  final StringBuffer buffer = .new(header);
 
   if (parentCommandName case final String name) {
     buffer

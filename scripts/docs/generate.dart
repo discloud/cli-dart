@@ -1,6 +1,7 @@
 import "dart:io";
 import "dart:typed_data";
 
+import "package:args/command_runner.dart";
 import "package:discloud/cli/runner.dart";
 import "package:discloud/version.dart";
 import "package:markdown/markdown.dart";
@@ -34,14 +35,11 @@ void main() async {
     await file.writeAsBytes(entry.value, flush: true);
   }
 
-  final runner = CliCommandRunner();
+  const version = packageVersion == "0.0.0" ? "" : " v$packageVersion";
 
-  const header =
-      """
-# [CLI Documentation${packageVersion == "0.0.0" ? "" : " v$packageVersion"}](index.md)
+  const header = "# [CLI Documentation$version](index.md)\n";
 
-## [Commands](commands.md)
-""";
+  final CommandRunner<void> runner = CliCommandRunner();
 
   await Future.wait([
     home(header: header),

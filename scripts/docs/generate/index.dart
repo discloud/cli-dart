@@ -1,7 +1,10 @@
 import "dart:io";
 
 Future<void> home({required String header}) async {
-  final buffer = StringBuffer(header);
+  final StringBuffer buffer = .new(header)
+    ..writeln()
+    ..writeAll(["## [Commands](commands.md)"], "\n")
+    ..writeln();
 
   final file = File("docs/index.md");
   await file.create(recursive: true);
