@@ -110,7 +110,7 @@ void main() async {
 
     final htmlFilename = "${basenameWithoutExtension(mdFile.path)}.html";
 
-    final htmlFile = File(joinAll([dirname(mdFile.path), htmlFilename]));
+    final File htmlFile = .new(joinAll([dirname(mdFile.path), htmlFilename]));
 
     await htmlFile.writeAsString(htmlContent);
   }
@@ -128,7 +128,7 @@ class _LocalLinkMdSyntax extends InlineSyntax {
   @override
   bool onMatch(InlineParser parser, Match match) {
     final title = match.group(1)!;
-    final element = Element.text("a", title);
+    final Element element = .text("a", title);
     parser.addNode(element);
 
     final mdFilePath = match.group(2)!;
