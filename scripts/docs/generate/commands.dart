@@ -28,7 +28,7 @@ Future<void> commands({
       visited: visited,
     );
   }
-  
+
   if (runner.commands.isNotEmpty) buffer.writeln();
 
   buffer
