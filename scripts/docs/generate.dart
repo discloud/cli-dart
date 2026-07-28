@@ -1,21 +1,50 @@
 import "dart:io";
+import "dart:typed_data";
 
+import "package:args/command_runner.dart";
 import "package:discloud/cli/runner.dart";
+import "package:discloud/version.dart";
 import "package:markdown/markdown.dart";
 import "package:path/path.dart";
 
 import "generate/commands.dart";
 import "generate/index.dart";
 
+const _filesToPreserve = {"_config.yml"};
+
 void main() async {
   const docRootPath = "docs";
   const docsExt = ".md";
 
-  final docRootDir = Directory(docRootPath);
+  final Directory docRootDir = .new(docRootPath);
 
-  final runner = CliCommandRunner();
+  final filesToPreserveContents = <String, Uint8List>{};
 
-  await Future.wait([home(), commands(runner: runner)]);
+  for (final filename in _filesToPreserve) {
+    final File file = .new(joinAll([docRootDir.path, filename]));
+    if (!await file.exists()) continue;
+
+    filesToPreserveContents[file.path] = await file.readAsBytes();
+  }
+
+  await docRootDir.delete(recursive: true);
+  await docRootDir.create(recursive: true);
+
+  for (final entry in filesToPreserveContents.entries) {
+    final File file = .new(entry.key);
+    await file.writeAsBytes(entry.value, flush: true);
+  }
+
+  const version = packageVersion == "0.0.0" ? "" : " v$packageVersion";
+
+  const header = "# [CLI Documentation$version](index.md)\n";
+
+  final CommandRunner<void> runner = CliCommandRunner();
+
+  await Future.wait([
+    home(header: header),
+    commands(header: header, runner: runner),
+  ]);
 
   final entities = await docRootDir
       .list(recursive: true)
@@ -79,7 +108,7 @@ void main() async {
 
     final htmlFilename = "${basenameWithoutExtension(mdFile.path)}.html";
 
-    final htmlFile = File(joinAll([dirname(mdFile.path), htmlFilename]));
+    final File htmlFile = .new(joinAll([dirname(mdFile.path), htmlFilename]));
 
     await htmlFile.writeAsString(htmlContent);
   }
@@ -97,7 +126,7 @@ class _LocalLinkMdSyntax extends InlineSyntax {
   @override
   bool onMatch(InlineParser parser, Match match) {
     final title = match.group(1)!;
-    final element = Element.text("a", title);
+    final Element element = .text("a", title);
     parser.addNode(element);
 
     final mdFilePath = match.group(2)!;

@@ -1,86 +1,91 @@
-import "dart:convert";
+import "dart:async";
 import "dart:io";
 
 import "package:args/command_runner.dart";
-import "package:discloud/version.dart";
+import "package:path/path.dart";
 
-Future<void> commands({required CommandRunner runner}) async {
+Future<void> commands({
+  required String header,
+  required CommandRunner runner,
+}) async {
   final visited = <Command<void>>{};
 
-  const version = packageVersion == "0.0.0" ? "" : " v$packageVersion";
+  final StringBuffer buffer = .new(header)
+    ..writeln()
+    ..writeln("## [Commands](commands.md)")
+    ..writeln();
 
-  final buffer = StringBuffer("""
-# [CLI Documentation$version](index.md)
-
-## [Commands](commands.md)
-""");
+  header = buffer.toString();
 
   for (final command in runner.commands.values) {
     if (command.hidden) continue;
 
-    const level = 3;
+    buffer.writeln("- [${command.name}](${command.name}.md)");
 
-    final prefix = "".padRight(level, "#");
-
-    buffer.writeln("\n$prefix ${command.name}");
-
-    if (command.usage case final String usage when usage.isNotEmpty) {
-      buffer.writeln("\n```sh\n${_removeLastLine(usage)}\n```");
-    }
-
-    _recursiveDocsGenerate(
-      buffer,
-      visited,
-      command.subcommands,
-      command.name,
-      level + 1,
+    await _recursiveDocsGenerate(
+      command: command,
+      header: header,
+      visited: visited,
     );
   }
 
-  final file = File("docs/commands.md");
-  await file.create(recursive: true);
+  final File file = .new(joinAll(["docs", "commands.md"]));
   await file.writeAsString(buffer.toString());
 }
 
-void _recursiveDocsGenerate(
-  StringBuffer buffer,
-  Set<Command<void>> visited,
-  Map<String, Command<void>> subcommands,
-  String fullName,
-  int level,
-) {
-  for (final command in subcommands.values) {
-    if (visited.contains(command)) continue;
-    visited.add(command);
+Future<void> _recursiveDocsGenerate({
+  required Command<void> command,
+  required String header,
+  required Set<Command<void>> visited,
+  String? parentCommandName,
+}) async {
+  final StringBuffer buffer = .new(header);
 
-    if (command.hidden) continue;
+  if (parentCommandName case final String name) {
+    buffer
+      ..writeAll([
+        "### [$name](${name.replaceAll(" ", "_")}.md)",
+        "[${command.name}](${command.name.replaceAll(" ", "_")}.md)",
+      ], " / ")
+      ..writeln()
+      ..writeln();
+  } else {
+    buffer
+      ..writeln(
+        "### [${command.name}](${command.name.replaceAll(" ", "_")}.md)",
+      )
+      ..writeln();
+  }
 
-    final prefix = "".padRight(level, "#");
+  final commandName = [?parentCommandName, command.name].join(" ");
 
-    final actualName = "$fullName ${command.name}";
+  final fileCommandName = commandName.replaceAll(" ", "_");
 
-    buffer.writeln("\n$prefix $actualName");
+  final File file = .new("docs/$fileCommandName.md");
 
-    if (command.usage case final String usage when usage.isNotEmpty) {
-      buffer.writeln("\n```sh\n${_removeLastLine(usage)}\n```");
-    }
+  for (final subcommand in command.subcommands.values) {
+    if (subcommand.hidden || !visited.add(subcommand)) continue;
 
-    _recursiveDocsGenerate(
-      buffer,
-      visited,
-      command.subcommands,
-      actualName,
-      level + 1,
+    final subcommandName = [commandName, subcommand.name].join(" ");
+
+    final fileSubcommandName = subcommandName.replaceAll(" ", "_");
+
+    buffer.writeln("- [${subcommand.name}]($fileSubcommandName.md)");
+
+    await _recursiveDocsGenerate(
+      command: subcommand,
+      header: header,
+      visited: visited,
+      parentCommandName: commandName,
     );
   }
-}
 
-String _removeLastLine(String text) {
-  final lines = const LineSplitter().convert(text)..removeLast();
+  if (command.subcommands.isNotEmpty) buffer.writeln();
 
-  while (lines.lastOrNull?.isEmpty ?? false) {
-    lines.removeLast();
-  }
+  buffer
+    ..writeln("```sh")
+    ..writeln(command.usage)
+    ..writeln("```");
 
-  return lines.join("\n");
+  await file.writeAsString(buffer.toString());
 }

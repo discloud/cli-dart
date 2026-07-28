@@ -1,0 +1,16 @@
+# [CLI Documentation](index.md)
+
+## [Commands](commands.md)
+
+### [app](app.md) / [console](console.md)
+
+```sh
+Use the app terminal
+
+Usage: discloud app console [arguments]
+-h, --help       Print this usage information.
+    --app        
+-c, --command    
+
+Run "discloud help" to see global options.
+```
