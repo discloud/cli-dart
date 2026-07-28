@@ -4,10 +4,8 @@
 
 - [app](app.md)
 - [domain](domain.md)
-- [domain](domain.md)
 - [init](init.md)
 - [login](login.md)
-- [snapshot](snapshot.md)
 - [snapshot](snapshot.md)
 - [subdomain](subdomain.md)
 - [team](team.md)
