@@ -45,7 +45,7 @@ void main() async {
 
   await Future.wait([
     home(header: header),
-    commandsv2(header: header, runner: runner),
+    commands(header: header, runner: runner),
   ]);
 
   final entities = await docRootDir

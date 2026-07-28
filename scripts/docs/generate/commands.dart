@@ -4,7 +4,7 @@ import "dart:io";
 import "package:args/command_runner.dart";
 import "package:path/path.dart";
 
-Future<void> commandsv2({
+Future<void> commands({
   required String header,
   required CommandRunner runner,
 }) async {
