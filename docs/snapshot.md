@@ -4,6 +4,9 @@
 
 ### [snapshot](snapshot.md)
 
+- [create](snapshot_create.md)
+- [download](snapshot_download.md)
+- [info](snapshot_info.md)
 
 ```sh
 Manage your versioned backups

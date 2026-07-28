@@ -4,6 +4,11 @@
 
 ### [domain](domain.md)
 
+- [create](domain_create.md)
+- [delete](domain_delete.md)
+- [edit](domain_edit.md)
+- [info](domain_info.md)
+- [verify](domain_verify.md)
 
 ```sh
 Manage your domains
