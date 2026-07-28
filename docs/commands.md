@@ -2,15 +2,15 @@
 
 ## [Commands](commands.md)
 
-- [app](app.md)
-- [domain](domain.md)
-- [init](init.md)
-- [login](login.md)
-- [snapshot](snapshot.md)
-- [subdomain](subdomain.md)
-- [team](team.md)
-- [user](user.md)
-- [zip](zip.md)
+- [app](commands_app.md)
+- [domain](commands_domain.md)
+- [init](commands_init.md)
+- [login](commands_login.md)
+- [snapshot](commands_snapshot.md)
+- [subdomain](commands_subdomain.md)
+- [team](commands_team.md)
+- [user](commands_user.md)
+- [zip](commands_zip.md)
 
 ```sh
 A fast option to manage your apps on Discloud.
