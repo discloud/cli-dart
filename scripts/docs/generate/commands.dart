@@ -28,6 +28,13 @@ Future<void> commands({
       visited: visited,
     );
   }
+  
+  if (runner.commands.isNotEmpty) buffer.writeln();
+
+  buffer
+    ..writeln("```sh")
+    ..writeln(runner.usage)
+    ..writeln("```");
 
   final File file = .new(joinAll(["docs", "commands.md"]));
   await file.writeAsString(buffer.toString());
