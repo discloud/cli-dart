@@ -16,7 +16,7 @@ import "package:discloud/commands/app/stop.dart";
 import "package:discloud/commands/app/upload.dart";
 
 final class AppCommand extends Command<void> {
-  AppCommand() {
+  new() {
     addSubcommand(AppAptCommand());
     addSubcommand(AppBackupCommand());
     addSubcommand(AppCommitCommand());

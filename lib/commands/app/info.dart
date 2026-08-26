@@ -20,7 +20,7 @@ const _keysIgnore = {
 };
 
 final class AppInfoCommand extends Command<void> {
-  AppInfoCommand() {
+  new() {
     argParser.addOption("app", valueHelp: "all");
   }
 

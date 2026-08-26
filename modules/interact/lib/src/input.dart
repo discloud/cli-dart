@@ -6,7 +6,7 @@ import "package:interact/src/utils/prompt.dart";
 /// validator when there is an error.
 class ValidationError {
   /// Constructs a [ValidationError] with given message.
-  ValidationError(this.message);
+  new(this.message);
 
   /// The error message.
   final String message;
@@ -15,7 +15,7 @@ class ValidationError {
 /// An input component.
 class Input extends Component<String> {
   /// Constructs an [Input] component with the default theme.
-  Input({
+  new({
     required this.prompt,
     this.validator,
     this.initialText = "",
@@ -23,7 +23,7 @@ class Input extends Component<String> {
   }) : theme = Theme.defaultTheme;
 
   /// Constructs an [Input] component with the supplied theme.
-  Input.withTheme({
+  new withTheme({
     required this.prompt,
     required this.theme,
     this.validator,

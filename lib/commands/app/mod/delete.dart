@@ -5,7 +5,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
 final class AppModDeleteCommand extends Command<void> {
-  AppModDeleteCommand() {
+  new() {
     argParser
       ..addOption("app")
       ..addOption("mod");

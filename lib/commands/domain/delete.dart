@@ -5,7 +5,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
 final class CustomdomainDeleteCommand extends Command<void> {
-  CustomdomainDeleteCommand() {
+  new() {
     argParser.addOption("id", aliases: const ["domain"]);
   }
 

@@ -203,7 +203,7 @@ class Context {
 /// containing multiple [BufferContext]s to the console.
 class BufferContext extends Context {
   /// Constructs a [BufferContext] with given properties.
-  BufferContext({required this.buffer, required this.setState});
+  new({required this.buffer, required this.setState});
 
   /// Buffer stores the lines written to the context.
   final StringBuffer buffer;

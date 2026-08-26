@@ -5,7 +5,7 @@ import "package:discloud/version.dart";
 class UserAgent {
   static const _product = "DiscloudCLI";
 
-  const UserAgent();
+  const new();
 
   String get _version => packageVersion;
 

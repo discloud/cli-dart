@@ -5,7 +5,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
 final class AppProfileCommand extends Command<void> {
-  AppProfileCommand() {
+  new() {
     argParser
       ..addOption("app")
       ..addOption("name", abbr: "n")

@@ -14,7 +14,7 @@ import "package:discloud_config/discloud_config.dart";
 import "package:path/path.dart" hide context;
 
 final class TeamCommitCommand extends Command<void> with Disposable {
-  TeamCommitCommand() {
+  new() {
     argParser
       ..addOption(
         "app",

@@ -9,19 +9,17 @@ import "package:discloud/utils/messages.dart";
 import "package:path/path.dart" hide context;
 
 final class AppLogsCommand extends Command<void> {
-  AppLogsCommand() {
+  new() {
     argParser
       ..addOption(
         "app",
         valueHelp: "all",
-        help:
-            "When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.",
+        help: "When set to 'all', this command will automatically download logs and will not display URLs. If the 'out' option is not set, downloads will be made to the current folder.",
       )
       ..addOption(
         "out",
         aliases: const ["path"],
-        help:
-            "Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.",
+        help: "Specifies the destination path for downloading logs. When the application option is set to 'all', the destination path will be considered a directory where all downloads will be stored.",
       );
   }
 

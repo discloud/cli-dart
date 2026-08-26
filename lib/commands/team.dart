@@ -10,7 +10,7 @@ import "package:discloud/commands/team/status.dart";
 import "package:discloud/commands/team/stop.dart";
 
 final class TeamCommand extends Command<void> {
-  TeamCommand() {
+  new() {
     addSubcommand(TeamBackupCommand());
     addSubcommand(TeamCommitCommand());
     addSubcommand(TeamInfoCommand());

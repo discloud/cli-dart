@@ -3,7 +3,7 @@ import "package:discloud/commands/app/apt/install.dart";
 import "package:discloud/commands/app/apt/uninstall.dart";
 
 final class AppAptCommand extends Command<void> {
-  AppAptCommand() {
+  new() {
     addSubcommand(AppAptInstallCommand());
     addSubcommand(AppAptUninstallCommand());
   }

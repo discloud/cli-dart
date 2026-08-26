@@ -13,14 +13,13 @@ class FS {
     return path.replaceAll(_rSlash, _pSep);
   }
 
-  FS({
+  new({
     required this.directory,
     this.globPatterns = const ["**"],
     this.ignoreFilename,
     Iterable<String> ignorePatterns = const .empty(),
-  }) : _originalIgnorePatterns = _transformIterableToGlob(
-         ignorePatterns,
-       ).toSet(),
+  }) : _originalIgnorePatterns = _transformIterableToGlob(ignorePatterns)
+           .toSet(),
        _ignorePatterns = .new();
 
   final Directory directory;

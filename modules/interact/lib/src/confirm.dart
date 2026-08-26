@@ -5,14 +5,11 @@ import "package:interact/src/utils/prompt.dart";
 /// A confirm component.
 class Confirm extends Component<bool> {
   /// Constructs a [Confirm] component with the default theme.
-  Confirm({
-    required this.prompt,
-    this.defaultValue,
-    this.waitForNewLine = false,
-  }) : theme = Theme.defaultTheme;
+  new({required this.prompt, this.defaultValue, this.waitForNewLine = false})
+    : theme = Theme.defaultTheme;
 
   /// Constructs a [Confirm] component with the supplied theme.
-  Confirm.withTheme({
+  new withTheme({
     required this.theme,
     required this.prompt,
     this.defaultValue,

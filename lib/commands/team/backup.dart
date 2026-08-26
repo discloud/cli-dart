@@ -13,15 +13,14 @@ import "package:discloud/utils/speed_monitor.dart";
 import "package:path/path.dart" hide context;
 
 final class TeamBackupCommand extends Command<void> with Disposable {
-  TeamBackupCommand() {
+  new() {
     argParser
       ..addOption("app", valueHelp: "all")
       ..addOption(
         "dir",
         abbr: "d",
         aliases: const ["out", "path"],
-        help:
-            "Specifies the destination path for downloading backups. The destination path will be considered a directory.",
+        help: "Specifies the destination path for downloading backups. The destination path will be considered a directory.",
       );
   }
 

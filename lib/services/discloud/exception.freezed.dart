@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'exception.dart';
@@ -9,12 +9,13 @@ part of 'exception.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiscloudApiException {
 
- int get code; String get message; String get path; Map? get body; String? get logs; List<dynamic>? get localeList;
+ int get code; String get message; String get path; Map<dynamic, dynamic>? get body; String? get logs; List<dynamic>? get localeList;
 /// Create a copy of DiscloudApiException
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +46,7 @@ abstract mixin class $DiscloudApiExceptionCopyWith<$Res>  {
   factory $DiscloudApiExceptionCopyWith(DiscloudApiException value, $Res Function(DiscloudApiException) _then) = _$DiscloudApiExceptionCopyWithImpl;
 @useResult
 $Res call({
- int code, String message, String path, Map? body, String? logs, List<dynamic>? localeList
+ int code, String message, String path, Map<dynamic, dynamic>? body, String? logs, List<dynamic>? localeList
 });
 
 
@@ -63,12 +64,12 @@ class _$DiscloudApiExceptionCopyWithImpl<$Res>
 /// Create a copy of DiscloudApiException
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? message = null,Object? path = null,Object? body = freezed,Object? logs = freezed,Object? localeList = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(DiscloudApiException(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as int,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,body: freezed == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
-as Map?,logs: freezed == logs ? _self.logs : logs // ignore: cast_nullable_to_non_nullable
+as Map<dynamic, dynamic>?,logs: freezed == logs ? _self.logs : logs // ignore: cast_nullable_to_non_nullable
 as String?,localeList: freezed == localeList ? _self.localeList : localeList // ignore: cast_nullable_to_non_nullable
 as List<dynamic>?,
   ));
@@ -155,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int code,  String message,  String path,  Map? body,  String? logs,  List<dynamic>? localeList)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int code,  String message,  String path,  Map<dynamic, dynamic>? body,  String? logs,  List<dynamic>? localeList)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DiscloudApiException() when $default != null:
 return $default(_that.code,_that.message,_that.path,_that.body,_that.logs,_that.localeList);case _:
@@ -176,7 +177,7 @@ return $default(_that.code,_that.message,_that.path,_that.body,_that.logs,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int code,  String message,  String path,  Map? body,  String? logs,  List<dynamic>? localeList)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int code,  String message,  String path,  Map<dynamic, dynamic>? body,  String? logs,  List<dynamic>? localeList)  $default,) {final _that = this;
 switch (_that) {
 case _DiscloudApiException():
 return $default(_that.code,_that.message,_that.path,_that.body,_that.logs,_that.localeList);case _:
@@ -196,7 +197,7 @@ return $default(_that.code,_that.message,_that.path,_that.body,_that.logs,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int code,  String message,  String path,  Map? body,  String? logs,  List<dynamic>? localeList)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int code,  String message,  String path,  Map<dynamic, dynamic>? body,  String? logs,  List<dynamic>? localeList)?  $default,) {final _that = this;
 switch (_that) {
 case _DiscloudApiException() when $default != null:
 return $default(_that.code,_that.message,_that.path,_that.body,_that.logs,_that.localeList);case _:
@@ -211,14 +212,14 @@ return $default(_that.code,_that.message,_that.path,_that.body,_that.logs,_that.
 
 
 class _DiscloudApiException implements DiscloudApiException {
-  const _DiscloudApiException({this.code = 500, this.message = "Unknown", this.path = "/", final  Map? body, this.logs, final  List<dynamic>? localeList}): _body = body,_localeList = localeList;
+  const _DiscloudApiException({this.code = 500, this.message = "Unknown", this.path = "/",  Map<dynamic, dynamic>? body, this.logs,  List<dynamic>? localeList}): _body = body,_localeList = localeList;
   
 
 @override@JsonKey() final  int code;
 @override@JsonKey() final  String message;
 @override@JsonKey() final  String path;
- final  Map? _body;
-@override Map? get body {
+ final  Map<dynamic, dynamic>? _body;
+@override Map<dynamic, dynamic>? get body {
   final value = _body;
   if (value == null) return null;
   if (_body is EqualUnmodifiableMapView) return _body;
@@ -267,7 +268,7 @@ abstract mixin class _$DiscloudApiExceptionCopyWith<$Res> implements $DiscloudAp
   factory _$DiscloudApiExceptionCopyWith(_DiscloudApiException value, $Res Function(_DiscloudApiException) _then) = __$DiscloudApiExceptionCopyWithImpl;
 @override @useResult
 $Res call({
- int code, String message, String path, Map? body, String? logs, List<dynamic>? localeList
+ int code, String message, String path, Map<dynamic, dynamic>? body, String? logs, List<dynamic>? localeList
 });
 
 
@@ -290,7 +291,7 @@ code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as int,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,body: freezed == body ? _self._body : body // ignore: cast_nullable_to_non_nullable
-as Map?,logs: freezed == logs ? _self.logs : logs // ignore: cast_nullable_to_non_nullable
+as Map<dynamic, dynamic>?,logs: freezed == logs ? _self.logs : logs // ignore: cast_nullable_to_non_nullable
 as String?,localeList: freezed == localeList ? _self._localeList : localeList // ignore: cast_nullable_to_non_nullable
 as List<dynamic>?,
   ));

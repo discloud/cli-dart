@@ -6,7 +6,7 @@ class _TimerCLISpin extends CLISpin {
     return null;
   }
 
-  _TimerCLISpin._({String? text})
+  new _({String? text})
     : _stopwatch = .new()..start(),
       _timer = .new(.zero, _noop),
       super._(.new(text: text)) {

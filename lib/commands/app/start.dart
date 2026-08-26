@@ -5,7 +5,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
 final class AppStartCommand extends Command<void> {
-  AppStartCommand() {
+  new() {
     argParser.addOption("app", valueHelp: "all");
   }
 

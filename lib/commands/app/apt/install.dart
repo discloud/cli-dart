@@ -6,7 +6,7 @@ import "package:discloud/services/discloud/constants.dart";
 import "package:discloud/utils/messages.dart";
 
 final class AppAptInstallCommand extends Command<void> {
-  AppAptInstallCommand() {
+  new() {
     argParser
       ..addOption("app")
       ..addMultiOption("apt", help: appApts.join(","));

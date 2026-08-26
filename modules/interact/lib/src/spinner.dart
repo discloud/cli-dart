@@ -10,14 +10,14 @@ String _prompt(bool x) => "";
 /// A spinner or a loading indicator component.
 class Spinner extends Component<SpinnerState> {
   /// Construts a [Spinner] component with the default theme.
-  Spinner({
+  new({
     required this.icon,
     this.leftPrompt = _prompt,
     this.rightPrompt = _prompt,
   }) : theme = Theme.defaultTheme;
 
   /// Constructs a [Spinner] component with the supplied theme.
-  Spinner.withTheme({
+  new withTheme({
     required this.icon,
     required this.theme,
     this.leftPrompt = _prompt,
@@ -63,7 +63,7 @@ class Spinner extends Component<SpinnerState> {
 /// Handles a [Spinner]'s state.
 class SpinnerState {
   /// Constructs a state to manage a [Spinner].
-  SpinnerState({required this.done});
+  new({required this.done});
 
   /// Function to be called to indicate that the
   /// spinner is loaded.

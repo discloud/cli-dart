@@ -4,7 +4,7 @@ import "package:discloud/commands/snapshot/download.dart";
 import "package:discloud/commands/snapshot/info.dart";
 
 final class SnapshotCommand extends Command<void> {
-  SnapshotCommand() {
+  new() {
     addSubcommand(SnapshotCreateCommand());
     addSubcommand(SnapshotDownloadCommand());
     addSubcommand(SnapshotInfoCommand());

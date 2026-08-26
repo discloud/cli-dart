@@ -6,7 +6,7 @@ import "package:discloud/commands/domain/info.dart";
 import "package:discloud/commands/domain/verify.dart";
 
 final class DomainCommand extends Command<void> {
-  DomainCommand() {
+  new() {
     addSubcommand(CustomdomainCreateCommand());
     addSubcommand(CustomdomainDeleteCommand());
     addSubcommand(CustomdomainEditCommand());

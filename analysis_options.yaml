@@ -86,7 +86,9 @@ linter:
     - cascade_invocations
     - combinators_ordering
     - directives_ordering
+    - empty_container_bodies
     - eol_at_end_of_file
+    - initialize_in_field_declaration
     - no_literal_bool_comparisons
     - noop_primitive_operations
     - prefer_const_constructors
@@ -102,13 +104,16 @@ linter:
     - require_trailing_commas
     - simplify_variable_pattern
     - unawaited_futures
-    - unnecessary_await_in_return
+    - unnecessary_const_in_enum_constructor
     - unnecessary_ignore
     - unnecessary_lambdas
     - unnecessary_parenthesis
+    - unnecessary_primary_constructor_body
     - unnecessary_raw_strings
+    - unnecessary_type_name_in_constructor
     - unnecessary_unawaited
     - use_colored_box
+    - use_declaring_parameters
     - use_decorated_box
     - use_enums
     - use_named_constants
