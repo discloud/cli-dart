@@ -8,12 +8,11 @@ import "package:discloud/services/discloud/constants.dart";
 import "package:discloud_config/discloud_config.dart";
 
 final class InitCommand extends Command<void> {
-  InitCommand() {
+  new() {
     argParser
       ..addFlag(
         "autorestart",
-        help:
-            "Determines whether the app should automatically restart if it crashes.",
+        help: "Determines whether the app should automatically restart if it crashes.",
         negatable: false,
       )
       ..addFlag(
@@ -76,7 +75,7 @@ final class InitCommand extends Command<void> {
 }
 
 class _InitArgs {
-  const _InitArgs(this._argResults);
+  const new(this._argResults);
 
   final ArgResults? _argResults;
 

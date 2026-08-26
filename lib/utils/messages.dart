@@ -4,9 +4,8 @@ import "package:discloud/services/discloud/exception.dart";
 String resolveResponseMessage<T>(T response) {
   switch (response) {
     case final Map r:
-      final StringBuffer buffer = .new();
-
-      buffer.writeAllCapitalized([?r["status"], ?r["message"]], ": ");
+      final StringBuffer buffer = .new()
+        ..writeAllCapitalized([?r["status"], ?r["message"]], ": ");
 
       if (r["logs"] case final String logs? when logs.isNotEmpty) {
         if (buffer.isNotEmpty) buffer.write("\n");

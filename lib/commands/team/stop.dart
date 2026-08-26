@@ -5,7 +5,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
 final class TeamStopCommand extends Command<void> {
-  TeamStopCommand() {
+  new() {
     argParser.addOption("app", valueHelp: "all");
   }
 

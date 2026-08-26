@@ -20,7 +20,7 @@ const _keysIgnore = {
 };
 
 final class TeamInfoCommand extends Command<void> {
-  TeamInfoCommand() {
+  new() {
     argParser.addOption("app");
   }
 

@@ -6,7 +6,7 @@ import "package:discloud/extensions/command.dart";
 import "package:intl/intl.dart";
 
 final class SystemLocaleCommand extends Command<void> {
-  SystemLocaleCommand();
+  new();
 
   @override
   final name = "locale";

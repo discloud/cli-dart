@@ -5,7 +5,7 @@ import "package:discloud/commands/app/mod/edit.dart";
 import "package:discloud/commands/app/mod/info.dart";
 
 final class AppModCommand extends Command<void> {
-  AppModCommand() {
+  new() {
     addSubcommand(AppModAddCommand());
     addSubcommand(AppModDeleteCommand());
     addSubcommand(AppModEditCommand());

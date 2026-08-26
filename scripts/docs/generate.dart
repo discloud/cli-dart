@@ -115,10 +115,8 @@ void main() async {
 }
 
 class _LocalLinkMdSyntax extends InlineSyntax {
-  _LocalLinkMdSyntax({
-    required this.relativeRootPath,
-    required this.localFileList,
-  }) : super(r"\[([^\]]+)\]\((.+.md)\)");
+  new({required this.relativeRootPath, required this.localFileList})
+    : super(r"\[([^\]]+)\]\((.+.md)\)");
 
   final String relativeRootPath;
   final Set<String> localFileList;

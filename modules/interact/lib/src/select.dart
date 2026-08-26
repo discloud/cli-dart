@@ -6,11 +6,11 @@ import "package:interact/src/utils/prompt.dart";
 /// A selector component.
 class Select extends Component<int> {
   /// Constructs a [Select] component with the default theme.
-  Select({required this.prompt, required this.options, this.initialIndex = 0})
+  new({required this.prompt, required this.options, this.initialIndex = 0})
     : theme = Theme.defaultTheme;
 
   /// Constructs a [Select] component with the supplied theme.
-  Select.withTheme({
+  new withTheme({
     required this.prompt,
     required this.options,
     required this.theme,

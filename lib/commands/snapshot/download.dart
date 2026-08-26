@@ -13,7 +13,7 @@ import "package:discloud/utils/speed_monitor.dart";
 import "package:path/path.dart" hide context;
 
 final class SnapshotDownloadCommand extends Command<void> with Disposable {
-  SnapshotDownloadCommand() {
+  new() {
     argParser
       ..addOption("app")
       ..addOption("version", help: "Snapshot version in YYYYMMDD-HHMMSS format")
@@ -21,8 +21,7 @@ final class SnapshotDownloadCommand extends Command<void> with Disposable {
         "dir",
         abbr: "d",
         aliases: const ["out"],
-        help:
-            "Specifies the destination path for downloading backups. The destination path will be considered a directory.",
+        help: "Specifies the destination path for downloading backups. The destination path will be considered a directory.",
       );
   }
 

@@ -6,7 +6,7 @@ import "package:discloud/utils/ascii_table.dart";
 import "package:discloud/utils/messages.dart";
 
 final class CustomdomainInfoCommand extends Command<void> {
-  CustomdomainInfoCommand() {
+  new() {
     argParser.addOption("id", aliases: const ["domain"], valueHelp: "all");
   }
 

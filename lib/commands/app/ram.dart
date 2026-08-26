@@ -7,7 +7,7 @@ import "package:discloud/utils/messages.dart";
 import "package:discloud_config/discloud_config.dart";
 
 final class AppRamCommand extends Command<void> {
-  AppRamCommand() {
+  new() {
     argParser
       ..addOption("app")
       ..addOption(

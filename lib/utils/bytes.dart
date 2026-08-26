@@ -13,19 +13,19 @@ enum Dimension {
   /// KB = 1000 B
   decimal(1000);
 
-  const Dimension(this.value);
+  new(this.value);
 
   final int value;
 }
 
 class Bytes<N extends num> {
-  const factory Bytes.bits(
+  const factory bits(
     N n, {
     Dimension dimension,
     NumberFormat? numberFormatter,
   }) = _Bits;
 
-  const Bytes(this.n, {this.dimension = .binary, this.numberFormatter});
+  const new(this.n, {this.dimension = .binary, this.numberFormatter});
 
   final N n;
   final Dimension dimension;
@@ -159,7 +159,7 @@ class Bytes<N extends num> {
 }
 
 class _Bits<N extends num> extends Bytes<N> {
-  const _Bits(super.n, {super.dimension = .binary, super.numberFormatter});
+  const new(super.n, {super.dimension = .binary, super.numberFormatter});
 
   @override
   UnitType get type => .bit;
@@ -298,7 +298,7 @@ enum UnitType {
   bit(_BitUnit.values),
   byte(_ByteUnit.values);
 
-  const UnitType(this.units);
+  new(this.units);
 
   final List<Enum> units;
 }

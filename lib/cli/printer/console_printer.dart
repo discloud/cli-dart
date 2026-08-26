@@ -7,11 +7,11 @@ import "package:discloud/cli/spin/ispin.dart";
 part "debug_console_printer.dart";
 
 class ConsolePrinter implements IPrinter {
-  factory ConsolePrinter._debug() = _DebugConsolePrinter;
+  factory _debug() = _DebugConsolePrinter;
 
-  factory ConsolePrinter({bool isDebug = false}) => isDebug ? ._debug() : ._();
+  factory({bool isDebug = false}) => isDebug ? ._debug() : ._();
 
-  ConsolePrinter._();
+  new _();
 
   ISpin? _spin;
 

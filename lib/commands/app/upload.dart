@@ -13,7 +13,7 @@ import "package:discloud_config/discloud_config.dart";
 import "package:path/path.dart" hide context;
 
 final class AppUploadCommand extends Command<void> with Disposable {
-  AppUploadCommand() {
+  new() {
     argParser.addMultiOption("glob", abbr: "g", valueHelp: "**");
   }
 

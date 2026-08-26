@@ -13,7 +13,7 @@ typedef StyleFunction = String Function(String);
 /// The theme to be used by components.
 class Theme {
   /// Constructs a new [Theme] with all of it's properties.
-  const Theme({
+  const new({
     required this.inputPrefix,
     required this.inputSuffix,
     required this.successPrefix,

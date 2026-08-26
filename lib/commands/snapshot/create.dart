@@ -6,7 +6,7 @@ import "package:discloud/utils/ascii_table.dart";
 import "package:discloud/utils/messages.dart";
 
 final class SnapshotCreateCommand extends Command<void> {
-  SnapshotCreateCommand() {
+  new() {
     argParser.addOption("app");
   }
 

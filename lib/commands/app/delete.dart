@@ -6,7 +6,7 @@ import "package:discloud/utils/messages.dart";
 import "package:interact/interact.dart";
 
 final class AppDeleteCommand extends Command<void> {
-  AppDeleteCommand() {
+  new() {
     argParser
       ..addFlag(
         "yes",

@@ -6,7 +6,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/extensions/num.dart";
 
 final class WaitCommand extends Command<void> with Disposable {
-  WaitCommand();
+  new();
 
   @override
   final name = "wait";

@@ -8,7 +8,7 @@ const _numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
 const _signSymbol = "-";
 
 class Integer extends Component<int> {
-  Integer({required this.prompt, this.max, this.min})
+  new({required this.prompt, this.max, this.min})
     : assert(max == null || min == null || min <= max),
       theme = Theme.defaultTheme;
 

@@ -6,11 +6,11 @@ import "package:interact/src/utils/prompt.dart";
 /// A sortable list component.
 class Sort extends Component<List<String>> {
   /// Constructs a [Sort] component with the default theme.
-  Sort({required this.prompt, required this.options, this.showOutput = true})
+  new({required this.prompt, required this.options, this.showOutput = true})
     : theme = Theme.defaultTheme;
 
   /// Constructs a [Sort] component with the default theme.
-  Sort.withTheme({
+  new withTheme({
     required this.prompt,
     required this.options,
     required this.theme,

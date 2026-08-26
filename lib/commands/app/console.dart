@@ -11,7 +11,7 @@ const _commandPrefix = "\x1B[2m?> \x1B[22m";
 const _exitCommand = "exit";
 
 final class AppConsoleCommand extends Command<void> {
-  AppConsoleCommand() {
+  new() {
     argParser
       ..addOption("app")
       ..addMultiOption("command", abbr: "c");

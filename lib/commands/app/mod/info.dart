@@ -1,11 +1,12 @@
 import "dart:async";
+
 import "package:args/command_runner.dart";
 import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/ascii_table.dart";
 import "package:discloud/utils/messages.dart";
 
 final class AppModInfoCommand extends Command<void> {
-  AppModInfoCommand() {
+  new() {
     argParser.addOption("app");
   }
 

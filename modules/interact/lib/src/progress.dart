@@ -11,7 +11,7 @@ String _prompt(int x) => "";
 /// A progress bar component.
 class Progress extends Component<ProgressState> {
   /// Constructs a [Progress] component with the default theme.
-  Progress({
+  new({
     required this.length,
     this.size = 1.0,
     this.leftPrompt = _prompt,
@@ -19,7 +19,7 @@ class Progress extends Component<ProgressState> {
   }) : theme = Theme.defaultTheme;
 
   /// Constructs a [Progress] component with the supplied theme.
-  Progress.withTheme({
+  new withTheme({
     required this.theme,
     required this.length,
     this.size = 1.0,
@@ -71,7 +71,7 @@ class Progress extends Component<ProgressState> {
 /// Handles a progress bar's state.
 class ProgressState {
   /// Constructs a [ProgressState] with it's all properties.
-  ProgressState({
+  new({
     required this.current,
     required this.clear,
     required this.increase,

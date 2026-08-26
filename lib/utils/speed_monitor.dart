@@ -3,7 +3,7 @@ import "dart:collection";
 import "package:discloud/cli/disposable.dart";
 
 final class _SpeedSample extends LinkedListEntry<_SpeedSample> {
-  _SpeedSample(this.units) : time = DateTime.now().microsecondsSinceEpoch;
+  new(this.units) : time = DateTime.now().microsecondsSinceEpoch;
 
   final int time;
   final int units;
@@ -14,9 +14,9 @@ class SpeedMonitor implements Disposable {
   static const double _zero = 0;
 
   /// Creates a [SpeedMonitor]
-  factory SpeedMonitor() => ._(queue: .new());
+  factory() => ._(queue: .new());
 
-  const SpeedMonitor._({
+  const new _({
     required this._queue,
     this._windowDuration = const .new(seconds: 1),
   });

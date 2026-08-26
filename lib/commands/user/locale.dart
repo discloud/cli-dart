@@ -4,7 +4,7 @@ import "package:discloud/extensions/command.dart";
 import "package:discloud/utils/messages.dart";
 
 final class UserLocaleCommand extends Command<void> {
-  UserLocaleCommand() {
+  new() {
     argParser
       ..addOption("locale", abbr: "l", mandatory: true, valueHelp: localeName)
       ..addFlag(

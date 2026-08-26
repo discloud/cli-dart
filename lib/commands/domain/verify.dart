@@ -6,7 +6,7 @@ import "package:discloud/utils/ascii_table.dart";
 import "package:discloud/utils/messages.dart";
 
 final class CustomdomainVerifyCommand extends Command<void> {
-  CustomdomainVerifyCommand() {
+  new() {
     argParser.addOption("id", aliases: const ["domain"]);
   }
 

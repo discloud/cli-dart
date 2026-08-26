@@ -6,12 +6,12 @@ part "exception.freezed.dart";
 abstract interface class DiscloudApiException
     with _$DiscloudApiException
     implements Exception {
-  const factory DiscloudApiException({
-    @Default(500) final int code,
-    @Default("Unknown") final String message,
-    @Default("/") final String path,
-    final Map? body,
-    final String? logs,
-    final List<dynamic>? localeList,
+  const factory({
+    @Default(500) int code,
+    @Default("Unknown") String message,
+    @Default("/") String path,
+    Map? body,
+    String? logs,
+    List<dynamic>? localeList,
   }) = _DiscloudApiException;
 }

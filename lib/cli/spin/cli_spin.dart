@@ -11,10 +11,10 @@ part "timer_cli_spin.dart";
 void _noop() {}
 
 class CLISpin implements ISpin {
-  factory CLISpin({String? text, bool showDuration = false}) =>
+  factory({String? text, bool showDuration = false}) =>
       showDuration ? _TimerCLISpin._(text: text) : ._(.new(text: text));
 
-  const CLISpin._(this._spin);
+  const new _(this._spin);
 
   final CliSpin _spin;
 

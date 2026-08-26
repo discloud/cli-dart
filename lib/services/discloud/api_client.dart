@@ -60,10 +60,10 @@ class DiscloudApiClient implements Disposable {
     return null;
   }
 
-  factory DiscloudApiClient({HttpClient? client}) =>
+  factory({HttpClient? client}) =>
       DiscloudApiClient._(client: client ?? .new());
 
-  const DiscloudApiClient._({required this._client});
+  const new _({required this._client});
 
   final HttpClient _client;
 

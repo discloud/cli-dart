@@ -18,7 +18,7 @@ part "paths.dart";
 class CliContext implements Disposable {
   static late final CliContext I;
 
-  factory CliContext(Iterable<String> arguments) {
+  factory(Iterable<String> arguments) {
     final bool debug = arguments.contains("--debug");
 
     return I = ._(
@@ -32,7 +32,7 @@ class CliContext implements Disposable {
     );
   }
 
-  const CliContext._({
+  const new _({
     required this.api,
     required this.arguments,
     required this.debug,

@@ -5,7 +5,7 @@ import "package:interact/src/utils/prompt.dart";
 /// A password input component.
 class Password extends Component<String> {
   /// Constructs a [Password] component with the default theme.
-  Password({
+  new({
     required this.prompt,
     this.confirmation = false,
     this.confirmPrompt,
@@ -13,7 +13,7 @@ class Password extends Component<String> {
   }) : theme = Theme.defaultTheme;
 
   /// Constructs a [Password] component with the supplied theme.
-  Password.withTheme({
+  new withTheme({
     required this.theme,
     required this.prompt,
     this.confirmation = false,

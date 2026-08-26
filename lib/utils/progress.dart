@@ -7,7 +7,7 @@ enum UnitDirection {
   down("↓"),
   both("⇅");
 
-  const UnitDirection(this.symbol);
+  new(this.symbol);
 
   final String symbol;
 

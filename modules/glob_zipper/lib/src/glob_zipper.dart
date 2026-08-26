@@ -44,7 +44,7 @@ class GlobZipper {
     onError: onError,
   );
 
-  const GlobZipper({
+  const new({
     required this.directory,
     required this.zipfile,
     this.globPatterns = const ["**"],

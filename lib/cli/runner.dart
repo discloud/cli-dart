@@ -8,8 +8,7 @@ import "package:discloud/commands/wait.dart";
 import "package:discloud/version.dart";
 
 class CliCommandRunner extends CommandRunner<void> {
-  CliCommandRunner()
-    : super("discloud", "A fast option to manage your apps on Discloud.") {
+  new() : super("discloud", "A fast option to manage your apps on Discloud.") {
     argParser
       ..addFlag(
         "debug",

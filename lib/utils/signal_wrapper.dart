@@ -6,10 +6,10 @@ import "package:discloud/extensions/list.dart";
 typedef OnDisposeCallback = FutureOr<void> Function();
 typedef OnSignalCallback = FutureOr<void> Function(ProcessSignal signal);
 
-final class _Cancelled implements Exception {}
+final class _Cancelled implements Exception;
 
 abstract class SignalWrapper {
-  factory SignalWrapper.multi(
+  factory multi(
     Iterable<ProcessSignal> signals, {
     OnDisposeCallback? onDispose,
     OnSignalCallback? onSignal,
@@ -20,7 +20,7 @@ abstract class SignalWrapper {
     completer: .new(),
   );
 
-  factory SignalWrapper(
+  factory(
     ProcessSignal signal, {
     OnSignalCallback? onSignal,
     OnDisposeCallback? onDispose,
@@ -40,7 +40,7 @@ abstract class SignalWrapper {
 }
 
 class _MultiSignalWrapper implements SignalWrapper {
-  const _MultiSignalWrapper(
+  const new(
     this._signals, {
     required this._completer,
     this.onSignal,
@@ -85,7 +85,7 @@ class _MultiSignalWrapper implements SignalWrapper {
 }
 
 class _SingleSignalWrapper implements SignalWrapper {
-  const _SingleSignalWrapper(
+  const new(
     this._signal, {
     required this._completer,
     this.onDispose,

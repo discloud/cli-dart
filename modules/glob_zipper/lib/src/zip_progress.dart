@@ -1,7 +1,7 @@
 part of "glob_zipper.dart";
 
 class ZipProgress {
-  const ZipProgress({
+  const new({
     required this.file,
     required this.stat,
     required this.current,
