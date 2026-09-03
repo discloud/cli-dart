@@ -44,9 +44,11 @@ void main() async {
     commands(header: header, runner: runner),
   ]);
 
-  final entities = docRootDir
-      .list(recursive: true)
-      .where((e) => e is File && extension(e.path) == docsExt) as Stream<File>;
+  final entities =
+      docRootDir
+              .list(recursive: true)
+              .where((e) => e is File && extension(e.path) == docsExt)
+          as Stream<File>;
 
   final entitiesPaths = await entities.map((e) => e.path).toSet();
 

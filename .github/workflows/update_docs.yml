@@ -40,7 +40,7 @@ jobs:
       - name: Git diff
         id: diff
         continue-on-error: true
-        run: git diff --quiet -- docs
+        run: git diff --exit-code -- docs
 
       - name: Git config
         if: steps.diff.outcome == 'failure'
