@@ -44,16 +44,14 @@ void main() async {
     commands(header: header, runner: runner),
   ]);
 
-  final entities =
-      docRootDir
-              .list(recursive: true)
-              .where((e) => e is File && extension(e.path) == docsExt);
+  final entities = await docRootDir
+      .list(recursive: true)
+      .where((e) => e is File && extension(e.path) == docsExt)
+      .toList();
 
-  final entitiesPaths = await entities.map((e) => e.path).toSet();
+  final entitiesPaths = entities.map((e) => e.path).toSet();
 
-  await for (final mdFile in entities) {
-    if (mdFile is! File) continue;
-
+  for (final mdFile in entities.whereType<File>()) {
     final mdContent = await mdFile.readAsString();
 
     final htmlContent = markdownToHtml(
