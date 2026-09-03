@@ -47,12 +47,13 @@ void main() async {
   final entities =
       docRootDir
               .list(recursive: true)
-              .where((e) => e is File && extension(e.path) == docsExt)
-          as Stream<File>;
+              .where((e) => e is File && extension(e.path) == docsExt);
 
   final entitiesPaths = await entities.map((e) => e.path).toSet();
 
   await for (final mdFile in entities) {
+    if (mdFile is! File) continue;
+
     final mdContent = await mdFile.readAsString();
 
     final htmlContent = markdownToHtml(
