@@ -15,8 +15,8 @@ on:
         default: false
 
 permissions:
-  contents: write
   actions: read
+  contents: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Get artifacts
         continue-on-error: true
@@ -70,8 +70,8 @@ jobs:
 
       - name: Dart format
         run: |
-          dart format .
           dart fix --apply
+          dart format .
 
       - name: Run tests
         run: dart test
@@ -93,7 +93,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Dart
         uses: dart-lang/setup-dart@v1
@@ -120,7 +120,7 @@ jobs:
         run: iscc inno_setup.iss
 
       - name: Upload to release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           prerelease: ${{ env.prerelease }}
           tag_name: ${{ env.version }}
@@ -132,8 +132,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Install Inno Setup
+      - name: Install Winget Create
         run: winget install Microsoft.WingetCreate -h --accept-package-agreements --accept-source-agreements --nowarn --verbose -s winget
 
-      - name: Submit using wingetcreate
+      - name: Submit using Winget Create
         run: wingetcreate update Discloud.CLI -s -v ${{ env.version }} --release-notes-url ${{ env.release_base_url }}/tag/${{ env.version }} -u '${{ env.release_base_url }}/download/${{ env.version }}/${{ env.setupx64 }}|x64' '${{ env.release_base_url }}/download/${{ env.version }}/${{ env.setuparm64 }}|arm64' -t ${{ secrets.PERSONAL_GITHUB_TOKEN }}

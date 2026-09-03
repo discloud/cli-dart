@@ -101,6 +101,7 @@ linter:
     - prefer_final_locals
     - prefer_if_elements_to_conditional_expressions
     - prefer_int_literals
+    - remove_deprecations_in_breaking_versions
     - require_trailing_commas
     - simplify_variable_pattern
     - unawaited_futures

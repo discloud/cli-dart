@@ -26,16 +26,21 @@ $DiscloudApiExceptionCopyWith<DiscloudApiException> get copyWith => _$DiscloudAp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiscloudApiException&&(identical(other.code, code) || other.code == code)&&(identical(other.message, message) || other.message == message)&&(identical(other.path, path) || other.path == path)&&const DeepCollectionEquality().equals(other.body, body)&&(identical(other.logs, logs) || other.logs == logs)&&const DeepCollectionEquality().equals(other.localeList, localeList));
+  final _this = this as DiscloudApiException;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiscloudApiException&&(identical(other.code, _this.code) || other.code == _this.code)&&(identical(other.message, _this.message) || other.message == _this.message)&&(identical(other.path, _this.path) || other.path == _this.path)&&const DeepCollectionEquality().equals(other.body, _this.body)&&(identical(other.logs, _this.logs) || other.logs == _this.logs)&&const DeepCollectionEquality().equals(other.localeList, _this.localeList));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,message,path,const DeepCollectionEquality().hash(body),logs,const DeepCollectionEquality().hash(localeList));
+int get hashCode {
+  final _this = this as DiscloudApiException;
+  return Object.hash(runtimeType,_this.code,_this.message,_this.path,const DeepCollectionEquality().hash(_this.body),_this.logs,const DeepCollectionEquality().hash(_this.localeList));
+}
 
 @override
 String toString() {
-  return 'DiscloudApiException(code: $code, message: $message, path: $path, body: $body, logs: $logs, localeList: $localeList)';
+  final _this = this as DiscloudApiException;
+  return 'DiscloudApiException(code: ${_this.code}, message: ${_this.message}, path: ${_this.path}, body: ${_this.body}, logs: ${_this.logs}, localeList: ${_this.localeList})';
 }
 
 
@@ -248,16 +253,18 @@ _$DiscloudApiExceptionCopyWith<_DiscloudApiException> get copyWith => __$Disclou
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiscloudApiException&&(identical(other.code, code) || other.code == code)&&(identical(other.message, message) || other.message == message)&&(identical(other.path, path) || other.path == path)&&const DeepCollectionEquality().equals(other._body, _body)&&(identical(other.logs, logs) || other.logs == logs)&&const DeepCollectionEquality().equals(other._localeList, _localeList));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiscloudApiException&&(identical(other.code, code) || other.code == code)&&(identical(other.message, message) || other.message == message)&&(identical(other.path, path) || other.path == path)&&const DeepCollectionEquality().equals(other.body, _body)&&(identical(other.logs, logs) || other.logs == logs)&&const DeepCollectionEquality().equals(other.localeList, _localeList));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,message,path,const DeepCollectionEquality().hash(_body),logs,const DeepCollectionEquality().hash(_localeList));
+int get hashCode {
+    return Object.hash(runtimeType,code,message,path,const DeepCollectionEquality().hash(_body),logs,const DeepCollectionEquality().hash(_localeList));
+}
 
 @override
 String toString() {
-  return 'DiscloudApiException(code: $code, message: $message, path: $path, body: $body, logs: $logs, localeList: $localeList)';
+    return 'DiscloudApiException(code: $code, message: $message, path: $path, body: $body, logs: $logs, localeList: $localeList)';
 }
 
 

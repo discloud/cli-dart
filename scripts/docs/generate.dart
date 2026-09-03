@@ -10,29 +10,27 @@ import "package:path/path.dart";
 import "generate/commands.dart";
 import "generate/index.dart";
 
-const _filesToPreserve = {"_config.yml"};
-
 void main() async {
   const docRootPath = "docs";
   const docsExt = ".md";
 
-  final Directory docRootDir = .new(docRootPath);
+  final docRootDir = Directory(docRootPath);
 
-  final filesToPreserveContents = <String, Uint8List>{};
+  const filesToPreserve = {"_config.yml"};
+  final filesToPreserveContents = <File, Uint8List>{};
 
-  for (final filename in _filesToPreserve) {
-    final File file = .new(joinAll([docRootDir.path, filename]));
+  for (final filename in filesToPreserve) {
+    final File file = .new(joinAll([docRootPath, filename]));
     if (!await file.exists()) continue;
 
-    filesToPreserveContents[file.path] = await file.readAsBytes();
+    filesToPreserveContents[file] = await file.readAsBytes();
   }
 
   await docRootDir.delete(recursive: true);
   await docRootDir.create(recursive: true);
 
   for (final entry in filesToPreserveContents.entries) {
-    final File file = .new(entry.key);
-    await file.writeAsBytes(entry.value, flush: true);
+    await entry.key.writeAsBytes(entry.value, flush: true);
   }
 
   const version = packageVersion == "0.0.0" ? "" : " v$packageVersion";
