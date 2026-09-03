@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Dart
         uses: dart-lang/setup-dart@v1
@@ -37,18 +37,29 @@ jobs:
       - name: Generate docs
         run: dart scripts/docs/generate.dart
 
+      - name: Git diff
+        id: diff
+        continue-on-error: true
+        run: git diff --quiet
+
       - name: Git config
+        if: steps.diff.outcome == 'failure'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Git commit
-        id: commit
-        continue-on-error: true
+      - name: Git push in new branch
+        if: steps.diff.outcome == 'failure'
         run: |
+          git checkout -b docs/update
           git add docs
           git commit -m "docs: update ${{ steps.short_github_sha.outputs.id }}"
+          git push --set-upstream origin docs/update
 
-      - name: Push
-        if: steps.commit.outcome != 'failure'
-        run: git push
+      - name: Git create & merge pull request
+        if: steps.diff.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create -t "docs: update ${{ steps.short_github_sha.outputs.id }}" -b " "
+          gh pr merge -ds

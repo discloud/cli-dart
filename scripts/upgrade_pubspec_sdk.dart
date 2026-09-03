@@ -5,13 +5,21 @@ import "dart:io";
 import "package:path/path.dart";
 import "package:pub_semver/pub_semver.dart";
 
+const _pubspecFilename = "pubspec.yaml";
+const _pubspecSdkPattern =
+    r"(\r?\nenvironment:\s*\r?\n[\w\W]*\s+sdk:\s*\^)(\d+\.\d+\.\d+\S*)((?:\r?\n)+)";
+final _pubspecSdkRegexp = RegExp(_pubspecSdkPattern);
+final Version _dartVersion = .parse(
+  Platform.version.replaceFirst(RegExp(r"\s+.+"), ""),
+);
+
 void _noop(Object _, StackTrace _) {}
 
 void main() async {
-  await for (final entity
-      in Directory.current.list(recursive: true).handleError(_noop)) {
-    if (entity is! File) continue;
-    if (basename(entity.path) != _pubspecFilename) continue;
+  final Directory modules = .new("modules");
+
+  await for (final entity in modules.list(recursive: true).handleError(_noop)) {
+    if (entity is! File || basename(entity.path) != _pubspecFilename) continue;
     await _upgradePubspecVersion(entity);
   }
 }
@@ -30,12 +38,3 @@ Future<void> _upgradePubspecVersion(File pubspecFile) async {
 
   await pubspecFile.writeAsString(content);
 }
-
-const _pubspecFilename = "pubspec.yaml";
-const _pubspecSdkPattern =
-    r"(\r?\nenvironment:\s*\r?\n[\w\W]*\s+sdk:\s*\^)(\d+\.\d+\.\d+\S*)((?:\r?\n)+)";
-final _pubspecSdkRegexp = RegExp(_pubspecSdkPattern);
-//const versionPattern = r"(\d+\.\d+\.\d+\S*)";
-final _dartVersion = Version.parse(
-  Platform.version.replaceFirst(RegExp(r"\s+.+"), ""),
-);
