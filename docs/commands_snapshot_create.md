@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [snapshot](commands_snapshot.md) / [create](commands_create.md)
+### [snapshot](commands_snapshot.md) / [create](commands_snapshot_create.md)
 
 ```sh
 Create a versioned snapshot of your app

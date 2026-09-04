@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [domain](commands_domain.md) / [create](commands_create.md)
+### [domain](commands_domain.md) / [create](commands_domain_create.md)
 
 ```sh
 Create a domain

@@ -112,8 +112,9 @@ void main() async {
 }
 
 class _LocalLinkMdSyntax extends InlineSyntax {
-  new({required this.localFiles})
-    : super(r"\[([^\]]+)\]\(((\.[\\/])?\w.*.md)\)");
+  static const _pattern = r"\[([^\]]+)\]\(([^)]+\.md)\)";
+
+  new({required this.localFiles}) : super(_pattern);
 
   final Set<String> localFiles;
 

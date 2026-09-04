@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [start](commands_start.md)
+### [app](commands_app.md) / [start](commands_app_start.md)
 
 ```sh
 Start one or all of your apps on Discloud

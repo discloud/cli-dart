@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [domain](commands_domain.md) / [verify](commands_verify.md)
+### [domain](commands_domain.md) / [verify](commands_domain_verify.md)
 
 ```sh
 Verify a domain

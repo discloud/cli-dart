@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [snapshot](commands_snapshot.md) / [info](commands_info.md)
+### [snapshot](commands_snapshot.md) / [info](commands_snapshot_info.md)
 
 ```sh
 List your versioned snapshots

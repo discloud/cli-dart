@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [domain](commands_domain.md) / [edit](commands_edit.md)
+### [domain](commands_domain.md) / [edit](commands_domain_edit.md)
 
 ```sh
 Edit a domain

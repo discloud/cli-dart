@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [upload](commands_upload.md)
+### [app](commands_app.md) / [upload](commands_app_upload.md)
 
 ```sh
 Upload one app or site to Discloud

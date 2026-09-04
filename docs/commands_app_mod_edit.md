@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app mod](commands_app_mod.md) / [edit](commands_edit.md)
+### [app mod](commands_app_mod.md) / [edit](commands_app_mod_edit.md)
 
 ```sh
 Edit MOD perms of your app

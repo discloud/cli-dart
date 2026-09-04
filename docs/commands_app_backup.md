@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [backup](commands_backup.md)
+### [app](commands_app.md) / [backup](commands_app_backup.md)
 
 ```sh
 Get backup of your app code from Discloud

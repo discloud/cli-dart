@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [team](commands_team.md) / [info](commands_info.md)
+### [team](commands_team.md) / [info](commands_team_info.md)
 
 ```sh
 Get information of your apps

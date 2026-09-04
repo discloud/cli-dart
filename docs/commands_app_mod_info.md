@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app mod](commands_app_mod.md) / [info](commands_info.md)
+### [app mod](commands_app_mod.md) / [info](commands_app_mod_info.md)
 
 ```sh
 Get MOD info of your app

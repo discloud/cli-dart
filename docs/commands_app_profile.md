@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [profile](commands_profile.md)
+### [app](commands_app.md) / [profile](commands_app_profile.md)
 
 ```sh
 Updates the profile information (avatar and name) for a specific app

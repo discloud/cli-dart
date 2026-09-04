@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app apt](commands_app_apt.md) / [install](commands_install.md)
+### [app apt](commands_app_apt.md) / [install](commands_app_apt_install.md)
 
 ```sh
 Install APT on your app

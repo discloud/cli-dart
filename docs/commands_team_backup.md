@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [team](commands_team.md) / [backup](commands_backup.md)
+### [team](commands_team.md) / [backup](commands_team_backup.md)
 
 ```sh
 Get backup of your team app code from Discloud
