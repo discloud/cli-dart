@@ -1,3 +1,5 @@
+// dart scripts/docs/generate.dart
+
 import "dart:io";
 import "dart:typed_data";
 
@@ -10,17 +12,17 @@ import "package:path/path.dart";
 import "generate/commands.dart";
 import "generate/index.dart";
 
-void main() async {
-  const docRootPath = "docs";
-  const docsExt = ".md";
+const _docsRootPath = "docs";
+const _mdDocsExt = ".md";
 
-  final docRootDir = Directory(docRootPath);
+void main() async {
+  final docRootDir = Directory(_docsRootPath);
 
   const filesToPreserve = {"_config.yml"};
   final filesToPreserveContents = <File, Uint8List>{};
 
   for (final filename in filesToPreserve) {
-    final File file = .new(joinAll([docRootPath, filename]));
+    final File file = .new(joinAll([_docsRootPath, filename]));
     if (!await file.exists()) continue;
 
     filesToPreserveContents[file] = await file.readAsBytes();
@@ -46,7 +48,7 @@ void main() async {
 
   final entities = await docRootDir
       .list(recursive: true)
-      .where((e) => e is File && extension(e.path) == docsExt)
+      .where((e) => e is File && extension(e.path) == _mdDocsExt)
       .toList();
 
   final entitiesPaths = entities.map((e) => e.path).toSet();
@@ -80,12 +82,9 @@ void main() async {
         UnorderedListWithCheckboxSyntax(),
       ],
       inlineSyntaxes: [
-        _LocalLinkMdSyntax(
-          localFileList: entitiesPaths,
-          relativeRootPath: docRootPath,
-        ),
-        AutolinkSyntax(),
+        _LocalLinkMdSyntax(localFiles: entitiesPaths),
         AutolinkExtensionSyntax(),
+        AutolinkSyntax(),
         CodeSyntax(),
         ColorSwatchSyntax(),
         DecodeHtmlSyntax(),
@@ -113,11 +112,10 @@ void main() async {
 }
 
 class _LocalLinkMdSyntax extends InlineSyntax {
-  new({required this.relativeRootPath, required this.localFileList})
-    : super(r"\[([^\]]+)\]\((.+.md)\)");
+  new({required this.localFiles})
+    : super(r"\[([^\]]+)\]\(((\.[\\/])?\w.*.md)\)");
 
-  final String relativeRootPath;
-  final Set<String> localFileList;
+  final Set<String> localFiles;
 
   @override
   bool onMatch(InlineParser parser, Match match) {
@@ -126,13 +124,15 @@ class _LocalLinkMdSyntax extends InlineSyntax {
     parser.addNode(element);
 
     final mdFilePath = match.group(2)!;
-    final path = joinAll([relativeRootPath, mdFilePath]);
-    if (localFileList.contains(path)) {
+    final path = joinAll([_docsRootPath, mdFilePath]);
+
+    if (localFiles.contains(path)) {
       final htmlFilename = "${basenameWithoutExtension(mdFilePath)}.html";
-      final htmlFilepath = joinAll([dirname(mdFilePath), htmlFilename]);
-      element.attributes["href"] = htmlFilepath;
+      final htmlFilePath = joinAll([dirname(mdFilePath), htmlFilename]);
+      element.attributes["href"] = htmlFilePath;
       return true;
     }
+
     element.attributes["href"] = mdFilePath;
     return true;
   }
