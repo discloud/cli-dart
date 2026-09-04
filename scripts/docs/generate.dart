@@ -6,14 +6,13 @@ import "dart:typed_data";
 import "package:args/command_runner.dart";
 import "package:discloud/cli/runner.dart";
 import "package:discloud/version.dart";
-import "package:markdown/markdown.dart";
 import "package:path/path.dart";
 
 import "generate/commands.dart";
 import "generate/index.dart";
+import "markdown_to_html_converter.dart";
 
 const _docsRootPath = "docs";
-const _mdDocsExt = ".md";
 
 void main() async {
   final docRootDir = Directory(_docsRootPath);
@@ -46,95 +45,9 @@ void main() async {
     commands(header: header, runner: runner),
   ]);
 
-  final entities = await docRootDir
-      .list(recursive: true)
-      .where((e) => e is File && extension(e.path) == _mdDocsExt)
-      .toList();
+  final converter = MarkdownToHtmlConverter(directory: docRootDir);
 
-  final entitiesPaths = entities.map((e) => e.path).toSet();
-
-  for (final mdFile in entities.whereType<File>()) {
-    final mdContent = await mdFile.readAsString();
-
-    final htmlContent = markdownToHtml(
-      mdContent,
-      blockSyntaxes: const [
-        AlertBlockSyntax(),
-        BlockquoteSyntax(),
-        CodeBlockSyntax(),
-        DummyBlockSyntax(),
-        EmptyBlockSyntax(),
-        FencedBlockquoteSyntax(),
-        FencedCodeBlockSyntax(),
-        FootnoteDefSyntax(),
-        HeaderSyntax(),
-        HeaderWithIdSyntax(),
-        HorizontalRuleSyntax(),
-        HtmlBlockSyntax(),
-        LinkReferenceDefinitionSyntax(),
-        OrderedListSyntax(),
-        OrderedListWithCheckboxSyntax(),
-        ParagraphSyntax(),
-        SetextHeaderSyntax(),
-        SetextHeaderWithIdSyntax(),
-        TableSyntax(),
-        UnorderedListSyntax(),
-        UnorderedListWithCheckboxSyntax(),
-      ],
-      inlineSyntaxes: [
-        _LocalLinkMdSyntax(localFiles: entitiesPaths),
-        AutolinkExtensionSyntax(),
-        AutolinkSyntax(),
-        CodeSyntax(),
-        ColorSwatchSyntax(),
-        DecodeHtmlSyntax(),
-        EmailAutolinkSyntax(),
-        EmojiSyntax(),
-        EmphasisSyntax.asterisk(),
-        EmphasisSyntax.underscore(),
-        EscapeHtmlSyntax(),
-        EscapeSyntax(),
-        ImageSyntax(),
-        InlineHtmlSyntax(),
-        LineBreakSyntax(),
-        LinkSyntax(),
-        SoftLineBreakSyntax(),
-        StrikethroughSyntax(),
-      ],
-    );
-
-    final htmlFilename = "${basenameWithoutExtension(mdFile.path)}.html";
-
-    final File htmlFile = .new(joinAll([dirname(mdFile.path), htmlFilename]));
-
-    await htmlFile.writeAsString(htmlContent);
-  }
-}
-
-class _LocalLinkMdSyntax extends InlineSyntax {
-  static const _pattern = r"\[([^\]]+)\]\(([^)]+\.md)\)";
-
-  new({required this.localFiles}) : super(_pattern);
-
-  final Set<String> localFiles;
-
-  @override
-  bool onMatch(InlineParser parser, Match match) {
-    final title = match.group(1)!;
-    final Element element = .text("a", title);
-    parser.addNode(element);
-
-    final mdFilePath = match.group(2)!;
-    final path = joinAll([_docsRootPath, mdFilePath]);
-
-    if (localFiles.contains(path)) {
-      final htmlFilename = "${basenameWithoutExtension(mdFilePath)}.html";
-      final htmlFilePath = joinAll([dirname(mdFilePath), htmlFilename]);
-      element.attributes["href"] = htmlFilePath;
-      return true;
-    }
-
-    element.attributes["href"] = mdFilePath;
-    return true;
+  await for (final (file, content) in converter.convert()) {
+    await file.writeAsString(content);
   }
 }
