@@ -17,8 +17,12 @@ part "paths.dart";
 
 class CliContext implements Disposable {
   static late final CliContext I;
+  static bool _instanced = false;
 
   factory(Iterable<String> arguments) {
+    if (_instanced) return I;
+    _instanced = true;
+
     final bool debug = arguments.contains("--debug");
 
     return I = ._(
