@@ -60,8 +60,7 @@ class DiscloudApiClient implements Disposable {
     return null;
   }
 
-  factory({HttpClient? client}) =>
-      DiscloudApiClient._(client: client ?? .new());
+  factory({HttpClient? client}) => ._(client: client ?? .new());
 
   const new _({required this._client});
 
@@ -347,12 +346,12 @@ class DiscloudApiClient implements Disposable {
 
     if (!hasApiToken) {
       if (await _maybeToken case final value?) {
-        request.headers.set(_apiTokenHeader, value);
+        request.headers.apiToken = value;
         sb.writeln("[Request] Header: $_apiTokenHeader:${value.length}");
       }
     }
 
-    if (!isDiscloudJwt(request.headers.value(_apiTokenHeader).orEmpty)) {
+    if (!isDiscloudJwt(request.headers.apiToken.orEmpty)) {
       _context.printer.debug(sb);
       throw const DiscloudApiException(
         code: 401,

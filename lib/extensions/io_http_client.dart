@@ -33,3 +33,11 @@ extension HttpClientResponseExtension on HttpClientResponse {
     return Isolate.run(() => jsonDecode(body));
   }
 }
+
+extension HttpHeadersExtension on HttpHeaders {
+  static const _apiTokenHeader = "api-token";
+
+  String? get apiToken => value(_apiTokenHeader);
+
+  set apiToken(String value) => set(_apiTokenHeader, value);
+}

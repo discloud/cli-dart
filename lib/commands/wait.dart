@@ -21,9 +21,9 @@ final class WaitCommand extends Command<void> with Disposable {
   Future<void> run() async {
     if (argResults!.rest.firstOrNull case final seconds?) {
       if (int.tryParse(seconds) case final seconds? when seconds.isPositive) {
-        context.printer("Waiting ${seconds}s...");
+        final spin = context.printer.spin(text: "Waiting ${seconds}s...");
         await Future.delayed(.new(seconds: seconds));
-        context.printer("Completed.");
+        spin.success("Completed.");
       }
     }
   }
