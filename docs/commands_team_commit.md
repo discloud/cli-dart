@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [team](commands_team.md) / [commit](commands_commit.md)
+### [team](commands_team.md) / [commit](commands_team_commit.md)
 
 ```sh
 Commit one app or site to Discloud

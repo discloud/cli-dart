@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [mod](commands_mod.md)
+### [app](commands_app.md) / [mod](commands_app_mod.md)
 
 - [add](commands_app_mod_add.md)
 - [delete](commands_app_mod_delete.md)

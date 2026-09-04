@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [team](commands_team.md) / [ram](commands_ram.md)
+### [team](commands_team.md) / [ram](commands_team_ram.md)
 
 ```sh
 Set amount of ram for your app

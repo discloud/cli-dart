@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [snapshot](commands_snapshot.md) / [download](commands_download.md)
+### [snapshot](commands_snapshot.md) / [download](commands_snapshot_download.md)
 
 ```sh
 Download a versioned snapshot of your app

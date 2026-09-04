@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [logs](commands_logs.md)
+### [app](commands_app.md) / [logs](commands_app_logs.md)
 
 ```sh
 View the logs from application in Discloud

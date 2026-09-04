@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [subdomain](commands_subdomain.md) / [create](commands_create.md)
+### [subdomain](commands_subdomain.md) / [create](commands_subdomain_create.md)
 
 ```sh
 Create a subdomain

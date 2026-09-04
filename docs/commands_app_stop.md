@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [stop](commands_stop.md)
+### [app](commands_app.md) / [stop](commands_app_stop.md)
 
 ```sh
 Stop one or all of your apps on Discloud

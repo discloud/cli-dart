@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [apt](commands_apt.md)
+### [app](commands_app.md) / [apt](commands_app_apt.md)
 
 - [install](commands_app_apt_install.md)
 - [uninstall](commands_app_apt_uninstall.md)

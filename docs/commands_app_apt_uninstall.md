@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app apt](commands_app_apt.md) / [uninstall](commands_uninstall.md)
+### [app apt](commands_app_apt.md) / [uninstall](commands_app_apt_uninstall.md)
 
 ```sh
 Uninstall APT from your app

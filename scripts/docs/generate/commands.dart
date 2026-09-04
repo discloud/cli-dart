@@ -52,7 +52,7 @@ Future<void> _recursiveDocsGenerate({
     buffer
       ..writeAll([
         "### [$name](commands_${name.replaceAll(" ", "_")}.md)",
-        "[${command.name}](commands_${command.name.replaceAll(" ", "_")}.md)",
+        "[${command.name}](commands_${name.replaceAll(" ", "_")}_${command.name.replaceAll(" ", "_")}.md)",
       ], " / ")
       ..writeln()
       ..writeln();

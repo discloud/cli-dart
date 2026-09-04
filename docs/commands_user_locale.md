@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [user](commands_user.md) / [locale](commands_locale.md)
+### [user](commands_user.md) / [locale](commands_user_locale.md)
 
 ```sh
 Set your locale

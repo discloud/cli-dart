@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app mod](commands_app_mod.md) / [add](commands_add.md)
+### [app mod](commands_app_mod.md) / [add](commands_app_mod_add.md)
 
 ```sh
 Add MOD to your app

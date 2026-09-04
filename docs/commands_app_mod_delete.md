@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app mod](commands_app_mod.md) / [delete](commands_delete.md)
+### [app mod](commands_app_mod.md) / [delete](commands_app_mod_delete.md)
 
 ```sh
 Delete MOD of your app

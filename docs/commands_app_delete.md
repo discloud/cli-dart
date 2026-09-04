@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [delete](commands_delete.md)
+### [app](commands_app.md) / [delete](commands_app_delete.md)
 
 ```sh
 Delete one of your apps on Discloud

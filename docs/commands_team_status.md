@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [team](commands_team.md) / [status](commands_status.md)
+### [team](commands_team.md) / [status](commands_team_status.md)
 
 ```sh
 Get status of your app

@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [restart](commands_restart.md)
+### [app](commands_app.md) / [restart](commands_app_restart.md)
 
 ```sh
 Restart one or all of your apps on Discloud

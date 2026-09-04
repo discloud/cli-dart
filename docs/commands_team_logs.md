@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [team](commands_team.md) / [logs](commands_logs.md)
+### [team](commands_team.md) / [logs](commands_team_logs.md)
 
 ```sh
 View the logs from application in Discloud

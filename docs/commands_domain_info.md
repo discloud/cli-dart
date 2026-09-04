@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [domain](commands_domain.md) / [info](commands_info.md)
+### [domain](commands_domain.md) / [info](commands_domain_info.md)
 
 ```sh
 Get information of your domains

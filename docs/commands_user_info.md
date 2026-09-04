@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [user](commands_user.md) / [info](commands_info.md)
+### [user](commands_user.md) / [info](commands_user_info.md)
 
 ```sh
 Get your information

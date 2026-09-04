@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [subdomain](commands_subdomain.md) / [delete](commands_delete.md)
+### [subdomain](commands_subdomain.md) / [delete](commands_subdomain_delete.md)
 
 ```sh
 Delete a subdomain

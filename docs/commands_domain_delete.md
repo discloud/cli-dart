@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [domain](commands_domain.md) / [delete](commands_delete.md)
+### [domain](commands_domain.md) / [delete](commands_domain_delete.md)
 
 ```sh
 Delete a domain

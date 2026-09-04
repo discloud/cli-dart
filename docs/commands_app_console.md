@@ -2,7 +2,7 @@
 
 ## [Commands](commands.md)
 
-### [app](commands_app.md) / [console](commands_console.md)
+### [app](commands_app.md) / [console](commands_app_console.md)
 
 ```sh
 Use the app terminal
