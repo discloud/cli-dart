@@ -10,9 +10,9 @@ final class MarkdownToHtmlConverter {
 
   final Directory directory;
 
-  Stream<(File file, String content)> convert() async* {
+  Stream<(File, String)> convert({bool recursive = false}) async* {
     final entities = await directory
-        .list(recursive: true)
+        .list(recursive: recursive, followLinks: false)
         .where((e) => e is File && extension(e.path) == _mdExt)
         .toList();
 

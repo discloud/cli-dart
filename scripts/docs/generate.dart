@@ -32,7 +32,7 @@ void main() async {
 
   final converter = MarkdownToHtmlConverter(directory: docRootDir);
 
-  await for (final (file, content) in converter.convert()) {
+  await for (final (file, content) in converter.convert(recursive: true)) {
     await file.writeAsString(content);
   }
 }
