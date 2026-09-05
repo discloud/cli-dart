@@ -62,9 +62,7 @@ Future<void> _recursiveDocsGenerate({
       ..writeln();
   } else {
     buffer
-      ..writeln(
-        "### [${command.name}](commands_$noSpaceCommandName.md)",
-      )
+      ..writeln("### [${command.name}](commands_$noSpaceCommandName.md)")
       ..writeln();
   }
 
