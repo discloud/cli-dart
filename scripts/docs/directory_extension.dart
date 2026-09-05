@@ -19,7 +19,10 @@ extension DirectoryExtension on Directory {
 
           final Directory dir = .new(filePath);
 
-          await for (final file in dir.list(recursive: recursive)) {
+          await for (final file in dir.list(
+            recursive: recursive,
+            followLinks: false,
+          )) {
             if (file is! File) continue;
             filesToPreserveContents[file] = await file.readAsBytes();
           }
@@ -37,14 +40,13 @@ extension DirectoryExtension on Directory {
     }
 
     await delete(recursive: true);
-    await create();
 
-    for (final entry in filesToPreserveContents.entries) {
-      if (!await entry.key.parent.exists()) {
-        await entry.key.parent.create(recursive: true);
+    for (final MapEntry(:key, :value) in filesToPreserveContents.entries) {
+      if (key.parent case final parent) {
+        if (!await parent.exists()) await parent.create(recursive: true);
       }
 
-      await entry.key.writeAsBytes(entry.value, flush: true);
+      await key.writeAsBytes(value, flush: true);
     }
   }
 }

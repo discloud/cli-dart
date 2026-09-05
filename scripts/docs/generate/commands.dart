@@ -48,18 +48,22 @@ Future<void> _recursiveDocsGenerate({
 }) async {
   final StringBuffer buffer = .new(header);
 
-  if (parentCommandName case final String name) {
+  final noSpaceCommandName = command.name.replaceAll(" ", "_");
+
+  if (parentCommandName case final String parentCommandName) {
+    final noSpaceParentCommandName = parentCommandName.replaceAll(" ", "_");
+
     buffer
       ..writeAll([
-        "### [$name](commands_${name.replaceAll(" ", "_")}.md)",
-        "[${command.name}](commands_${name.replaceAll(" ", "_")}_${command.name.replaceAll(" ", "_")}.md)",
+        "### [$parentCommandName](commands_$noSpaceParentCommandName.md)",
+        "[${command.name}](commands_${noSpaceParentCommandName}_$noSpaceCommandName.md)",
       ], " / ")
       ..writeln()
       ..writeln();
   } else {
     buffer
       ..writeln(
-        "### [${command.name}](commands_${command.name.replaceAll(" ", "_")}.md)",
+        "### [${command.name}](commands_$noSpaceCommandName.md)",
       )
       ..writeln();
   }
