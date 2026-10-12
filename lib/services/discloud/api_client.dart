@@ -15,7 +15,7 @@ import "package:path/path.dart";
 typedef VoidUploadProgressCallback = void Function(int processed);
 typedef VoidUploadDoneCallback = FutureOr<void> Function();
 
-class DiscloudApiClient implements Disposable {
+class DiscloudApiClient with Disposable {
   static const _apiScheme = "https";
   static const _apiHost = "api.discloud.app";
   static const _apiVersion = 2;

@@ -14,7 +14,7 @@ import "package:tint/tint.dart";
 part "locale.dart";
 part "paths.dart";
 
-class CliContext implements Disposable {
+class CliContext with Disposable {
   static late final CliContext I;
   static bool _instanced = false;
 

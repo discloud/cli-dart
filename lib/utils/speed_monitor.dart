@@ -10,7 +10,7 @@ final class _SpeedSample extends LinkedListEntry<_SpeedSample> {
 }
 
 /// A utility class for monitoring processing speed over a sliding time window.
-class SpeedMonitor implements Disposable {
+class SpeedMonitor with Disposable {
   static const double _zero = 0;
 
   /// Creates a [SpeedMonitor]
