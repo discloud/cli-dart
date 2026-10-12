@@ -11,78 +11,38 @@ import "package:tint/tint.dart";
 typedef StyleFunction = String Function(String);
 
 /// The theme to be used by components.
-class Theme {
-  /// Constructs a new [Theme] with all of it's properties.
-  const new({
-    required this.inputPrefix,
-    required this.inputSuffix,
-    required this.successPrefix,
-    required this.successSuffix,
-    required this.errorPrefix,
-    required this.hiddenPrefix,
-    required this.messageStyle,
-    required this.errorStyle,
-    required this.hintStyle,
-    required this.valueStyle,
-    required this.defaultStyle,
-    required this.activeItemPrefix,
-    required this.inactiveItemPrefix,
-    required this.activeItemStyle,
-    required this.inactiveItemStyle,
-    required this.checkedItemPrefix,
-    required this.uncheckedItemPrefix,
-    required this.pickedItemPrefix,
-    required this.unpickedItemPrefix,
-    required this.showActiveCursor,
-    required this.progressPrefix,
-    required this.progressSuffix,
-    required this.emptyProgress,
-    required this.filledProgress,
-    required this.leadingProgress,
-    required this.emptyProgressStyle,
-    required this.filledProgressStyle,
-    required this.leadingProgressStyle,
-    required this.spinners,
-    required this.spinningInterval,
-  });
-
-  final String inputPrefix;
-  final String inputSuffix;
-  final String successPrefix;
-  final String successSuffix;
-  final String errorPrefix;
-  final String hiddenPrefix;
-  final StyleFunction messageStyle;
-  final StyleFunction errorStyle;
-  final StyleFunction hintStyle;
-  final StyleFunction valueStyle;
-  final StyleFunction defaultStyle;
-
-  final String activeItemPrefix;
-  final String inactiveItemPrefix;
-  final StyleFunction activeItemStyle;
-  final StyleFunction inactiveItemStyle;
-
-  final String checkedItemPrefix;
-  final String uncheckedItemPrefix;
-
-  final String pickedItemPrefix;
-  final String unpickedItemPrefix;
-
-  final bool showActiveCursor;
-
-  final String progressPrefix;
-  final String progressSuffix;
-  final String emptyProgress;
-  final String filledProgress;
-  final String leadingProgress;
-  final StyleFunction emptyProgressStyle;
-  final StyleFunction filledProgressStyle;
-  final StyleFunction leadingProgressStyle;
-
-  final List<String> spinners;
-  final int spinningInterval;
-
+class const Theme({
+  required final String inputPrefix,
+  required final String inputSuffix,
+  required final String successPrefix,
+  required final String successSuffix,
+  required final String errorPrefix,
+  required final String hiddenPrefix,
+  required final StyleFunction messageStyle,
+  required final StyleFunction errorStyle,
+  required final StyleFunction hintStyle,
+  required final StyleFunction valueStyle,
+  required final StyleFunction defaultStyle,
+  required final String activeItemPrefix,
+  required final String inactiveItemPrefix,
+  required final StyleFunction activeItemStyle,
+  required final StyleFunction inactiveItemStyle,
+  required final String checkedItemPrefix,
+  required final String uncheckedItemPrefix,
+  required final String pickedItemPrefix,
+  required final String unpickedItemPrefix,
+  required final bool showActiveCursor,
+  required final String progressPrefix,
+  required final String progressSuffix,
+  required final String emptyProgress,
+  required final String filledProgress,
+  required final String leadingProgress,
+  required final StyleFunction emptyProgressStyle,
+  required final StyleFunction filledProgressStyle,
+  required final StyleFunction leadingProgressStyle,
+  required final List<String> spinners,
+  required final int spinningInterval,
+}) {
   /// Copy current theme with new properties and create a
   /// new [Theme] from it.
   Theme copyWith({

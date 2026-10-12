@@ -4,13 +4,7 @@ import "package:interact/src/utils/prompt.dart";
 
 /// The error message to be thrown from the [Input] component's
 /// validator when there is an error.
-class ValidationError {
-  /// Constructs a [ValidationError] with given message.
-  new(this.message);
-
-  /// The error message.
-  final String message;
-}
+class const ValidationError(final String message);
 
 /// An input component.
 class Input extends Component<String> {

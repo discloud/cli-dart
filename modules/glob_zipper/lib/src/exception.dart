@@ -1,5 +1,3 @@
 part of "glob_zipper.dart";
 
-class ZipException implements Exception {
-  const new();
-}
+final class const ZipException() implements Exception;

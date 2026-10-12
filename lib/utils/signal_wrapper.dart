@@ -6,7 +6,7 @@ import "package:discloud/extensions/list.dart";
 typedef OnDisposeCallback = FutureOr<void> Function();
 typedef OnSignalCallback = FutureOr<void> Function(ProcessSignal signal);
 
-final class _Cancelled implements Exception;
+final class const _Cancelled() implements Exception;
 
 abstract class SignalWrapper {
   factory multi(
@@ -39,23 +39,12 @@ abstract class SignalWrapper {
   Future<T?> call<T>(Future<T> Function() fn);
 }
 
-class _MultiSignalWrapper implements SignalWrapper {
-  const new(
-    this._signals, {
-    required this._completer,
-    this.onSignal,
-    this.onDispose,
-  });
-
-  final Iterable<ProcessSignal> _signals;
-  final Completer<Null> _completer;
-
-  @override
-  final OnDisposeCallback? onDispose;
-
-  @override
-  final OnSignalCallback? onSignal;
-
+class const _MultiSignalWrapper(
+  final Iterable<ProcessSignal> _signals, {
+  required final Completer<Null> _completer,
+  @override final OnDisposeCallback? onDispose,
+  @override final OnSignalCallback? onSignal,
+}) implements SignalWrapper {
   @override
   bool get signed => _completer.isCompleted;
 
@@ -65,7 +54,9 @@ class _MultiSignalWrapper implements SignalWrapper {
     final subscriptions = [
       for (final signal in _signals)
         signal.watch().listen((signal) {
-          if (!_completer.isCompleted) _completer.completeError(_Cancelled());
+          if (!_completer.isCompleted) {
+            _completer.completeError(const _Cancelled());
+          }
           if (onSignal?.call(signal) case final Future f) futures.add(f);
         }),
     ];
@@ -84,23 +75,12 @@ class _MultiSignalWrapper implements SignalWrapper {
   }
 }
 
-class _SingleSignalWrapper implements SignalWrapper {
-  const new(
-    this._signal, {
-    required this._completer,
-    this.onDispose,
-    this.onSignal,
-  });
-
-  final ProcessSignal _signal;
-  final Completer<Null> _completer;
-
-  @override
-  final OnDisposeCallback? onDispose;
-
-  @override
-  final OnSignalCallback? onSignal;
-
+class const _SingleSignalWrapper(
+  final ProcessSignal _signal, {
+  required final Completer<Null> _completer,
+  @override final OnDisposeCallback? onDispose,
+  @override final OnSignalCallback? onSignal,
+}) implements SignalWrapper {
   @override
   bool get signed => _completer.isCompleted;
 
@@ -108,7 +88,9 @@ class _SingleSignalWrapper implements SignalWrapper {
   Future<T?> call<T>(Future<T> Function() fn) async {
     final futures = <Future>[];
     final subscription = _signal.watch().listen((signal) {
-      if (!_completer.isCompleted) _completer.completeError(_Cancelled());
+      if (!_completer.isCompleted) {
+        _completer.completeError(const _Cancelled());
+      }
       if (onSignal?.call(signal) case final Future future) futures.add(future);
     });
 

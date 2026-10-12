@@ -21,7 +21,17 @@ void _noop(_, _) {}
 typedef ZipCallback = void Function(ZipProgress progress);
 typedef OnErrorCallback = void Function(Object error, StackTrace trace);
 
-class GlobZipper {
+class const GlobZipper({
+  required final Directory directory,
+  required final File zipfile,
+  final Iterable<String> globPatterns = const ["**"],
+  final Iterable<String> ignorePatterns = const .empty(),
+  final String? ignoreFilename,
+
+  /// Compression level
+  final int? level,
+  final String? password,
+}) {
   static Future<void> isolated({
     required Directory directory,
     required File zipfile,
@@ -43,26 +53,6 @@ class GlobZipper {
     onData: onData,
     onError: onError,
   );
-
-  const new({
-    required this.directory,
-    required this.zipfile,
-    this.globPatterns = const ["**"],
-    this.ignorePatterns = const .empty(),
-    this.ignoreFilename,
-    this.level,
-    this.password,
-  });
-
-  final Directory directory;
-  final File zipfile;
-  final Iterable<String> globPatterns;
-  final Iterable<String> ignorePatterns;
-  final String? ignoreFilename;
-
-  /// Compression level
-  final int? level;
-  final String? password;
 
   Future<void> zip({ZipCallback? onData, OnErrorCallback? onError}) async {
     final fs = FS(

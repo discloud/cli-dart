@@ -1,7 +1,10 @@
 import "package:discloud/cli/disposable.dart";
+import "package:discloud/cli/printer/console_printer.dart";
 import "package:discloud/cli/spin/ispin.dart";
 
-abstract interface class IPrinter implements Disposable {
+abstract interface class const IPrinter() implements Disposable {
+  factory console({bool isDebug = true}) => ConsolePrinter(isDebug: isDebug);
+
   ISpin spin({String? text, bool start = true});
 
   /// [info] alias

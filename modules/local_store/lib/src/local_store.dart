@@ -6,7 +6,7 @@ import "package:nested_map/nested_map.dart";
 
 part "json_local_store.dart";
 
-abstract class LocalStore {
+abstract interface class const LocalStore() {
   factory json(String path) = _JSONLocalStore;
 
   Future<T?> get<T>(String key);

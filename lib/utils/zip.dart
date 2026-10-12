@@ -15,19 +15,17 @@ Future<void> zip({
   String? password,
   ZipCallback? onData,
   OnErrorCallback? onError,
-}) {
-  return GlobZipper.isolated(
-    directory: directory,
-    zipfile: zipfile,
-    globPatterns: glob,
-    ignorePatterns: ignore,
-    ignoreFilename: _ignoreFilename,
-    level: level,
-    password: password,
-    onData: onData,
-    onError: onError,
-  );
-}
+}) => GlobZipper.isolated(
+  directory: directory,
+  zipfile: zipfile,
+  globPatterns: glob,
+  ignorePatterns: ignore,
+  ignoreFilename: _ignoreFilename,
+  level: level,
+  password: password,
+  onData: onData,
+  onError: onError,
+);
 
 String formatZipProgress(ZipProgress progress, Directory root) {
   final buffer = StringBuffer("Zipping")
