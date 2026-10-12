@@ -2,14 +2,10 @@ import "package:discloud/extensions/num.dart";
 import "package:discloud/utils/bytes.dart";
 import "package:discloud/utils/formatters.dart";
 
-enum UnitDirection {
+enum UnitDirection(final String symbol) {
   up("↑"),
   down("↓"),
   both("⇅");
-
-  new(this.symbol);
-
-  final String symbol;
 
   @override
   String toString() => symbol;
