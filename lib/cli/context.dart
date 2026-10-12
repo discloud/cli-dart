@@ -2,7 +2,6 @@ import "dart:async";
 import "dart:io";
 
 import "package:discloud/cli/disposable.dart";
-import "package:discloud/cli/printer/console_printer.dart";
 import "package:discloud/cli/printer/iprinter.dart";
 import "package:discloud/extensions/duration.dart";
 import "package:discloud/extensions/list.dart";
@@ -29,7 +28,7 @@ class CliContext implements Disposable {
       api: .new(),
       arguments: arguments,
       debug: debug,
-      printer: ConsolePrinter(isDebug: debug),
+      printer: IPrinter.console(isDebug: debug),
       stopwatch: .new()..start(),
       store: .json(_cliConfigFilePath),
       subscriptions: [],

@@ -1,7 +1,6 @@
 import "dart:io";
 
 import "package:discloud/cli/printer/iprinter.dart";
-import "package:discloud/cli/spin/cli_spin.dart";
 import "package:discloud/cli/spin/ispin.dart";
 
 part "debug_console_printer.dart";
@@ -22,7 +21,7 @@ class ConsolePrinter implements IPrinter {
 
   @override
   ISpin spin({String? text, bool start = true, bool showDuration = true}) {
-    final spin = _spin ??= CLISpin(text: text, showDuration: showDuration);
+    final spin = _spin ??= ISpin.cli(text: text, showDuration: showDuration);
     if (start) spin.start();
     return spin;
   }
