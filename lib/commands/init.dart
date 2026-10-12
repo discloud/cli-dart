@@ -74,11 +74,7 @@ final class InitCommand extends Command<void> {
   }
 }
 
-class _InitArgs {
-  const new(this._argResults);
-
-  final ArgResults? _argResults;
-
+class const _InitArgs(final ArgResults? _argResults) {
   bool _flag(String name) => _argResults?.flag(name) ?? false;
   List<String> _multiOption(String n) =>
       _argResults?.multiOption(n) ?? const [];

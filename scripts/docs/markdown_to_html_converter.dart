@@ -5,11 +5,9 @@ import "package:path/path.dart";
 
 const _mdExt = ".md";
 
-final class MarkdownToHtmlConverter {
-  const new({required this.directory});
-
-  final Directory directory;
-
+final class const MarkdownToHtmlConverter({
+  required final Directory directory,
+}) {
   Stream<(File, String)> convert({bool recursive = false}) async* {
     final entities = await directory
         .list(recursive: recursive, followLinks: false)

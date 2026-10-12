@@ -2,17 +2,13 @@ import "dart:io";
 
 import "package:discloud/version.dart";
 
-class UserAgent {
+final class const UserAgent() {
   static const _product = "DiscloudCLI";
-
-  const new();
 
   String get _version => packageVersion;
 
   String get _osName => Platform.operatingSystem;
 
   @override
-  String toString() {
-    return "$_product/$_version ($_osName)";
-  }
+  String toString() => "$_product/$_version ($_osName)";
 }

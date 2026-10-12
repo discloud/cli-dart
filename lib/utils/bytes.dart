@@ -6,30 +6,24 @@ import "package:intl/intl.dart";
 
 /// binary: KB = 1024 B
 /// decimal: KB = 1000 B
-enum Dimension {
+enum Dimension(final int value) {
   /// KB = 1024 B
   binary(1024),
 
   /// KB = 1000 B
-  decimal(1000);
-
-  new(this.value);
-
-  final int value;
+  decimal(1000),
 }
 
-class Bytes<N extends num> {
+class const Bytes<N extends num>(
+  final N n, {
+  final Dimension dimension = .binary,
+  final NumberFormat? numberFormatter,
+}) {
   const factory bits(
     N n, {
     Dimension dimension,
     NumberFormat? numberFormatter,
   }) = _Bits;
-
-  const new(this.n, {this.dimension = .binary, this.numberFormatter});
-
-  final N n;
-  final Dimension dimension;
-  final NumberFormat? numberFormatter;
 
   UnitType get type => .byte;
 
@@ -158,9 +152,11 @@ class Bytes<N extends num> {
   int get hashCode => super.hashCode;
 }
 
-class _Bits<N extends num> extends Bytes<N> {
-  const new(super.n, {super.dimension = .binary, super.numberFormatter});
-
+class const _Bits<N extends num>(
+  super.n, {
+  super.dimension = .binary,
+  super.numberFormatter,
+}) extends Bytes<N> {
   @override
   UnitType get type => .bit;
 
@@ -294,11 +290,7 @@ enum _ByteUnit { B, KB, MB, GB, TB, PB, EB, ZB, YB }
 // ignore: constant_identifier_names
 enum _BitUnit { b, Kb, Mb, Gb, Tb, Pb, Eb, Zb, Yb }
 
-enum UnitType {
+enum UnitType(final List<Enum> units) {
   bit(_BitUnit.values),
-  byte(_ByteUnit.values);
-
-  new(this.units);
-
-  final List<Enum> units;
+  byte(_ByteUnit.values),
 }
