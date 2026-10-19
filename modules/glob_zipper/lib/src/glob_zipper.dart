@@ -10,7 +10,6 @@ import "package:glob_zipper/src/extensions/date_time.dart";
 import "package:glob_zipper/src/extensions/file.dart";
 import "package:path/path.dart";
 
-part "exception.dart";
 part "fs.dart";
 part "gitignore_glob_converter.dart";
 part "isolated.dart";
