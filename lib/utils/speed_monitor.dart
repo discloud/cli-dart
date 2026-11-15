@@ -16,9 +16,8 @@ class SpeedMonitor with Disposable {
   /// Creates a [SpeedMonitor]
   factory() => ._(queue: .new());
 
-  const new _({
-    required this._queue,
-  }) : _windowDuration = const .new(seconds: 1);
+  const new _({required this._queue})
+    : _windowDuration = const .new(seconds: 1);
 
   final LinkedList<_SpeedSample> _queue;
   final Duration _windowDuration;
