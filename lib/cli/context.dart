@@ -51,7 +51,7 @@ class CliContext with Disposable {
   Future<void> dispose() async {
     await subscriptions.dispose();
     api.dispose();
-    printer.dispose();
+    await printer.dispose();
 
     _stopwatch.stop();
 

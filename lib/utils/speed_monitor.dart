@@ -18,8 +18,7 @@ class SpeedMonitor with Disposable {
 
   const new _({
     required this._queue,
-    this._windowDuration = const .new(seconds: 1),
-  });
+  }) : _windowDuration = const .new(seconds: 1);
 
   final LinkedList<_SpeedSample> _queue;
   final Duration _windowDuration;
