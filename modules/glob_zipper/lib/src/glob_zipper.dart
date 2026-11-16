@@ -15,7 +15,7 @@ part "gitignore_glob_converter.dart";
 part "isolated.dart";
 part "zip_progress.dart";
 
-void _noop(_, _) {}
+void _onErrorNoop(_, _) {}
 
 typedef ZipCallback = void Function(ZipProgress progress);
 typedef OnErrorCallback = void Function(Object error, StackTrace trace);
@@ -26,10 +26,10 @@ class const GlobZipper({
   final Iterable<String> globPatterns = const ["**"],
   final Iterable<String> ignorePatterns = const .empty(),
   final String? ignoreFilename,
+  final String? password,
 
   /// Compression level
   final int? level,
-  final String? password,
 }) {
   static Future<void> isolated({
     required Directory directory,
@@ -61,10 +61,11 @@ class const GlobZipper({
       ignorePatterns: ignorePatterns.followedBy([zipfile.path]),
     );
 
+    final ZipFileEncoder encoder = .new(password: password);
+
     bool success = false;
     try {
-      final encoder = ZipFileEncoder(password: password)
-        ..create(zipfile.path, level: level);
+      encoder.create(zipfile.path, level: level);
 
       if (onData case final onData?) {
         await _zipWithCallback(encoder, fs.list, onData, onError);
@@ -72,13 +73,12 @@ class const GlobZipper({
         await _zipWithoutCallback(encoder, fs.list, onError);
       }
 
-      await encoder.close();
-
       success = true;
     } on PathAccessException catch (e, s) {
       if (onError == null) rethrow;
       onError(e, s);
     } finally {
+      await encoder.close();
       if (!success) await zipfile.safeDelete();
     }
   }
@@ -89,7 +89,7 @@ class const GlobZipper({
     OnErrorCallback? onError,
   ]) async {
     await for (final file in fileStreamFactory().handleError(
-      onError ?? _noop,
+      onError ?? _onErrorNoop,
     )) {
       final aFile = await _toArchiveFile(file, root: directory);
 
@@ -105,7 +105,7 @@ class const GlobZipper({
   ]) async {
     int processed = 0, i = 0;
     await for (final file in fileStreamFactory().handleError(
-      onError ?? _noop,
+      onError ?? _onErrorNoop,
     )) {
       final stat = await file.stat();
 
