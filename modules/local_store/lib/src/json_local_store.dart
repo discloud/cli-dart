@@ -11,31 +11,29 @@ class _JSONLocalStore implements LocalStore {
       .fuse(base64.encoder)
       .fuse(utf8.encoder);
 
-  new(String path) : _cache = .new(), _file = .new(path);
+  static Future<void> _loadCache(Map<String, dynamic> cache, File file) async {
+    try {
+      final json =
+          await file.openRead().transform(_jsonBase64Decoder).first
+              as Map<String, dynamic>;
+      cache.addAll(json..addAll(cache));
+    } catch (_) {}
+  }
+
+  factory(String path) => ._(cache: .new(), file: .new(path));
+
+  new _({required this._cache, required this._file});
 
   final Map<String, dynamic> _cache;
   final File _file;
 
-  Completer<void>? _loadCompleter;
-
-  Future<void> _load() async {
-    if (_loadCompleter case final completer?) return completer.future;
-    final completer = _loadCompleter = .new();
-    try {
-      final json =
-          await _file.openRead().transform(_jsonBase64Decoder).first
-              as Map<String, dynamic>;
-      _cache.addAll(json..addAll(_cache));
-    } catch (_) {
-    } finally {
-      completer.complete();
-    }
-  }
+  Future<void>? _loadFuture;
+  Future<void> _load() => _loadFuture ??= _loadCache(_cache, _file);
 
   Future<void> _save() async {
     await _file.parent.create(recursive: true);
 
-    final temp = File("${_file.path}.tmp");
+    final File temp = .new("${_file.path}.tmp");
     await temp.writeAsBytes(_jsonBase64Encoder.convert(_cache), flush: true);
 
     await temp.rename(_file.path);
